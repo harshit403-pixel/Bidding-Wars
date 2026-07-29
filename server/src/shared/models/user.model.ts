@@ -39,6 +39,52 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    avatar: {
+    type: String,
+    default: "",
+},
+
+phone: {
+    type: String,
+    default: "",
+},
+
+bio: {
+    type: String,
+    maxlength: [300, "Bio cannot exceed 300 characters"],
+    default: "",
+},
+
+role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+},
+
+rating: {
+    type: Number,
+    default: 0,
+},
+
+totalReviews: {
+    type: Number,
+    default: 0,
+},
+
+auctionsCreated: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auction",
+}],
+
+auctionsWon: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auction",
+}],
+
+wishlist: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Auction",
+}],
 
 });
 
