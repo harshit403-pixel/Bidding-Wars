@@ -21,3 +21,20 @@ export interface AuthResponse {
     user: User;
     accessToken: string;
 }
+export interface ForgotPasswordPayload {
+    email: string;
+}
+
+export interface ResetPasswordPayload {
+    token: string;
+    password: string;
+    confirmPassword: string;
+}
+
+export interface ForgotPasswordResponse {
+    message: string;
+}
+
+export interface ResetPasswordResponse {
+    message: string;
+}

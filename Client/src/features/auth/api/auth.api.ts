@@ -5,6 +5,11 @@ import type {
     LoginPayload,
     RegisterPayload,
     User,
+      ForgotPasswordResponse,
+      ResetPasswordResponse,
+      ForgotPasswordPayload,
+      ResetPasswordPayload
+
 } from "../auth.types";
 
 interface ApiResponse<T> {
@@ -57,4 +62,23 @@ export const refreshToken = async () => {
     >("/auth/refresh");
 
     return data.data.accessToken;
+};
+export const forgotPassword = async (
+    payload: ForgotPasswordPayload,
+) => {
+    const { data } = await api.post<
+        ApiResponse<ForgotPasswordResponse>
+    >("/auth/forgot-password", payload);
+
+    return data;
+};
+
+export const resetPassword = async (
+    payload: ResetPasswordPayload,
+) => {
+    const { data } = await api.post<
+        ApiResponse<ResetPasswordResponse>
+    >("/auth/reset-password", payload);
+
+    return data;
 };
