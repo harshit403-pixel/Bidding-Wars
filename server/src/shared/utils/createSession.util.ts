@@ -12,7 +12,7 @@ async function createSession(user: Record<string, unknown> | object, res: Respon
     const tokenPayload = await buildTokenPayload(user);
     const sessionId = new mongoose.Types.ObjectId();
     const refreshToken = generateRefreshToken({
-        sessionId: sessionId.toString(),
+        sessionId: sessionId.toString(),  
         userId: u._id.toString()
     });
 
