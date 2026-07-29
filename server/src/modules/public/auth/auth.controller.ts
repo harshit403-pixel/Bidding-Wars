@@ -139,8 +139,7 @@ class AuthController {
 		}
 
 		// getting the user from the session
-		const dbUserId = String((dbSession as unknown as Record<string, unknown>).userId || "");
-		const user = await this.userDao.findUserById(dbUserId);
+		const user = (dbSession as any).userId;
 
 		// checking if the user exists
 		if (!user) {
