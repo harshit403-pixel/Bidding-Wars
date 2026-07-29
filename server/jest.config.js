@@ -1,13 +1,33 @@
-export default {
-  testEnvironment: 'node',
-  preset: 'ts-jest/presets/default-esm',
-  testMatch: ['**/__tests__/**/*.test.ts'],
-  moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.js$': '$1'
+const config = {
+  preset: "ts-jest/presets/default-esm",
+  testEnvironment: "node",
+  extensionsToTreatAsEsm: [".ts"],
+  transform: {
+    "^.+\\.tsx?$": [
+      "ts-jest",
+      {
+        useESM: true,
+        tsconfig: "./tsconfig.json",
+      },
+    ],
   },
-  verbose: true,
-  forceExit: true,
+  moduleNameMapper: {
+    "^(\\.{1,2}/.*)\\.js$": "$1",
+  },
+  setupFilesAfterEnv: ["<rootDir>/src/__tests__/setup.cjs"],
+  globalTeardown: "<rootDir>/src/__tests__/teardown.ts",
+  testMatch: ["**/__tests__/**/*.test.ts"],
+  collectCoverage: false,
+  collectCoverageFrom: [
+    "src/**/*.ts",
+    "!src/**/*.d.ts",
+    "!src/server.ts",
+  ],
+  coverageDirectory: "coverage",
   clearMocks: true,
+  restoreMocks: true,
   resetMocks: true,
-  restoreMocks: true
+  verbose: true,
 };
+
+export default config;
