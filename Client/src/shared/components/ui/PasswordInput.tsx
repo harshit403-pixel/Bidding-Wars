@@ -3,32 +3,59 @@ import type { InputHTMLAttributes } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
 interface PasswordInputProps
-    extends InputHTMLAttributes<HTMLInputElement> {}
+    extends InputHTMLAttributes<HTMLInputElement> {
+    label?: string;
+    error?: string;
+}
 
 const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
-    ({ className = "", ...props }, ref) => {
+    (
+        {
+            label,
+            error,
+            className = "",
+            ...props
+        },
+        ref
+    ) => {
         const [showPassword, setShowPassword] = useState(false);
 
         return (
-            <div className="relative">
-                <input
-                    ref={ref}
-                    type={showPassword ? "text" : "password"}
-                    className={`w-full rounded-lg border border-slate-300 px-4 py-3 pr-12 outline-none transition focus:border-slate-900 ${className}`}
-                    {...props}
-                />
+            <div className="space-y-2">
+                {label && (
+                    <label className="text-sm font-medium">
+                        {label}
+                    </label>
+                )}
 
-                <button
-                    type="button"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800"
-                >
-                    {showPassword ? (
-                        <EyeOff size={20} />
-                    ) : (
-                        <Eye size={20} />
-                    )}
-                </button>
+                <div className="relative">
+                    <input
+                        ref={ref}
+                        type={showPassword ? "text" : "password"}
+                        className={`w-full rounded-lg border border-slate-300 px-4 py-3 pr-12 outline-none transition focus:border-slate-900 ${className}`}
+                        {...props}
+                    />
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            setShowPassword((prev) => !prev)
+                        }
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800"
+                    >
+                        {showPassword ? (
+                            <EyeOff size={20} />
+                        ) : (
+                            <Eye size={20} />
+                        )}
+                    </button>
+                </div>
+
+                {error && (
+                    <p className="text-sm text-red-500">
+                        {error}
+                    </p>
+                )}
             </div>
         );
     }

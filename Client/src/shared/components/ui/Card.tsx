@@ -1,12 +1,15 @@
-import type { ReactNode } from "react";
+import type { HTMLAttributes, ReactNode } from "react";
 
-interface CardProps {
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 
-function Card({ children }: CardProps) {
+function Card({ children, className = "", ...props }: CardProps) {
   return (
-    <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
+    <div
+      {...props}
+      className={`w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm ${className}`}
+    >
       {children}
     </div>
   );
