@@ -102,20 +102,6 @@ function Navbar() {
                         Marketplace
                     </NavLink>
 
-                    <NavLink
-                        to="/categories"
-                        className={navClass}
-                    >
-                        Categories
-                    </NavLink>
-
-                    <NavLink
-                        to="/about"
-                        className={navClass}
-                    >
-                        About
-                    </NavLink>
-
                     {isAuthenticated && (
                         <NavLink
                             to="/dashboard"
@@ -243,42 +229,6 @@ function Navbar() {
                             }
                         >
                             Marketplace
-                        </NavLink>
-
-                        <NavLink
-                            to="/categories"
-                            onClick={() => setMobileOpen(false)}
-                            className={({ isActive }) =>
-                                `rounded-xl px-4 py-3 transition ${
-                                    scrolled
-                                        ? isActive
-                                            ? "bg-neutral-100 font-medium text-black"
-                                            : "text-neutral-700 hover:bg-neutral-100"
-                                        : isActive
-                                          ? "bg-white/10 text-white"
-                                          : "text-white/70 hover:bg-white/10 hover:text-white"
-                                }`
-                            }
-                        >
-                            Categories
-                        </NavLink>
-
-                        <NavLink
-                            to="/about"
-                            onClick={() => setMobileOpen(false)}
-                            className={({ isActive }) =>
-                                `rounded-xl px-4 py-3 transition ${
-                                    scrolled
-                                        ? isActive
-                                            ? "bg-neutral-100 font-medium text-black"
-                                            : "text-neutral-700 hover:bg-neutral-100"
-                                        : isActive
-                                          ? "bg-white/10 text-white"
-                                          : "text-white/70 hover:bg-white/10 hover:text-white"
-                                }`
-                            }
-                        >
-                            About
                         </NavLink>
 
                         {isAuthenticated && (

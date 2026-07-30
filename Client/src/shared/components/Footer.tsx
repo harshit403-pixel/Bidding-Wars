@@ -104,13 +104,6 @@ function Footer() {
 
                             <div className="space-y-4">
 
-                                <Link
-                                    to="/about"
-                                    className="block transition hover:text-[#FF5A1F]"
-                                >
-                                    About Us
-                                </Link>
-
                                 <a
                                     href="#"
                                     className="block transition hover:text-[#FF5A1F]"

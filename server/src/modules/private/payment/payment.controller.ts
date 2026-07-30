@@ -1,9 +1,11 @@
 // Importing modules
+import crypto from "crypto";
 import { Response } from "express";
 
 import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import PaymentDAO from "../../../shared/dao/payment.dao.js";
 import { AuthenticatedRequest } from "../../public/auth/auth.types.js";
+import env from "../../../shared/config/env.config.js";
 
 import Created from "../../../shared/responses/Created.response.js";
 import Ok from "../../../shared/responses/Ok.response.js";
@@ -86,13 +88,16 @@ export const verifyPayment = async (req: AuthenticatedRequest, res: Response) =>
         throw new BadRequest("Payment already verified");
     }
 
-    // TODO: Verify provider signature using payment provider SDK
-    // This is a placeholder for actual signature verification
-    // Example for Razorpay: razorpay.utils.verifyPaymentSignature({ razorpay_order_id, razorpay_payment_id, razorpay_signature })
-    const isSignatureValid = true;
+    // Verify Razorpay signature using HMAC-SHA256
+    if (env.RAZORPAY_KEY_SECRET) {
+        const expectedSignature = crypto
+            .createHmac("sha256", env.RAZORPAY_KEY_SECRET)
+            .update(`${providerOrderId}|${providerPaymentId}`)
+            .digest("hex");
 
-    if (!isSignatureValid) {
-        throw new BadRequest("Invalid payment signature");
+        if (expectedSignature !== providerSignature) {
+            throw new BadRequest("Invalid payment signature");
+        }
     }
 
     // updating the payment
