@@ -1,9 +1,11 @@
 import api from "../../api/axios";
 import { toast } from "sonner";
 
+const RAZORPAY_KEY_ID = import.meta.env.VITE_RAZORPAY_KEY_ID || "rzp_test_TJkpAhBuCYO4R3";
+
 export async function loadRazorpayScript(): Promise<boolean> {
     return new Promise((resolve) => {
-        if ((window as any).Razorpay) {
+        if ((window as unknown as { Razorpay?: unknown }).Razorpay) {
             resolve(true);
             return;
         }
@@ -37,14 +39,18 @@ export async function processRazorpayPayment({
         // 2. Load Razorpay JS SDK
         const isLoaded = await loadRazorpayScript();
 
-        if (isLoaded && (window as any).Razorpay) {
+        if (isLoaded && (window as unknown as { Razorpay?: new (opts: Record<string, unknown>) => { open: () => void } }).Razorpay) {
             const options = {
-                key: "rzp_test_sample",
-                amount: amount * 100, // paise
+                key: RAZORPAY_KEY_ID,
+                amount: amount * 100,
                 currency: "INR",
                 name: "Bidding Wars",
                 description: `Payment for: ${auctionTitle}`,
-                handler: async function (response: any) {
+                handler: async function (response: {
+                    razorpay_payment_id?: string;
+                    razorpay_order_id?: string;
+                    razorpay_signature?: string;
+                }) {
                     try {
                         await api.post("/payments/verify", {
                             providerOrderId: providerOrderId,
@@ -53,8 +59,9 @@ export async function processRazorpayPayment({
                         });
                         toast.success("Payment verified & completed successfully!");
                         if (onSuccess) onSuccess();
-                    } catch (err: any) {
-                        toast.error(err.response?.data?.message || "Payment verification failed");
+                    } catch (err: unknown) {
+                        const error = err as { response?: { data?: { message?: string } } };
+                        toast.error(error.response?.data?.message || "Payment verification failed");
                     }
                 },
                 prefill: {
@@ -65,7 +72,8 @@ export async function processRazorpayPayment({
                     color: "#FF3B00",
                 },
             };
-            const rzp = new (window as any).Razorpay(options);
+            const RazorpayConstructor = (window as unknown as { Razorpay: new (opts: Record<string, unknown>) => { open: () => void } }).Razorpay;
+            const rzp = new RazorpayConstructor(options);
             rzp.open();
         } else {
             // Fallback for dev environment if script fails to load
@@ -78,7 +86,8 @@ export async function processRazorpayPayment({
             toast.success("Test payment completed successfully!");
             if (onSuccess) onSuccess();
         }
-    } catch (error: any) {
-        toast.error(error.response?.data?.message || "Failed to initiate payment");
+    } catch (error: unknown) {
+        const err = error as { response?: { data?: { message?: string } } };
+        toast.error(err.response?.data?.message || "Failed to initiate payment");
     }
 }

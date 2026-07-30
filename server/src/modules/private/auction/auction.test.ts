@@ -705,17 +705,21 @@ describe("Private Auction API", () => {
 
   describe("GET /api/auctions/my", () => {
 
-    // NOTE: The GET /api/auctions/my route is currently broken due to a routing conflict.
-    // The public router's GET /:auctionId matches /my first, treating "my" as an auctionId,
-    // and the auctionIdParamValidators reject it as an invalid ObjectId (400).
-    // These tests document the actual production behavior.
-
-    it("should return 400 due to routing conflict with public /:auctionId", async () => {
+    it("should return seller's auctions", async () => {
       const res = await request(app)
         .get("/api/auctions/my")
         .set("Authorization", `Bearer ${accessToken}`);
 
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+      expect(res.body.data).toHaveProperty("auctions");
+      expect(Array.isArray(res.body.data.auctions)).toBe(true);
+    });
+
+    it("should reject unauthenticated users", async () => {
+      const res = await request(app).get("/api/auctions/my");
+
+      expect(res.status).toBe(401);
       expect(res.body.success).toBe(false);
     });
   });

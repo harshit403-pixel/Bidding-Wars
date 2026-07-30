@@ -3,6 +3,7 @@ import streamifier from "streamifier";
 
 import cloudinary from "../../../shared/config/cloudinary.config.js";
 import Ok from "../../../shared/responses/Ok.response.js";
+import env from "../../../shared/config/env.config.js";
 
 export const uploadImage = async (
     req: Request,
@@ -11,34 +12,35 @@ export const uploadImage = async (
 ) => {
     try {
         if (!req.file) {
-    throw new Error("No image uploaded.");
-}
+            throw new Error("No image uploaded.");
+        }
 
-const file = req.file;
+        if (!env.CLOUDINARY_CLOUD_NAME) {
+            throw new Error("Cloudinary is not configured. Use ImageKit client-side upload instead.");
+        }
 
-const result = await new Promise<any>((resolve, reject) => {
-    const stream = cloudinary.uploader.upload_stream(
-        {
-            folder: "bidarena",
-        },
-        (error, result) => {
-            if (error) return reject(error);
-            resolve(result);
-        },
-    );
+        const file = req.file;
 
-    streamifier.createReadStream(file.buffer).pipe(stream);
-});
+        const result = await new Promise<any>((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                {
+                    folder: "bidarena",
+                },
+                (error, result) => {
+                    if (error) return reject(error);
+                    resolve(result);
+                },
+            );
 
- 
+            streamifier.createReadStream(file.buffer).pipe(stream);
+        });
 
         return Ok(res, "Image uploaded successfully.", {
             url: result.secure_url,
             publicId: result.public_id,
         });
-    }catch (error: any) {
-    console.error(error);
-    next(error);
+    } catch (error: unknown) {
+        next(error);
     }
 };
 

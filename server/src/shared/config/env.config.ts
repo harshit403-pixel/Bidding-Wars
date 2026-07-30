@@ -10,7 +10,7 @@ config();
 const envSchema = z.object({
     PORT: z.coerce.number().default(envConstants.PORT),
     NODE_ENV: z.enum(["development", "production", "test"]).default(envConstants.NODE_ENV),
-    MONGO_URI: z.string().default(envConstants.MONGO_URI),
+    MONGO_URI: z.string().default(envConstants.MONGO_URI),  
     ACCESS_TOKEN_SECRET: z.string().default(envConstants.ACCESS_TOKEN_SECRET),
     REFRESH_TOKEN_SECRET: z.string().default(envConstants.REFRESH_TOKEN_SECRET),
     FRONTEND_URL: z.string().url().default(envConstants.FRONTEND_URL),
@@ -34,11 +34,13 @@ const envSchema = z.object({
     REDIS_PASSWORD: z.string().default(envConstants.REDIS_PASSWORD),
     GROQ_API_KEY: z.string().default(""),
     CLOUDINARY_CLOUD_NAME: z.string().default(""),
-CLOUDINARY_API_KEY: z.string().default(""),
-CLOUDINARY_API_SECRET: z.string().default(""),
+    CLOUDINARY_API_KEY: z.string().default(""),
+    CLOUDINARY_API_SECRET: z.string().default(""),
     IMAGEKIT_PUBLIC_KEY: z.string().default(""),
     IMAGEKIT_PRIVATE_KEY: z.string().default(""),
     IMAGEKIT_URL_ENDPOINT: z.string().default(""),
+    RAZORPAY_KEY_ID: z.string().default(""),
+    RAZORPAY_KEY_SECRET: z.string().default(""),
 });
 
 // parsing and validating environment variables
