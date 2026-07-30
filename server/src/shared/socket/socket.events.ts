@@ -28,6 +28,10 @@ export function registerSocketEvents(io: Server) {
             await handlePlaceBid(socket, payload);
         });
 
+        socket.on("send_chat_message", async (payload: { roomId: string; message: string }) => {
+            await handleSendChatMessage(socket, payload);
+        });
+
         socket.on("disconnect", async (reason) => {
             await handleDisconnect(socket, reason);
         });
@@ -107,6 +111,7 @@ async function handleJoinAuction(socket: AuthenticatedSocket, payload: JoinAucti
             remainingSeconds,
             participants: participantCount,
             status: auction.status,
+            chatMessages: room?.chatMessages || [],
         };
 
         socketManager.emitToSocket(socket.id, "auction_state", auctionState);
@@ -155,8 +160,8 @@ async function handleLeaveAuction(socket: AuthenticatedSocket, roomId: string) {
 
 async function handlePlaceBid(socket: AuthenticatedSocket, payload: PlaceBidPayload) {
     try {
-        if (!socket.userId || !socket.username) {
-            return emitError(socket, "UNAUTHORIZED", "Authentication required");
+        if (!socket.userId || !socket.username || (socket as any).isGuest || socket.userId.startsWith("guest_")) {
+            return emitError(socket, "UNAUTHORIZED", "Please log in or create an account to place bids.");
         }
 
         if (socketManager.isRateLimited(socket.id)) {
@@ -245,6 +250,52 @@ async function handleDisconnect(socket: AuthenticatedSocket, reason: string) {
         logger.info({ socketId: socket.id, userId: socket.userId, reason }, "Socket disconnected");
     } catch (error) {
         logger.error({ socketId: socket.id, error }, "Socket: disconnect cleanup error");
+    }
+}
+
+async function handleSendChatMessage(socket: AuthenticatedSocket, payload: { roomId: string; message: string }) {
+    try {
+        if (!socket.userId || (socket as any).isGuest || socket.userId.startsWith("guest_")) {
+            return emitError(socket, "UNAUTHORIZED", "Please log in to send chat messages.");
+        }
+
+        const username = socket.username || "User";
+        const { roomId, message } = payload;
+        if (!roomId || !message || typeof message !== "string" || !message.trim()) {
+            return;
+        }
+
+        const trimmed = message.trim().slice(0, 300);
+
+        let targetRoomId = roomId;
+        let room = socketManager.getRoom(roomId);
+        if (!room) {
+            const auction = await auctionDAO.findAuctionById(roomId);
+            if (auction && auction.roomId) {
+                targetRoomId = auction.roomId;
+                room = socketManager.getRoom(targetRoomId);
+            }
+        }
+
+        const chatMsg = {
+            id: `chat_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+            userId: socket.userId,
+            username,
+            message: trimmed,
+            timestamp: new Date().toISOString(),
+        };
+
+        if (targetRoomId) {
+            socketManager.addChatMessage(targetRoomId, chatMsg);
+            socketManager.broadcastToRoom(targetRoomId, "new_chat_message", chatMsg);
+        }
+        if (roomId && roomId !== targetRoomId) {
+            socketManager.addChatMessage(roomId, chatMsg);
+            socketManager.broadcastToRoom(roomId, "new_chat_message", chatMsg);
+        }
+        socket.emit("new_chat_message", chatMsg);
+    } catch (error) {
+        logger.error({ socketId: socket.id, error }, "Socket: handleSendChatMessage error");
     }
 }
 

@@ -12,6 +12,7 @@ import type {
     AuctionStarted,
     AuctionEnded,
     SocketError,
+    ChatMessage,
 } from "./socket.types";
 import { toast } from "sonner";
 
@@ -19,11 +20,14 @@ interface UseAuctionSocketReturn {
     auction: AuctionState | null;
     connected: boolean;
     placeBid: (payload: BidPayload) => void;
+    chatMessages: ChatMessage[];
+    sendChatMessage: (message: string) => void;
 }
 
 export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketReturn {
     const { socket, connected } = useSocket();
     const [auction, setAuction] = useState<AuctionState | null>(null);
+    const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
     const joinedRef = useRef(false);
 
     useEffect(() => {
@@ -34,6 +38,9 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
 
         function onAuctionState(state: AuctionState) {
             setAuction(state);
+            if (state.chatMessages && Array.isArray(state.chatMessages)) {
+                setChatMessages(state.chatMessages);
+            }
         }
 
         function onNewHighestBid(data: NewHighestBid) {
@@ -99,6 +106,13 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
             toast.info("Auction has ended!");
         }
 
+        function onNewChatMessage(msg: ChatMessage) {
+            setChatMessages((prev) => {
+                if (prev.some((m) => m.id === msg.id)) return prev;
+                return [...prev.slice(-100), msg];
+            });
+        }
+
         function onSocketError(err: SocketError) {
             toast.error(err.message);
         }
@@ -111,6 +125,7 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
         socket.on("user_left", onUserLeft);
         socket.on("auction_started", onAuctionStarted);
         socket.on("auction_ended", onAuctionEnded);
+        socket.on("new_chat_message", onNewChatMessage);
         socket.on("socket_error", onSocketError);
 
         return () => {
@@ -122,6 +137,7 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
             socket.off("user_left", onUserLeft);
             socket.off("auction_started", onAuctionStarted);
             socket.off("auction_ended", onAuctionEnded);
+            socket.off("new_chat_message", onNewChatMessage);
             socket.off("socket_error", onSocketError);
 
             if (joinedRef.current && roomId) {
@@ -129,6 +145,7 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
                 joinedRef.current = false;
             }
             setAuction(null);
+            setChatMessages([]);
         };
     }, [socket, connected, roomId]);
 
@@ -143,5 +160,17 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
         [socket],
     );
 
-    return { auction, connected, placeBid };
+    const sendChatMessage = useCallback(
+        (message: string) => {
+            if (!socket?.connected) {
+                toast.error("Not connected to auction room");
+                return;
+            }
+            if (!roomId || !message.trim()) return;
+            socket.emit("send_chat_message", { roomId, message: message.trim() });
+        },
+        [socket, roomId],
+    );
+
+    return { auction, connected, placeBid, chatMessages, sendChatMessage };
 }

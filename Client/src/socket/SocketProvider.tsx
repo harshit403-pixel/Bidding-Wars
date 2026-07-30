@@ -48,10 +48,8 @@ function SocketProvider({ children }: SocketProviderProps) {
     }, [socket]);
 
     useEffect(() => {
-        if (isAuthChecked && isAuthenticated) {
+        if (isAuthChecked) {
             connectSocket();
-        } else {
-            disconnectSocket();
         }
     }, [isAuthenticated, isAuthChecked]);
 

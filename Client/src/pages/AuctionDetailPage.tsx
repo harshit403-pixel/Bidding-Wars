@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { useParams } from "react-router";
+import { useState, useRef, useEffect } from "react";
+import { useParams, Link } from "react-router";
 import { useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
-import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square, CreditCard } from "lucide-react";
+import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square, CreditCard, MessageSquare, Send } from "lucide-react";
 import { toast } from "sonner";
 
 import { processRazorpayPayment } from "../shared/utils/razorpay";
@@ -18,11 +18,24 @@ function AuctionDetailPage() {
     const { roomId } = useParams<{ roomId: string }>();
     const queryClient = useQueryClient();
     const user = useSelector((state: RootState) => state.auth.user);
-    const { auction: socketAuction, connected, placeBid } = useAuctionSocket(roomId);
+    const { auction: socketAuction, connected, placeBid, chatMessages, sendChatMessage } = useAuctionSocket(roomId);
     const { connected: socketConnected } = useSocket();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [bidAmount, setBidAmount] = useState("");
     const [actionLoading, setActionLoading] = useState(false);
+    const [chatInput, setChatInput] = useState("");
+    const chatEndRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, [chatMessages]);
+
+    const handleSendChat = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!chatInput.trim()) return;
+        sendChatMessage(chatInput);
+        setChatInput("");
+    };
 
     const { data: apiAuction, isLoading: apiLoading } = useAuction(roomId);
 
@@ -262,6 +275,82 @@ function AuctionDetailPage() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Live Auction Chat Widget */}
+                            <div className="border-t border-neutral-200 pt-6 sm:pt-8">
+                                <div className="mb-4 flex items-center justify-between">
+                                    <h2
+                                        className="text-2xl uppercase font-black sm:text-3xl flex items-center gap-2"
+                                        style={{ fontFamily: "Bebas Neue" }}
+                                    >
+                                        <MessageSquare className="h-6 w-6 text-[#FF3B00]" />
+                                        Live Auction Chat
+                                    </h2>
+                                    <span className="flex items-center gap-1.5 text-xs text-neutral-500 font-medium">
+                                        <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                                        Realtime Feed
+                                    </span>
+                                </div>
+
+                                <div className="border border-neutral-200 bg-white p-4 shadow-sm">
+                                    <div className="h-64 overflow-y-auto space-y-3 pr-2 mb-3">
+                                        {chatMessages.length === 0 ? (
+                                            <div className="flex h-full items-center justify-center text-center text-xs text-neutral-400">
+                                                No chat messages yet. Be the first to start the conversation!
+                                            </div>
+                                        ) : (
+                                            chatMessages.map((msg) => (
+                                                <div
+                                                    key={msg.id}
+                                                    className={`flex flex-col text-xs ${
+                                                        msg.userId === user?._id ? "items-end" : "items-start"
+                                                    }`}
+                                                >
+                                                    <div className="flex items-center gap-1.5 mb-0.5 text-[10px] text-neutral-400">
+                                                        <span className="font-semibold text-neutral-700">{msg.username}</span>
+                                                        <span>•</span>
+                                                        <span>{new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                                                    </div>
+                                                    <div
+                                                        className={`rounded-lg px-3 py-2 max-w-[85%] text-sm break-words ${
+                                                            msg.userId === user?._id
+                                                                ? "bg-[#FF3B00] text-white"
+                                                                : "bg-neutral-100 text-neutral-800 border border-neutral-200"
+                                                        }`}
+                                                    >
+                                                        {msg.message}
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                        <div ref={chatEndRef} />
+                                    </div>
+
+                                    {user ? (
+                                        <form onSubmit={handleSendChat} className="flex gap-2">
+                                            <input
+                                                type="text"
+                                                value={chatInput}
+                                                onChange={(e) => setChatInput(e.target.value)}
+                                                placeholder="Type a message to bidders..."
+                                                maxLength={300}
+                                                className="flex-1 border border-neutral-300 bg-neutral-50 px-3 py-2 text-xs outline-none focus:border-[#FF3B00] focus:bg-white"
+                                            />
+                                            <button
+                                                type="submit"
+                                                disabled={!chatInput.trim()}
+                                                className="bg-[#FF3B00] px-4 py-2 text-xs font-semibold uppercase text-white transition hover:bg-[#FF5A2C] disabled:opacity-50"
+                                            >
+                                                <Send className="h-4 w-4" />
+                                            </button>
+                                        </form>
+                                    ) : (
+                                        <div className="border border-amber-200 bg-amber-50 p-2.5 text-center text-xs text-amber-800 font-medium">
+                                            🔒 Log in to participate in the live auction chat.
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -355,6 +444,22 @@ function AuctionDetailPage() {
                                             <Square className="h-4 w-4 sm:h-5 sm:w-5" />
                                             {actionLoading ? "Ending..." : "End Auction Now"}
                                         </button>
+                                    </div>
+                                ) : !user ? (
+                                    <div className="space-y-3 border border-[#FF3B00]/30 bg-[#FF3B00]/5 p-4 text-center sm:p-5">
+                                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#FF3B00]">
+                                            🔴 Live Auction Stream
+                                        </p>
+                                        <p className="text-xs text-neutral-600">
+                                            You are watching live bids in real-time. Log in or create an account to place a bid.
+                                        </p>
+                                        <Link
+                                            to="/login"
+                                            className="flex w-full items-center justify-center gap-2 border-b-2 border-[#FF3B00] bg-[#FF3B00] py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-[#FF5A2C] sm:py-3.5 sm:text-lg shadow-sm"
+                                            style={{ fontFamily: "Bebas Neue" }}
+                                        >
+                                            🔒 Log In to Place Bid — ₹{minBid}
+                                        </Link>
                                     </div>
                                 ) : (
                                     <div className="space-y-3 sm:space-y-4">

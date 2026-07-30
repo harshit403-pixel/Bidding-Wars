@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import { useLogout } from "../../features/auth/hooks/useLogout";
 import type { RootState } from "../../app/store";
+import logoImg from "../../assets/logo.png";
 
 function Navbar() {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -17,50 +18,48 @@ function Navbar() {
 
     const { mutate: logout } = useLogout();
 
-   useEffect(() => {
-    let lastScrollY = window.scrollY;
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
 
-    const handleScroll = () => {
-        const currentScrollY = window.scrollY;
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
 
-        setScrolled(currentScrollY > 30);
+            setScrolled(currentScrollY > 30);
 
-        if (currentScrollY < 80) {
-            setShowNavbar(true);
-        } else if (currentScrollY > lastScrollY) {
-            // Scrolling down
-            setShowNavbar(false);
-        } else {
-            // Scrolling up
-            setShowNavbar(true);
-        }
+            if (currentScrollY < 80) {
+                setShowNavbar(true);
+            } else if (currentScrollY > lastScrollY) {
+                setShowNavbar(false);
+            } else {
+                setShowNavbar(true);
+            }
 
-        lastScrollY = currentScrollY;
-    };
+            lastScrollY = currentScrollY;
+        };
 
-    window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll);
 
-    return () =>
-        window.removeEventListener("scroll", handleScroll);
-}, []);
+        return () =>
+            window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const navClass = ({ isActive }: { isActive: boolean }) =>
         `relative transition duration-300 ${
             scrolled
                 ? isActive
-                    ? "text-black"
+                    ? "text-black font-semibold"
                     : "text-neutral-600 hover:text-black"
                 : isActive
-                  ? "text-white"
+                  ? "text-white font-semibold"
                   : "text-white/70 hover:text-white"
         }`;
 
     return (
-      <header
-    className={`fixed left-0 top-0 z-50 w-full px-4 py-5 transition-transform duration-500 ${
-        showNavbar ? "translate-y-0" : "-translate-y-full"
-    }`}
->
+        <header
+            className={`fixed left-0 top-0 z-50 w-full px-4 py-5 transition-transform duration-500 ${
+                showNavbar ? "translate-y-0" : "-translate-y-full"
+            }`}
+        >
             <div
                 className={`mx-auto flex h-20 max-w-7xl items-center justify-between rounded-full px-8 transition-all duration-500 ${
                     scrolled
@@ -68,24 +67,19 @@ function Navbar() {
                         : "border border-white/15 bg-white/10 backdrop-blur-xl"
                 }`}
             >
-
                 {/* Logo */}
 
                 <Link
                     to="/"
                     className="flex items-center gap-3"
                 >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FF3B00] text-lg font-black text-white shadow-sm">
-                        BW
-                    </div>
+                    <img
+                        src={logoImg}
+                        alt="Bidding Wars Logo"
+                        className="h-11 w-11 rounded-full object-cover shadow-sm border border-neutral-200"
+                    />
 
-                    <span
-                        className={`hidden text-xl font-semibold lg:block ${
-                            scrolled
-                                ? "text-black"
-                                : "text-white"
-                        }`}
-                    >
+                    <span className="hidden text-xl font-extrabold text-neutral-900 lg:block">
                         Bidding Wars
                     </span>
                 </Link>
@@ -93,7 +87,6 @@ function Navbar() {
                 {/* Desktop Navigation */}
 
                 <nav className="hidden items-center gap-10 lg:flex">
-
                     <NavLink
                         to="/auctions"
                         className={navClass}
@@ -103,22 +96,19 @@ function Navbar() {
 
                     {isAuthenticated && (
                         <NavLink
-                            to="/dashboard"
+                            to="/profile"
                             className={navClass}
                         >
-                            Dashboard
+                            Profile
                         </NavLink>
                     )}
-
                 </nav>
 
                 {/* Right Side */}
 
                 <div className="hidden items-center gap-5 lg:flex">
-
                     {isAuthenticated ? (
                         <>
-
                             <Link
                                 to="/create-auction"
                                 className="flex items-center gap-2 rounded-full bg-[#FF3B00] px-5 py-2.5 text-sm font-semibold text-white transition duration-300 hover:scale-105 hover:bg-[#FF5A2C] shadow-md"
@@ -129,11 +119,9 @@ function Navbar() {
 
                             <Link
                                 to="/profile"
-                                className="group relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#FF3B00] via-neutral-900 to-black text-sm font-black text-white shadow-md ring-2 ring-white/20 transition duration-300 hover:scale-105 hover:ring-[#FF3B00] hover:shadow-lg"
-                                title={user?.name || "View Profile"}
+                                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#111] text-sm font-semibold text-white transition hover:scale-105"
                             >
-                                <span>{user?.name?.charAt(0).toUpperCase()}</span>
-                                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" title="Online" />
+                                {user?.name?.charAt(0).toUpperCase()}
                             </Link>
 
                             <button
@@ -146,11 +134,9 @@ function Navbar() {
                             >
                                 Logout
                             </button>
-
                         </>
                     ) : (
                         <div className="flex items-center gap-4">
-
                             <Link
                                 to="/login"
                                 className={`transition ${
@@ -168,10 +154,8 @@ function Navbar() {
                             >
                                 Get Started
                             </Link>
-
                         </div>
                     )}
-
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -190,11 +174,10 @@ function Navbar() {
                         <Menu size={28} />
                     )}
                 </button>
-
             </div>
 
-            {/* Mobile Menu Starts Here */}
-                        {mobileOpen && (
+            {/* Mobile Menu */}
+            {mobileOpen && (
                 <div
                     className={`mt-4 overflow-hidden rounded-3xl transition-all duration-300 lg:hidden ${
                         scrolled
@@ -203,7 +186,6 @@ function Navbar() {
                     }`}
                 >
                     <nav className="flex flex-col p-6">
-
                         <NavLink
                             to="/auctions"
                             onClick={() => setMobileOpen(false)}
@@ -225,7 +207,7 @@ function Navbar() {
                         {isAuthenticated && (
                             <>
                                 <NavLink
-                                    to="/dashboard"
+                                    to="/profile"
                                     onClick={() => setMobileOpen(false)}
                                     className={({ isActive }) =>
                                         `rounded-xl px-4 py-3 transition ${
@@ -239,7 +221,7 @@ function Navbar() {
                                         }`
                                     }
                                 >
-                                    Dashboard
+                                    Profile
                                 </NavLink>
 
                                 <NavLink
@@ -261,7 +243,8 @@ function Navbar() {
                                 </NavLink>
                             </>
                         )}
-                                                <div
+
+                        <div
                             className={`mt-6 border-t pt-6 ${
                                 scrolled
                                     ? "border-neutral-200"
@@ -336,7 +319,6 @@ function Navbar() {
                                 </div>
                             )}
                         </div>
-
                     </nav>
                 </div>
             )}

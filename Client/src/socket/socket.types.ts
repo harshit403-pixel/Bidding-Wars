@@ -37,6 +37,7 @@ export interface AuctionState {
     remainingSeconds: number;
     participants: number;
     status: string;
+    chatMessages?: ChatMessage[];
 }
 
 export interface BidPayload {
@@ -86,4 +87,12 @@ export interface AuctionEnded {
 export interface SocketError {
     code: string;
     message: string;
+}
+
+export interface ChatMessage {
+    id: string;
+    userId: string;
+    username: string;
+    message: string;
+    timestamp: string;
 }
