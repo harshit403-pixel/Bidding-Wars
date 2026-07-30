@@ -10,6 +10,11 @@ export default defineConfig({
                 target: process.env.BACKEND_URL || "http://localhost:5000",
                 changeOrigin: true,
             },
+            "/socket.io": {
+                target: process.env.BACKEND_URL || "http://localhost:5000",
+                changeOrigin: true,
+                ws: true,
+            },
         },
     },
 });

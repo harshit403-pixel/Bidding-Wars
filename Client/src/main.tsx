@@ -8,11 +8,14 @@ import "./index.css";
 import App from "./App";
 import { store } from "./app/store";
 import { queryClient } from "./app/queryCLient";
+import SocketProvider from "./socket/SocketProvider";
 
 createRoot(document.getElementById("root")!).render(
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-            <App />
+            <SocketProvider>
+                <App />
+            </SocketProvider>
             <Toaster
                 position="top-right"
                 richColors
