@@ -9,22 +9,16 @@ interface ImageKitAuthResponse {
     urlEndpoint: string;
 }
 
-let imageKitAvailable: boolean | null = null;
-
 export async function getImageKitAuth(): Promise<ImageKitAuthResponse | null> {
-    if (imageKitAvailable === false) return null;
     try {
         const { data } = await api.get<{ data: ImageKitAuthResponse }>(
             "/upload/imagekit-auth"
         );
         if (!data.data?.publicKey || !data.data?.urlEndpoint) {
-            imageKitAvailable = false;
             return null;
         }
-        imageKitAvailable = true;
         return data.data;
     } catch {
-        imageKitAvailable = false;
         return null;
     }
 }
