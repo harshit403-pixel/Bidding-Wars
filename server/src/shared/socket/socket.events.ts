@@ -55,7 +55,10 @@ async function handleJoinAuction(socket: AuthenticatedSocket, payload: JoinAucti
         let room = socketManager.getRoom(roomId);
         if (!room) {
             const endTimeMs = auction.endTime ? new Date(auction.endTime).getTime() : Date.now();
-            room = socketManager.createRoom(roomId, auction._id.toString(), endTimeMs);
+            const startTimeMs = auction.startTime ? new Date(auction.startTime).getTime() : Date.now();
+            room = socketManager.createRoom(roomId, auction._id.toString(), endTimeMs, startTimeMs, auction.status);
+        } else {
+            room.status = auction.status;
         }
 
         const existingParticipant = room.participants.get(socket.id);

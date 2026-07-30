@@ -311,18 +311,23 @@ function AuctionDetailPage() {
                             )}
 
                             {status === "upcoming" && (
-                                <div className="border border-[#FF3B00]/30 bg-[#FF3B00]/5 p-4 text-center sm:p-6 space-y-3">
-                                    <p className="text-xs uppercase tracking-[0.2em] text-[#FF3B00] sm:text-sm sm:tracking-[0.25em] font-semibold">
-                                        📅 Auction Scheduled
+                                <div className="border border-amber-300/60 bg-amber-50/70 p-4 text-center sm:p-6 space-y-3">
+                                    <p className="text-xs uppercase tracking-[0.2em] text-amber-800 sm:text-sm sm:tracking-[0.25em] font-bold">
+                                        📅 Auction Scheduled (Upcoming)
                                     </p>
-                                    <p className="text-sm text-neutral-600">
+                                    <p className="text-sm text-neutral-700">
                                         Starts at {new Date(auction.startTime).toLocaleString()}
                                     </p>
+                                    {!isSeller && (
+                                        <p className="text-xs font-medium text-neutral-500 italic">
+                                            Bidding is not open yet. Bids can only be placed after the auction starts.
+                                        </p>
+                                    )}
                                     {isSeller && (
                                         <button
                                             onClick={handleStartNow}
                                             disabled={actionLoading}
-                                            className="flex w-full items-center justify-center gap-2 border-b-2 border-green-600 bg-green-600 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
+                                            className="flex w-full items-center justify-center gap-2 border-b-2 border-green-600 bg-green-600 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg shadow-sm"
                                             style={{ fontFamily: "Bebas Neue" }}
                                         >
                                             <Play className="h-4 w-4 sm:h-5 sm:w-5" />
