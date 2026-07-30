@@ -229,6 +229,13 @@ export const startNow = async (req: AuthenticatedRequest, res: Response) => {
     // emit socket event for realtime
     try {
         const { getIO } = await import("../../../shared/socket/socket.js");
+        const socketManager = (await import("../../../shared/socket/socket.manager.js")).default;
+        if (existingAuction.roomId) {
+            const room = socketManager.getRoom(existingAuction.roomId);
+            if (room) {
+                room.status = "active";
+            }
+        }
         const io = getIO();
         if (io && existingAuction.roomId) {
             io.to(existingAuction.roomId).emit("auction_started", {
@@ -291,6 +298,13 @@ export const endNow = async (req: AuthenticatedRequest, res: Response) => {
     // emit socket event for realtime
     try {
         const { getIO } = await import("../../../shared/socket/socket.js");
+        const socketManager = (await import("../../../shared/socket/socket.manager.js")).default;
+        if (existingAuction.roomId) {
+            const room = socketManager.getRoom(existingAuction.roomId);
+            if (room) {
+                room.status = "ended";
+            }
+        }
         const io = getIO();
         if (io && existingAuction.roomId) {
             io.to(existingAuction.roomId).emit("auction_ended", {

@@ -20,8 +20,8 @@ class SocketManager {
         return this.rooms.get(roomId);
     }
 
-    createRoom(roomId: string, auctionId: string, endTime: number): AuctionRoom {
-        const room: AuctionRoom = { roomId, auctionId, endTime, participants: new Map() };
+    createRoom(roomId: string, auctionId: string, endTime: number, startTime?: number, status?: string): AuctionRoom {
+        const room: AuctionRoom = { roomId, auctionId, endTime, startTime, status, participants: new Map() };
         this.rooms.set(roomId, room);
         return room;
     }

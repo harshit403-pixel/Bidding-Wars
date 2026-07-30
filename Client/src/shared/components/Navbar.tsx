@@ -129,9 +129,11 @@ function Navbar() {
 
                             <Link
                                 to="/profile"
-                                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#111] text-sm font-semibold text-white transition hover:scale-105"
+                                className="group relative flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-tr from-[#FF3B00] via-neutral-900 to-black text-sm font-black text-white shadow-md ring-2 ring-white/20 transition duration-300 hover:scale-105 hover:ring-[#FF3B00] hover:shadow-lg"
+                                title={user?.name || "View Profile"}
                             >
-                                {user?.name?.charAt(0).toUpperCase()}
+                                <span>{user?.name?.charAt(0).toUpperCase()}</span>
+                                <span className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-white bg-emerald-500" title="Online" />
                             </Link>
 
                             <button
