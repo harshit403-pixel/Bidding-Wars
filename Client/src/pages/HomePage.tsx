@@ -1,10 +1,22 @@
+
+import AboutSection from "../shared/components/AboutSection";
+import FeaturedAuctions from "../shared/components/FeaturedAuctions";
+import Footer from "../shared/components/Footer";
+import Hero from "../shared/components/Hero";
+import LiveAuction from "../shared/components/LiveAuction";
+import Navbar from "../shared/components/Navbar";
+
+
 function HomePage() {
     return (
-        <section className="flex min-h-screen items-center justify-center">
-            <h1 className="text-4xl font-bold">
-                Welcome to BidArena
-            </h1>
-        </section>
+       <div className="min-h-screen bg-[#F5F1EB] text-[#111111]">
+            <Navbar />
+            <Hero />
+            <FeaturedAuctions/>
+            <LiveAuction/>
+            <AboutSection/>
+            <Footer/>
+        </div>
     );
 }
 
