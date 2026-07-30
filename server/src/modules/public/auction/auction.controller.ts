@@ -5,6 +5,7 @@ import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import BidDAO from "../../../shared/dao/bid.dao.js";
 import TimelineDAO from "../../../shared/dao/timeline.dao.js";
 import ChatMessageDAO from "../../../shared/dao/chatMessage.dao.js";
+import socketManager from "../../../shared/socket/socket.manager.js";
 import { AuthenticatedRequest } from "../auth/auth.types.js";
 
 import Ok from "../../../shared/responses/Ok.response.js";
@@ -60,9 +61,18 @@ export const getAuctions = async (req: AuthenticatedRequest, res: Response) => {
         sort: sortObj,
     });
 
+    const auctionsWithLiveParticipants = result.auctions.map((auc: any) => {
+        const obj = auc.toObject ? auc.toObject() : { ...auc };
+        const liveCount = socketManager.getParticipantCount(obj.roomId);
+        return {
+            ...obj,
+            participantsCount: liveCount > 0 ? liveCount : (obj.participantsCount ?? 0),
+        };
+    });
+
     // returning the response
     return Ok(res, "Auctions fetched successfully", {
-        auctions: result.auctions,
+        auctions: auctionsWithLiveParticipants,
         total: result.total,
         page: result.page,
         totalPages: result.totalPages,

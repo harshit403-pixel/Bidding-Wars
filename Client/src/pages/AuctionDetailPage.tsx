@@ -2,12 +2,12 @@ import { useState, useRef, useEffect } from "react";
 import { useParams, Link } from "react-router";
 import { useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
-import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square, CreditCard, MessageSquare, Send } from "lucide-react";
+import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square, CreditCard, MessageSquare, Send, History } from "lucide-react";
 import { toast } from "sonner";
 
 import { processRazorpayPayment } from "../shared/utils/razorpay";
 
-import { useAuction } from "../features/auction/hooks/useAuctions";
+import { useAuction, useAuctionTimeline } from "../features/auction/hooks/useAuctions";
 import { useAuctionSocket } from "../socket/useAuctionSocket";
 import { useSocket } from "../socket/useSocket";
 import type { RootState } from "../app/store";
@@ -49,6 +49,7 @@ function AuctionDetailPage() {
 
     const auction = socketAuction?.auction ?? apiAuction;
     const auctionId = auction?._id;
+    const { data: timelineData } = useAuctionTimeline(auctionId);
     const currentPrice = socketAuction?.currentPrice ?? auction?.currentPrice ?? 0;
     const remainingSeconds = socketAuction?.remainingSeconds ?? 0;
     const participants = socketAuction?.participants ?? 0;
@@ -370,6 +371,65 @@ function AuctionDetailPage() {
                                     ) : (
                                         <div className="border border-amber-200 bg-amber-50 p-2.5 text-center text-xs text-amber-800 font-medium">
                                             🔒 Log in to participate in the live auction chat.
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Live Auction Activity Timeline Widget */}
+                            <div className="border-t border-neutral-200 pt-6 sm:pt-8">
+                                <div className="mb-4 flex items-center justify-between">
+                                    <h2
+                                        className="text-2xl uppercase font-black sm:text-3xl flex items-center gap-2"
+                                        style={{ fontFamily: "Bebas Neue" }}
+                                    >
+                                        <History className="h-6 w-6 text-[#FF3B00]" />
+                                        Activity Timeline
+                                    </h2>
+                                    <span className="text-xs text-neutral-500 font-medium">
+                                        Who Bid What & When
+                                    </span>
+                                </div>
+
+                                <div className="border border-neutral-200 bg-white p-4 shadow-sm">
+                                    {timelineData?.events && timelineData.events.length > 0 ? (
+                                        <div className="space-y-3 max-h-72 overflow-y-auto pr-2">
+                                            {timelineData.events.map((event: any) => {
+                                                const eventDate = new Date(event.createdAt);
+                                                const formattedTime = eventDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                                                const formattedDate = eventDate.toLocaleDateString([], { month: 'short', day: 'numeric' });
+                                                const userName = event.metadata?.bidderName || event.user?.name || event.user?.email || "Bidder";
+                                                const amount = event.metadata?.amount;
+
+                                                return (
+                                                    <div key={event._id} className="flex items-start gap-3 border-b border-neutral-100 pb-2.5 last:border-0 last:pb-0">
+                                                        <div className={`mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                                                            amount ? "bg-[#FF3B00]/10 text-[#FF3B00]" : "bg-neutral-100 text-neutral-700"
+                                                        }`}>
+                                                            {amount ? "₹" : "•"}
+                                                        </div>
+                                                        <div className="min-w-0 flex-1">
+                                                            <div className="flex items-center justify-between gap-2">
+                                                                <p className="text-xs font-bold text-neutral-900 truncate">
+                                                                    {userName}
+                                                                </p>
+                                                                <span className="text-[10px] text-neutral-400 flex-shrink-0">
+                                                                    {formattedDate} {formattedTime}
+                                                                </span>
+                                                            </div>
+                                                            <p className="text-xs text-neutral-600 mt-0.5">
+                                                                {amount
+                                                                    ? `Placed a bid of ₹${amount.toLocaleString()}`
+                                                                    : event.message || event.type}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : (
+                                        <div className="py-8 text-center text-xs text-neutral-400">
+                                            No timeline events logged yet.
                                         </div>
                                     )}
                                 </div>
