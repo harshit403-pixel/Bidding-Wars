@@ -34,28 +34,28 @@ const auctions = [
 ];
 function FeaturedAuctions() {
     return (
-        <section className="border-t border-neutral-200 py-24">
-            <div className="mx-auto max-w-7xl px-8">
-                <div className="mb-20 flex items-end justify-between">
+        <section className="border-t border-neutral-200 py-12 sm:py-16 md:py-24">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+                <div className="mb-10 flex items-end justify-between sm:mb-16 md:mb-20">
                     <div>
-                        <p className="mb-3 text-sm uppercase tracking-[0.35em] text-[#FF3B00]">
+                        <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[#FF3B00] sm:mb-3 sm:text-sm sm:tracking-[0.35em]">
                             Live Marketplace
                         </p>
 
                         <h2
-                            className="text-6xl uppercase"
+                            className="text-4xl uppercase sm:text-5xl md:text-6xl"
                             style={{ fontFamily: "Bebas Neue" }}
                         >
                             Featured Auctions
                         </h2>
                     </div>
 
-                    <button className="border-b border-black pb-1 transition hover:text-[#FF3B00]">
+                    <button className="border-b border-black pb-0.5 text-sm transition hover:text-[#FF3B00] sm:pb-1">
                         View All
                     </button>
                 </div>
 
-                <div className="grid gap-10 md:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-3">
                     {auctions.map((auction) => (
                         <AuctionCard
                             key={auction.id}

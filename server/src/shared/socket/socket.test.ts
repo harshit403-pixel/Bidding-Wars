@@ -610,7 +610,7 @@ describe("Socket.io Auction Events from Scheduler", () => {
         });
 
         clientSocket.on("connect", () => {
-            getIO().emit("auction_started", { auction: { _id: auctionId, title: "Event Test" } });
+            getIO()?.emit("auction_started", { auction: { _id: auctionId, title: "Event Test" } });
         });
     });
 
@@ -624,7 +624,7 @@ describe("Socket.io Auction Events from Scheduler", () => {
         });
 
         clientSocket.on("connect", () => {
-            getIO().emit("auction_ended", { auction: { _id: auctionId, title: "Event Test" } });
+            getIO()?.emit("auction_ended", { auction: { _id: auctionId, title: "Event Test" } });
         });
     });
 });

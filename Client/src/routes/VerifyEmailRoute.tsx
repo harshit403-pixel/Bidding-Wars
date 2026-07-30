@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import type { RootState } from "../app/store";
 
-function PublicRoute() {
+function VerifyEmailRoute() {
     const { user, isAuthenticated, isAuthChecked } = useSelector(
         (state: RootState) => state.auth
     );
@@ -16,11 +16,15 @@ function PublicRoute() {
         );
     }
 
-    if (isAuthenticated && user?.isVerified) {
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    if (user?.isVerified) {
         return <Navigate to="/" replace />;
     }
 
     return <Outlet />;
 }
 
-export default PublicRoute;
+export default VerifyEmailRoute;

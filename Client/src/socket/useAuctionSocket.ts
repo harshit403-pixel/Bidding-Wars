@@ -54,8 +54,6 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
                 return {
                     ...prev,
                     remainingSeconds: data.remainingSeconds,
-                    currentPrice: data.currentPrice,
-                    highestBidder: data.highestBidder,
                     status: data.status,
                 };
             });

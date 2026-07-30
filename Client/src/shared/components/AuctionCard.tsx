@@ -28,33 +28,33 @@ function AuctionCard({
                 />
             </div>
 
-            <div className="mt-5 flex items-start justify-between">
+            <div className="mt-3 flex items-start justify-between sm:mt-5">
                 <div>
-                    <h3 className="text-2xl font-semibold">{title}</h3>
+                    <h3 className="text-lg font-semibold sm:text-2xl">{title}</h3>
 
-                    <p className="mt-2 text-sm uppercase tracking-[0.25em] text-neutral-500">
+                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500 sm:mt-2 sm:text-sm sm:tracking-[0.25em]">
                         {seller}
                     </p>
                 </div>
 
                 <ArrowUpRight
-                    size={22}
-                    className="transition group-hover:text-[#FF3B00]"
+                    size={18}
+                    className="mt-0.5 transition group-hover:text-[#FF3B00] sm:mt-1 sm:size-[22px]"
                 />
             </div>
 
-            <div className="mt-6 flex items-end justify-between border-t border-neutral-300 pt-5">
+            <div className="mt-4 flex items-end justify-between border-t border-neutral-300 pt-4 sm:mt-6 sm:pt-5">
                 <div>
-                    <p className="text-xs uppercase tracking-[0.25em] text-neutral-500">
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:text-xs sm:tracking-[0.25em]">
                         Current Bid
                     </p>
 
-                    <h4 className="mt-1 text-3xl font-bold text-[#FF3B00]">
+                    <h4 className="mt-0.5 text-xl font-bold text-[#FF3B00] sm:mt-1 sm:text-3xl">
                         ₹{currentBid.toLocaleString()}
                     </h4>
                 </div>
 
-                <div className="text-right text-sm text-neutral-500">
+                <div className="text-right text-xs text-neutral-500 sm:text-sm">
                     <p>{watchers} Watching</p>
                     <p>{bids} Bids</p>
                 </div>
