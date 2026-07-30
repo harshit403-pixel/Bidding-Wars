@@ -15,7 +15,7 @@ const SORT_OPTIONS = [
 function MarketplacePage() {
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<AuctionCategory | "">("");
-    const [selectedStatus, setSelectedStatus] = useState<string>("active");
+    const [selectedStatus, setSelectedStatus] = useState<string>("all");
     const [sort, setSort] = useState("-createdAt");
     const [page, setPage] = useState(1);
 
@@ -78,10 +78,10 @@ function MarketplacePage() {
 
                 <div className="mb-4 flex flex-wrap gap-2 sm:mb-6 sm:gap-3">
                     {[
+                        { key: "all", label: "All Statuses" },
                         { key: "active", label: "Live Active" },
                         { key: "upcoming", label: "Upcoming" },
                         { key: "ended", label: "Ended" },
-                        { key: "all", label: "All Statuses" },
                     ].map((tab) => (
                         <button
                             key={tab.key}
