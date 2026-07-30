@@ -12,6 +12,7 @@ import { useAuctionSocket } from "../socket/useAuctionSocket";
 import { useSocket } from "../socket/useSocket";
 import type { RootState } from "../app/store";
 import api from "../api/axios";
+import { formatCurrency } from "../shared/utils/formatCurrency";
 
 function AuctionDetailPage() {
     const { roomId } = useParams<{ roomId: string }>();
@@ -379,13 +380,14 @@ function AuctionDetailPage() {
                     <div className="space-y-4 sm:space-y-6">
                         <div className="sticky top-20 border border-neutral-200 bg-white p-4 sm:p-6 md:p-8">
                             <div className="mb-4 grid grid-cols-2 gap-3 sm:mb-6 sm:gap-4">
-                                <div className="bg-neutral-100 p-3 text-center sm:p-5">
+                                <div className="bg-neutral-100 p-3 text-center sm:p-5 min-w-0">
                                     <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:text-xs sm:tracking-[0.25em]">Current Bid</p>
                                     <p
-                                        className="mt-1 text-2xl font-bold text-[#FF3B00] sm:mt-2 sm:text-3xl md:text-4xl"
+                                        className="mt-1 text-2xl font-bold text-[#FF3B00] sm:mt-2 sm:text-3xl md:text-4xl truncate"
                                         style={{ fontFamily: "Bebas Neue" }}
+                                        title={`₹${currentPrice.toLocaleString()}`}
                                     >
-                                        ₹{currentPrice.toLocaleString()}
+                                        {formatCurrency(currentPrice)}
                                     </p>
                                 </div>
                                 <div className="bg-neutral-100 p-3 text-center sm:p-5">
