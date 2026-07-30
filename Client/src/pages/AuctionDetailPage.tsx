@@ -10,7 +10,6 @@ import { processRazorpayPayment } from "../shared/utils/razorpay";
 import { useAuction } from "../features/auction/hooks/useAuctions";
 import { useAuctionSocket } from "../socket/useAuctionSocket";
 import { useSocket } from "../socket/useSocket";
-import type { BidPayload } from "../socket/socket.types";
 import type { RootState } from "../app/store";
 import api from "../api/axios";
 
@@ -32,6 +31,14 @@ function AuctionDetailPage() {
 
     const handleSendChat = (e: React.FormEvent) => {
         e.preventDefault();
+        if (!user) {
+            toast.error("Please log in to chat.");
+            return;
+        }
+        if (!user.isVerified) {
+            toast.error("Your account is not verified. Please verify your email before sending chat messages.");
+            return;
+        }
         if (!chatInput.trim()) return;
         sendChatMessage(chatInput);
         setChatInput("");
@@ -72,15 +79,24 @@ function AuctionDetailPage() {
     }
 
     const handlePlaceBid = () => {
-        const amount = bidAmount
-            ? parseFloat(bidAmount)
-            : currentPrice + auction.minimumIncrement;
-        const payload: BidPayload = {
-            roomId,
+        if (!user) {
+            toast.error("Please log in to place a bid");
+            return;
+        }
+        if (!user.isVerified) {
+            toast.error("Your account is not verified. Please verify your email before placing bids.");
+            return;
+        }
+        const val = Number(bidAmount) || minBid;
+        if (val < minBid) {
+            toast.error(`Bid must be at least ₹${minBid}`);
+            return;
+        }
+        placeBid({
+            roomId: roomId!,
             auctionId: auction._id,
-            amount,
-        };
-        placeBid(payload);
+            amount: val,
+        });
         setBidAmount("");
     };
 
@@ -327,23 +343,29 @@ function AuctionDetailPage() {
                                     </div>
 
                                     {user ? (
-                                        <form onSubmit={handleSendChat} className="flex gap-2">
-                                            <input
-                                                type="text"
-                                                value={chatInput}
-                                                onChange={(e) => setChatInput(e.target.value)}
-                                                placeholder="Type a message to bidders..."
-                                                maxLength={300}
-                                                className="flex-1 border border-neutral-300 bg-neutral-50 px-3 py-2 text-xs outline-none focus:border-[#FF3B00] focus:bg-white"
-                                            />
-                                            <button
-                                                type="submit"
-                                                disabled={!chatInput.trim()}
-                                                className="bg-[#FF3B00] px-4 py-2 text-xs font-semibold uppercase text-white transition hover:bg-[#FF5A2C] disabled:opacity-50"
-                                            >
-                                                <Send className="h-4 w-4" />
-                                            </button>
-                                        </form>
+                                        !user.isVerified ? (
+                                            <div className="border border-amber-300 bg-amber-50 p-2.5 text-center text-xs text-amber-800 font-medium">
+                                                ⚠️ Account verification required to send chat messages.
+                                            </div>
+                                        ) : (
+                                            <form onSubmit={handleSendChat} className="flex gap-2">
+                                                <input
+                                                    type="text"
+                                                    value={chatInput}
+                                                    onChange={(e) => setChatInput(e.target.value)}
+                                                    placeholder="Type a message to bidders..."
+                                                    maxLength={300}
+                                                    className="flex-1 border border-neutral-300 bg-neutral-50 px-3 py-2 text-xs outline-none focus:border-[#FF3B00] focus:bg-white"
+                                                />
+                                                <button
+                                                    type="submit"
+                                                    disabled={!chatInput.trim()}
+                                                    className="bg-[#FF3B00] px-4 py-2 text-xs font-semibold uppercase text-white transition hover:bg-[#FF5A2C] disabled:opacity-50"
+                                                >
+                                                    <Send className="h-4 w-4" />
+                                                </button>
+                                            </form>
+                                        )
                                     ) : (
                                         <div className="border border-amber-200 bg-amber-50 p-2.5 text-center text-xs text-amber-800 font-medium">
                                             🔒 Log in to participate in the live auction chat.
@@ -460,6 +482,22 @@ function AuctionDetailPage() {
                                         >
                                             🔒 Log In to Place Bid — ₹{minBid}
                                         </Link>
+                                    </div>
+                                ) : !user.isVerified ? (
+                                    <div className="space-y-3 border border-amber-500/40 bg-amber-500/10 p-4 text-center sm:p-5">
+                                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-700">
+                                            ⚠️ Account Verification Required
+                                        </p>
+                                        <p className="text-xs text-neutral-700">
+                                            Your account is unverified. Please verify your email address to place bids or participate in live rooms.
+                                        </p>
+                                        <button
+                                            disabled
+                                            className="w-full border-b-2 border-amber-500 bg-amber-500/30 py-3 text-base font-medium uppercase tracking-[0.15em] text-amber-800 cursor-not-allowed sm:py-3.5 sm:text-lg opacity-80"
+                                            style={{ fontFamily: "Bebas Neue" }}
+                                        >
+                                            🔒 Account Verification Required to Bid
+                                        </button>
                                     </div>
                                 ) : (
                                     <div className="space-y-3 sm:space-y-4">

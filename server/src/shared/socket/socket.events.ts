@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import AuctionDAO from "../dao/auction.dao.js";
 import BidDAO from "../dao/bid.dao.js";
 import TimelineDAO from "../dao/timeline.dao.js";
+import UserDao from "../dao/user.dao.js";
 import logger from "../config/logger.config.js";
 import socketManager from "./socket.manager.js";
 import { AuthenticatedSocket, JoinAuctionPayload, PlaceBidPayload } from "./socket.types.js";
@@ -9,6 +10,7 @@ import { AuthenticatedSocket, JoinAuctionPayload, PlaceBidPayload } from "./sock
 const auctionDAO = new AuctionDAO();
 const bidDAO = new BidDAO();
 const timelineDAO = new TimelineDAO();
+const userDao = new UserDao();
 
 export function registerSocketEvents(io: Server) {
     socketManager.setIO(io);
@@ -172,6 +174,11 @@ async function handlePlaceBid(socket: AuthenticatedSocket, payload: PlaceBidPayl
             return emitError(socket, "UNAUTHORIZED", "Please log in or create an account to place bids.");
         }
 
+        const dbUser = await userDao.findUserById(socket.userId);
+        if (!dbUser || !dbUser.isVerified) {
+            return emitError(socket, "NOT_VERIFIED", "Your account is not verified. Please verify your email before placing bids.");
+        }
+
         if (socketManager.isRateLimited(socket.id)) {
             return emitError(socket, "RATE_LIMITED", "Bidding too fast. Please wait 200ms between bids.");
         }
@@ -265,6 +272,11 @@ async function handleSendChatMessage(socket: AuthenticatedSocket, payload: { roo
     try {
         if (!socket.userId || (socket as any).isGuest || socket.userId.startsWith("guest_")) {
             return emitError(socket, "UNAUTHORIZED", "Please log in to send chat messages.");
+        }
+
+        const dbUser = await userDao.findUserById(socket.userId);
+        if (!dbUser || !dbUser.isVerified) {
+            return emitError(socket, "NOT_VERIFIED", "Your account is not verified. Please verify your email before sending chat messages.");
         }
 
         const username = socket.username || "User";
