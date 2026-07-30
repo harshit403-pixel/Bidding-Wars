@@ -1,18 +1,24 @@
 import { useState } from "react";
 import { useParams } from "react-router";
-import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square } from "lucide-react";
+import { toast } from "sonner";
 
 import { useAuction } from "../features/auction/hooks/useAuctions";
 import { useAuctionSocket } from "../socket/useAuctionSocket";
 import { useSocket } from "../socket/useSocket";
 import type { BidPayload } from "../socket/socket.types";
+import type { RootState } from "../app/store";
+import api from "../api/axios";
 
 function AuctionDetailPage() {
     const { roomId } = useParams<{ roomId: string }>();
+    const user = useSelector((state: RootState) => state.auth.user);
     const { auction: socketAuction, connected, placeBid } = useAuctionSocket(roomId);
     const { connected: socketConnected } = useSocket();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [bidAmount, setBidAmount] = useState("");
+    const [actionLoading, setActionLoading] = useState(false);
 
     const auctionId = socketAuction?.auction._id;
     const { data: apiAuction, isLoading: apiLoading } = useAuction(auctionId);
@@ -63,6 +69,35 @@ function AuctionDetailPage() {
 
     const images = auction.images ?? [];
     const minBid = currentPrice + auction.minimumIncrement;
+    const isSeller = user && auction.seller._id === user._id;
+
+    const handleStartNow = async () => {
+        if (!auctionId) return;
+        setActionLoading(true);
+        try {
+            await api.post(`/auctions/${auctionId}/start-now`);
+            toast.success("Auction started!");
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { message?: string } } };
+            toast.error(err.response?.data?.message || "Failed to start auction");
+        } finally {
+            setActionLoading(false);
+        }
+    };
+
+    const handleEndNow = async () => {
+        if (!auctionId) return;
+        setActionLoading(true);
+        try {
+            await api.post(`/auctions/${auctionId}/end-now`);
+            toast.success("Auction ended!");
+        } catch (error: unknown) {
+            const err = error as { response?: { data?: { message?: string } } };
+            toast.error(err.response?.data?.message || "Failed to end auction");
+        } finally {
+            setActionLoading(false);
+        }
+    };
 
     const formatTime = (seconds: number) => {
         const h = Math.floor(seconds / 3600);
@@ -297,6 +332,30 @@ function AuctionDetailPage() {
                                         </p>
                                     )}
                                 </div>
+                            )}
+
+                            {isSeller && status === "upcoming" && (
+                                <button
+                                    onClick={handleStartNow}
+                                    disabled={actionLoading}
+                                    className="flex w-full items-center justify-center gap-2 border-b-2 border-green-600 bg-green-600 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
+                                    style={{ fontFamily: "Bebas Neue" }}
+                                >
+                                    <Play className="h-4 w-4 sm:h-5 sm:w-5" />
+                                    {actionLoading ? "Starting..." : "Start Now"}
+                                </button>
+                            )}
+
+                            {isSeller && status === "active" && (
+                                <button
+                                    onClick={handleEndNow}
+                                    disabled={actionLoading}
+                                    className="flex w-full items-center justify-center gap-2 border-b-2 border-neutral-800 bg-neutral-800 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
+                                    style={{ fontFamily: "Bebas Neue" }}
+                                >
+                                    <Square className="h-4 w-4 sm:h-5 sm:w-5" />
+                                    {actionLoading ? "Ending..." : "End Auction Now"}
+                                </button>
                             )}
 
                             <div className="mt-4 flex items-center gap-2 border-t border-neutral-200 pt-4 text-xs text-neutral-500 sm:mt-6 sm:pt-5 sm:text-sm">

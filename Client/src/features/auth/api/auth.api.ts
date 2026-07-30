@@ -45,12 +45,31 @@ export const logout = async () => {
     return data;
 };
 
-export const getCurrentUser = async () => {
-    const { data } = await api.get<
-        ApiResponse<{
-            user: User;
-        }>
-    >("/auth/me");
+export const getCurrentUser = async (): Promise<User> => {
+    const { store } = await import("../../../app/store");
+    const token = store.getState().auth.accessToken;
+
+    // If we already have an access token, use GET /auth/me directly
+    if (token) {
+        const { data } = await api.get<
+            ApiResponse<{ user: User }>
+        >("/auth/me");
+        return data.data.user;
+    }
+
+    // No token in memory (page was refreshed). Try to obtain one via
+    // the refresh-token cookie so we don't trigger a pointless 401.
+    const { data } = await api.post<
+        ApiResponse<{ user: User; accessToken: string }>
+    >("/auth/refresh");
+
+    const { setCredentials } = await import("../auth.slice");
+    store.dispatch(
+        setCredentials({
+            user: data.data.user,
+            accessToken: data.data.accessToken,
+        }),
+    );
 
     return data.data.user;
 };

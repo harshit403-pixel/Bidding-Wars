@@ -36,6 +36,9 @@ const envSchema = z.object({
     CLOUDINARY_CLOUD_NAME: z.string().default(""),
 CLOUDINARY_API_KEY: z.string().default(""),
 CLOUDINARY_API_SECRET: z.string().default(""),
+    IMAGEKIT_PUBLIC_KEY: z.string().default(""),
+    IMAGEKIT_PRIVATE_KEY: z.string().default(""),
+    IMAGEKIT_URL_ENDPOINT: z.string().default(""),
 });
 
 // parsing and validating environment variables

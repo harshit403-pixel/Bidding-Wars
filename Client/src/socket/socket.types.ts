@@ -18,6 +18,9 @@ export interface AuctionData {
         rating?: number;
     };
     images: string[];
+    condition?: string;
+    highestBidder?: HighestBidder | null;
+    winner?: HighestBidder | null;
     roomId?: string;
 }
 

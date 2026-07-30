@@ -39,5 +39,19 @@ router.delete("/:auctionId", asyncHandler(AuctionController.deleteAuction));
 */
 router.get("/my", asyncHandler(AuctionController.getMyAuctions));
 
+/*
+    @route POST /api/auctions/:auctionId/start-now
+    @desc Start an upcoming auction immediately
+    @access Private
+*/
+router.post("/:auctionId/start-now", asyncHandler(AuctionController.startNow));
+
+/*
+    @route POST /api/auctions/:auctionId/end-now
+    @desc End an active auction immediately
+    @access Private
+*/
+router.post("/:auctionId/end-now", asyncHandler(AuctionController.endNow));
+
 // exporting the router
 export default router;

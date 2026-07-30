@@ -43,6 +43,9 @@ export const createAuction = async (req: AuthenticatedRequest, res: Response) =>
         throw new BadRequest("End time must be after start time");
     }
 
+    // warning: start time in the past means auction starts immediately
+    const startsInPast = new Date(startsAt) < new Date();
+
     // generating a unique room id for socket connections
     const roomId = crypto.randomUUID();
 
@@ -181,6 +184,113 @@ export const deleteAuction = async (req: AuthenticatedRequest, res: Response) =>
 
     // returning the response
     return Ok(res, "Auction deleted successfully");
+};
+
+// Start auction immediately
+export const startNow = async (req: AuthenticatedRequest, res: Response) => {
+    const user = req.user!;
+
+    const existingAuction = await auctionDAO.findAuctionByIdLean(
+        req.params.auctionId as string,
+    );
+
+    if (!existingAuction) {
+        throw new NotFound("Auction not found");
+    }
+
+    if (existingAuction.seller.toString() !== user.userId!) {
+        throw new Forbidden("You can only update your own auction");
+    }
+
+    if (existingAuction.status !== "upcoming") {
+        throw new BadRequest("Auction is not in upcoming status");
+    }
+
+    const auction = await auctionDAO.updateAuctionById(
+        req.params.auctionId as string,
+        {
+            status: "active",
+            startTime: new Date(),
+        },
+    );
+
+    // emit socket event for realtime
+    try {
+        const { getIO } = await import("../../../shared/socket/socket.js");
+        const io = getIO();
+        if (io) {
+            io.to(`auction:${existingAuction.roomId}`).emit("auction_started", {
+                auctionId: auction!._id,
+                roomId: existingAuction.roomId,
+            });
+        }
+    } catch {
+        // socket not available
+    }
+
+    return Ok(res, "Auction started successfully", { auction });
+};
+
+// End auction immediately
+export const endNow = async (req: AuthenticatedRequest, res: Response) => {
+    const user = req.user!;
+
+    const existingAuction = await auctionDAO.findAuctionByIdLean(
+        req.params.auctionId as string,
+    );
+
+    if (!existingAuction) {
+        throw new NotFound("Auction not found");
+    }
+
+    if (existingAuction.seller.toString() !== user.userId!) {
+        throw new Forbidden("You can only update your own auction");
+    }
+
+    if (existingAuction.status !== "active") {
+        throw new BadRequest("Auction is not active");
+    }
+
+    // find highest bid
+    const highestBid = await bidDAO.findHighestBid(req.params.auctionId as string);
+
+    const updateData: Record<string, unknown> = {
+        status: "ended",
+        endedAt: new Date(),
+    };
+
+    if (highestBid) {
+        updateData.winner = highestBid.bidder;
+        updateData.currentPrice = highestBid.amount;
+    }
+
+    const auction = await auctionDAO.updateAuctionById(
+        req.params.auctionId as string,
+        updateData,
+    );
+
+    // mark winning bid
+    if (highestBid) {
+        await bidDAO.markWinningBid(highestBid._id.toString());
+    }
+
+    // emit socket event for realtime
+    try {
+        const { getIO } = await import("../../../shared/socket/socket.js");
+        const io = getIO();
+        if (io) {
+            io.to(`auction:${existingAuction.roomId}`).emit("auction_ended", {
+                auctionId: auction!._id,
+                roomId: existingAuction.roomId,
+                winner: highestBid?.bidder || null,
+                amount: highestBid?.amount || 0,
+            });
+        }
+    } catch {
+        // socket not available
+    }
+
+    return Ok(res, "Auction ended successfully", { auction });
 };
 
 // Get auctions created by the logged-in seller

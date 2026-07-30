@@ -1,27 +1,31 @@
-const categories = [
-    "Luxury Watches",
-    "Sneakers",
-    "Electronics",
-    "Gaming",
-    "Collectibles",
-    "Fashion",
-    "Art",
-    "Vehicles",
-];
+import { AUCTION_CATEGORIES } from "../../../features/auction/auction.types";
 
-function CategorySelector() {
+interface CategorySelectorProps {
+    value: string;
+    onChange: (value: string) => void;
+}
+
+function CategorySelector({ value, onChange }: CategorySelectorProps) {
     return (
         <section>
-            <h3 className="mb-6 text-3xl font-semibold">
+            <h3
+                className="mb-6 text-3xl uppercase"
+                style={{ fontFamily: "Bebas Neue" }}
+            >
                 Category
             </h3>
 
-            <div className="grid grid-cols-2 gap-4">
-                {categories.map((category) => (
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                {AUCTION_CATEGORIES.map((category) => (
                     <button
                         key={category}
                         type="button"
-                        className="border border-neutral-300 bg-white px-5 py-4 text-left transition hover:border-black hover:bg-black hover:text-white"
+                        onClick={() => onChange(category)}
+                        className={`border px-5 py-4 text-left text-sm transition ${
+                            value === category
+                                ? "border-[#FF3B00] bg-[#FF3B00] text-white"
+                                : "border-neutral-300 bg-white hover:border-[#FF3B00]"
+                        }`}
                     >
                         {category}
                     </button>

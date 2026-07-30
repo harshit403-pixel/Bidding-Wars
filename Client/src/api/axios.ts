@@ -47,15 +47,14 @@ api.interceptors.response.use(
 
             try {
                 const { data } = await axios.post(
-    "/api/auth/refresh",
-    {},
-    {
-        withCredentials: true,
-    }
-);
+                    "/api/auth/refresh",
+                    {},
+                    { withCredentials: true },
+                );
+
                 store.dispatch(
                     setCredentials({
-                        user: store.getState().auth.user!,
+                        user: data.data.user,
                         accessToken: data.data.accessToken,
                     })
                 );
