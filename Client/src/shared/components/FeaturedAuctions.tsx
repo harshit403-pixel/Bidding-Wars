@@ -1,10 +1,13 @@
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router";
+
 import AuctionCard from "./AuctionCard";
 
 const auctions = [
     {
         id: 1,
         title: "Nike Air Jordan",
-        image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200",
+        image: "https://thelastape.in/cdn/shop/files/53.jpg?v=1714140246",
         currentBid: 12500,
         seller: "SneakerHub",
         watchers: 285,
@@ -14,7 +17,7 @@ const auctions = [
     {
         id: 2,
         title: "Rolex Submariner",
-        image: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=1200",
+        image: "https://media.rolex.com/image/upload/q_auto/f_auto/c_limit,w_1920/v1775305335/rolexcom/094398bf1f99/navigation/professional-watches-sea-dweller-navigation-portrait",
         currentBid: 185000,
         seller: "Luxury Vault",
         watchers: 142,
@@ -24,7 +27,7 @@ const auctions = [
     {
         id: 3,
         title: "MacBook Pro M4",
-        image: "https://images.unsplash.com/photo-1517336714739-489689fd1ca8?w=1200",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwgo_krNNmepsuZwnhp680fy50HBggDrYfYDIgqmzarNfPadIQ3jSxdn2f&s=10",
         currentBid: 98000,
         seller: "Apple Store",
         watchers: 91,
@@ -32,37 +35,59 @@ const auctions = [
         timeLeft: "09:14:50",
     },
 ];
+
 function FeaturedAuctions() {
     return (
-        <section className="border-t border-neutral-200 py-12 sm:py-16 md:py-24">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                <div className="mb-10 flex items-end justify-between sm:mb-16 md:mb-20">
-                    <div>
-                        <p className="mb-2 text-xs uppercase tracking-[0.3em] text-[#FF3B00] sm:mb-3 sm:text-sm sm:tracking-[0.35em]">
-                            Live Marketplace
-                        </p>
+        <section className="bg-white py-28">
+            <div className="mx-auto max-w-7xl px-6">
 
-                        <h2
-                            className="text-4xl uppercase sm:text-5xl md:text-6xl"
-                            style={{ fontFamily: "Bebas Neue" }}
-                        >
-                            Featured Auctions
+                <div className="mb-16 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+
+                    <div className="max-w-2xl">
+
+                        
+
+                        <h2 className="mt-6 text-5xl font-black uppercase leading-none text-neutral-900 md:text-7xl">
+                            Bid On
+                            <br />
+                            Extraordinary
+                            <br />
+                            Items.
                         </h2>
+
                     </div>
 
-                    <button className="border-b border-black pb-0.5 text-sm transition hover:text-[#FF3B00] sm:pb-1">
-                        View All
-                    </button>
+                    <div className="max-w-md">
+
+                        <p className="mb-8 text-lg leading-8 text-neutral-500">
+                            Explore handpicked auctions featuring premium
+                            collectibles, luxury goods, gadgets and rare finds
+                            from verified sellers around the world.
+                        </p>
+
+                        <Link
+                            to="/auctions"
+                            className="inline-flex items-center gap-3 rounded-full bg-black/10 px-7 py-4 font-medium text-white transition hover:scale-105 hover:bg-[#FF5A1F]"
+                        >
+                            Explore Marketplace
+                            <ArrowRight size={18} />
+                        </Link>
+
+                    </div>
+
                 </div>
 
-                <div className="grid gap-6 sm:gap-8 md:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+
                     {auctions.map((auction) => (
                         <AuctionCard
                             key={auction.id}
                             {...auction}
                         />
                     ))}
+
                 </div>
+
             </div>
         </section>
     );

@@ -1,73 +1,89 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router";
+import { motion } from "framer-motion";
 
 function AboutSection() {
     return (
-        <section className="border-y border-neutral-300 py-16 sm:py-24 md:py-32">
-            <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:gap-12 sm:px-6 md:gap-20 md:px-8 lg:grid-cols-2">
+        <section className="bg-white py-32">
+            <div className="mx-auto grid max-w-7xl items-center gap-20 px-6 lg:grid-cols-[0.9fr_1.1fr]">
+
                 {/* Left */}
 
-                <div>
-                    <p className="mb-3 text-xs uppercase tracking-[0.3em] text-[#FF3B00] sm:mb-4 sm:text-sm sm:tracking-[0.35em]">
-                        Featured Auction
-                    </p>
+                <motion.div
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7 }}
+                >
+                 
 
-                    <h2
-                        className="text-5xl uppercase sm:text-6xl md:text-7xl"
-                        style={{ fontFamily: "Bebas Neue" }}
-                    >
+                    <h2 className="mt-8 text-5xl font-black uppercase leading-[0.9] text-neutral-900 md:text-7xl">
                         Every
                         <br />
                         Second
                         <br />
-                        Counts
+                        Counts.
                     </h2>
-                </div>
+
+                    <p className="mt-8 max-w-md text-lg leading-8 text-neutral-500">
+                        Experience a marketplace built for collectors, sellers
+                        and enthusiasts where every bid happens live, securely
+                        and transparently.
+                    </p>
+
+                   
+                </motion.div>
 
                 {/* Right */}
 
-                <div className="space-y-6 sm:space-y-10">
-                    <p className="text-lg leading-8 text-neutral-700 sm:text-2xl sm:leading-10">
-                        Bidding Wars brings together collectors, enthusiasts,
-                        and premium sellers through live auctions designed for
-                        speed, excitement, and transparency.
-                    </p>
+                <motion.div
+                    initial={{ opacity: 0, x: 40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.7 }}
+                    className="grid gap-6 md:grid-cols-2"
+                >
+                    <div className="rounded-[28px] border border-neutral-200 bg-neutral-50 p-8">
+                        <h3 className="text-5xl font-black text-neutral-900">
+                            2K+
+                        </h3>
 
-                    <div className="grid grid-cols-2 gap-6 border-t border-neutral-300 pt-6 sm:gap-10 sm:pt-10">
-                        <div>
-                            <h3 className="text-3xl font-bold sm:text-5xl">2K+</h3>
-                            <p className="mt-1 text-xs text-neutral-500 sm:mt-2 sm:text-base">
-                                Live Auctions
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 className="text-3xl font-bold sm:text-5xl">18K+</h3>
-                            <p className="mt-1 text-xs text-neutral-500 sm:mt-2 sm:text-base">
-                                Active Users
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 className="text-3xl font-bold sm:text-5xl">₹8.5M</h3>
-                            <p className="mt-1 text-xs text-neutral-500 sm:mt-2 sm:text-base">
-                                Total Sales
-                            </p>
-                        </div>
-
-                        <div>
-                            <h3 className="text-3xl font-bold sm:text-5xl">99%</h3>
-                            <p className="mt-1 text-xs text-neutral-500 sm:mt-2 sm:text-base">
-                                Verified Sellers
-                            </p>
-                        </div>
+                        <p className="mt-3 text-neutral-500">
+                            Live auctions hosted every month.
+                        </p>
                     </div>
 
-                    <button className="mt-4 flex items-center gap-2 border-b-2 border-[#FF3B00] pb-1.5 text-base font-medium text-[#FF3B00] sm:mt-6 sm:gap-3 sm:pb-2 sm:text-lg">
-                        Explore Marketplace
+                    <div className="rounded-[28px] border border-neutral-200 bg-neutral-50 p-8">
+                        <h3 className="text-5xl font-black text-neutral-900">
+                            18K+
+                        </h3>
 
-                        <ArrowUpRight size={16} className="sm:size-[18px]" />
-                    </button>
-                </div>
+                        <p className="mt-3 text-neutral-500">
+                            Active collectors and bidders.
+                        </p>
+                    </div>
+
+                    <div className="rounded-[28px] border border-neutral-200 bg-neutral-50 p-8">
+                        <h3 className="text-5xl font-black text-neutral-900">
+                            ₹8.5M+
+                        </h3>
+
+                        <p className="mt-3 text-neutral-500">
+                            Worth of successful auction sales.
+                        </p>
+                    </div>
+
+                    <div className="rounded-[28px] border border-neutral-200 bg-neutral-50 p-8">
+                        <h3 className="text-5xl font-black text-neutral-900">
+                            99%
+                        </h3>
+
+                        <p className="mt-3 text-neutral-500">
+                            Verified sellers with trusted identities.
+                        </p>
+                    </div>
+                </motion.div>
+
             </div>
         </section>
     );

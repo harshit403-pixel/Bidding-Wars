@@ -1,4 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Clock, Eye, Gavel } from "lucide-react";
+import { motion } from "framer-motion";
 
 type AuctionCardProps = {
     title: string;
@@ -17,49 +18,86 @@ function AuctionCard({
     seller,
     watchers,
     bids,
+    timeLeft,
 }: AuctionCardProps) {
     return (
-        <article className="group cursor-pointer">
-            <div className="overflow-hidden bg-neutral-200">
+        <motion.article
+            whileHover={{ y: -8 }}
+            transition={{ duration: 0.25 }}
+            className="group overflow-hidden rounded-[32px] bg-white shadow-sm transition hover:shadow-2xl"
+        >
+            <div className="relative overflow-hidden">
+
                 <img
                     src={image}
                     alt={title}
-                    className="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-105"
+                    className="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-110"
                 />
-            </div>
 
-            <div className="mt-3 flex items-start justify-between sm:mt-5">
-                <div>
-                    <h3 className="text-lg font-semibold sm:text-2xl">{title}</h3>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
 
-                    <p className="mt-1 text-xs uppercase tracking-[0.2em] text-neutral-500 sm:mt-2 sm:text-sm sm:tracking-[0.25em]">
-                        {seller}
-                    </p>
+                <div className="absolute left-5 top-5 rounded-full bg-red-500 px-3 py-1 text-xs font-semibold text-white">
+                    LIVE
                 </div>
 
-                <ArrowUpRight
-                    size={18}
-                    className="mt-0.5 transition group-hover:text-[#FF3B00] sm:mt-1 sm:size-[22px]"
-                />
-            </div>
+                <div className="absolute right-5 top-5 flex items-center gap-2 rounded-full bg-white/20 px-3 py-2 text-sm text-white backdrop-blur-xl">
+                    <Clock size={15} />
+                    {timeLeft}
+                </div>
 
-            <div className="mt-4 flex items-end justify-between border-t border-neutral-300 pt-4 sm:mt-6 sm:pt-5">
-                <div>
-                    <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:text-xs sm:tracking-[0.25em]">
+                <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-white/15 p-4 backdrop-blur-xl">
+
+                    <p className="text-xs uppercase tracking-widest text-white/70">
                         Current Bid
                     </p>
 
-                    <h4 className="mt-0.5 text-xl font-bold text-[#FF3B00] sm:mt-1 sm:text-3xl">
+                    <h3 className="mt-1 text-3xl font-bold text-white">
                         ₹{currentBid.toLocaleString()}
-                    </h4>
+                    </h3>
+
                 </div>
 
-                <div className="text-right text-xs text-neutral-500 sm:text-sm">
-                    <p>{watchers} Watching</p>
-                    <p>{bids} Bids</p>
-                </div>
             </div>
-        </article>
+
+            <div className="p-6">
+
+                <div className="flex items-start justify-between">
+
+                    <div>
+
+                        <h3 className="text-2xl font-bold text-neutral-900">
+                            {title}
+                        </h3>
+
+                        <p className="mt-1 text-sm text-neutral-500">
+                            by {seller}
+                        </p>
+
+                    </div>
+
+                    <div className="rounded-full bg-neutral-100 p-3 transition group-hover:bg-[#FF5A1F] group-hover:text-white">
+                        <ArrowUpRight size={18} />
+                    </div>
+
+                </div>
+
+                <div className="mt-6 flex items-center justify-between border-t pt-5">
+
+                    <div className="flex items-center gap-2 text-sm text-neutral-500">
+                        <Eye size={16} />
+                        {watchers} Watching
+                    </div>
+
+                    <div className="flex items-center gap-2 text-sm text-neutral-500">
+                        <Gavel size={16} />
+                        {bids} Bids
+                    </div>
+
+                </div>
+
+            </div>
+
+        </motion.article>
     );
 }
 
