@@ -4,6 +4,7 @@ import RootLayout from "../layouts/RootLayout";
 
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
+import AuctionDetailPage from "../pages/AuctionDetailPage";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
@@ -25,6 +26,10 @@ export const router = createBrowserRouter([
                     {
                         index: true,
                         element: <HomePage />,
+                    },
+                    {
+                        path: "auction/:roomId",
+                        element: <AuctionDetailPage />,
                     },
                 ],
             },

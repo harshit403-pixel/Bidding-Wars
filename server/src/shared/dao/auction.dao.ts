@@ -129,6 +129,15 @@ class AuctionDAO {
         );
     }
 
+    // Decrement participantsCount atomically (minimum 0)
+    async decrementParticipantsCount(auctionId: string) {
+        return await this.AuctionModel.findByIdAndUpdate(
+            auctionId,
+            [{ $set: { participantsCount: { $max: [{ $subtract: ["$participantsCount", 1] }, 0] } } }],
+            { new: true },
+        );
+    }
+
     // Update the highest bid details (currentPrice, highestBidder)
     async updateHighestBid(auctionId: string, bidderId: string, amount: number) {
         return await this.AuctionModel.findByIdAndUpdate(
