@@ -68,11 +68,21 @@ export const getAuctions = async (req: AuthenticatedRequest, res: Response) => {
     });
 };
 
-// Get auction by ID
+// Get auction by ID or Room ID
 export const getAuction = async (req: AuthenticatedRequest, res: Response) => {
+    const idOrRoomId = req.params.auctionId as string;
 
-    // finding the auction
-    const auction = await auctionDAO.findAuctionById(req.params.auctionId as string);
+    let auction = null;
+
+    // Check if valid ObjectId format
+    if (idOrRoomId.match(/^[0-9a-fA-F]{24}$/)) {
+        auction = await auctionDAO.findAuctionById(idOrRoomId);
+    }
+
+    // Fallback to room ID lookup
+    if (!auction) {
+        auction = await auctionDAO.findAuctionByRoomId(idOrRoomId);
+    }
 
     // checking if auction exists
     if (!auction) {

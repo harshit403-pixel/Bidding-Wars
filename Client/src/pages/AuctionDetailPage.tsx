@@ -20,8 +20,7 @@ function AuctionDetailPage() {
     const [bidAmount, setBidAmount] = useState("");
     const [actionLoading, setActionLoading] = useState(false);
 
-    const auctionId = socketAuction?.auction._id;
-    const { data: apiAuction, isLoading: apiLoading } = useAuction(auctionId);
+    const { data: apiAuction, isLoading: apiLoading } = useAuction(roomId);
 
     const auction = socketAuction?.auction ?? apiAuction;
     const currentPrice = socketAuction?.currentPrice ?? auction?.currentPrice ?? 0;

@@ -49,9 +49,9 @@ export const createAuction = async (req: AuthenticatedRequest, res: Response) =>
     // generating a unique room id for socket connections
     const roomId = crypto.randomUUID();
 
-    // determining initial status based on start time
+    // determining initial status based on start time (with 60s leeway for immediate activation)
     const now = new Date();
-    const status = new Date(startsAt) > now ? "upcoming" : "active";
+    const status = new Date(startsAt).getTime() > now.getTime() + 60000 ? "upcoming" : "active";
 
     // creating the auction document
     const auction = await auctionDAO.createAuction({
@@ -219,9 +219,8 @@ export const startNow = async (req: AuthenticatedRequest, res: Response) => {
         const { getIO } = await import("../../../shared/socket/socket.js");
         const io = getIO();
         if (io) {
-            io.to(`auction:${existingAuction.roomId}`).emit("auction_started", {
-                auctionId: auction!._id,
-                roomId: existingAuction.roomId,
+            io.to(existingAuction.roomId).emit("auction_started", {
+                auction: auction!,
             });
         }
     } catch {
@@ -279,11 +278,8 @@ export const endNow = async (req: AuthenticatedRequest, res: Response) => {
         const { getIO } = await import("../../../shared/socket/socket.js");
         const io = getIO();
         if (io) {
-            io.to(`auction:${existingAuction.roomId}`).emit("auction_ended", {
-                auctionId: auction!._id,
-                roomId: existingAuction.roomId,
-                winner: highestBid?.bidder || null,
-                amount: highestBid?.amount || 0,
+            io.to(existingAuction.roomId).emit("auction_ended", {
+                auction: auction!,
             });
         }
     } catch {

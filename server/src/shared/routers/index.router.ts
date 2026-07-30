@@ -15,8 +15,8 @@ const router = express.Router();
 router.use("/health", healthRouter);
 router.use("/auth", authRouter);
 router.use("/upload", uploadRouter);
-router.use("/auctions", auctionRouter);
 router.use("/auctions", privateAuctionRouter);
+router.use("/auctions", auctionRouter);
 router.use("/dashboard", dashboardRouter);
 router.use("/payments", paymentRouter);
 
