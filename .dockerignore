@@ -1,9 +1,12 @@
 node_modules
+server/node_modules
+Client/node_modules
 npm-debug.log
 .git
 .gitignore
 .env
 dist
+server/dist
 coverage
 scripts
 .dockerignore

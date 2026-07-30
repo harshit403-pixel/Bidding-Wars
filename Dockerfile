@@ -6,6 +6,7 @@ WORKDIR /app
 # Copy server package files
 COPY server/package*.json ./server/
 WORKDIR /app/server
+ENV MONGOMS_SKIP_DOWNLOAD=true
 RUN npm ci
 
 # Copy server source code
@@ -23,7 +24,6 @@ COPY --from=builder /app/server/package*.json ./
 RUN npm ci --only=production
 
 COPY --from=builder /app/server/dist ./dist
-COPY --from=builder /app/server/server.js ./server.js
 
 EXPOSE 5000
-CMD ["node", "server.js"]
+CMD ["node", "dist/server.js"]
