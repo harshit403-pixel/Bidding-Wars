@@ -7,6 +7,7 @@ import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import BidDAO from "../../../shared/dao/bid.dao.js";
 import TimelineDAO from "../../../shared/dao/timeline.dao.js";
 import ChatMessageDAO from "../../../shared/dao/chatMessage.dao.js";
+import UserDao from "../../../shared/dao/user.dao.js";
 import socketManager from "../../../shared/socket/socket.manager.js";
 import { AuthenticatedRequest } from "../../public/auth/auth.types.js";
 
@@ -20,6 +21,7 @@ const auctionDAO = new AuctionDAO();
 const bidDAO = new BidDAO();
 const timelineDAO = new TimelineDAO();
 const chatMessageDAO = new ChatMessageDAO();
+const userDao = new UserDao();
 
 const getAuctionByIdOrRoomId = async (id: string) => {
     if (mongoose.Types.ObjectId.isValid(id)) {
@@ -34,6 +36,12 @@ export const createAuction = async (req: AuthenticatedRequest, res: Response) =>
 
     // getting the authenticated user
     const user = req.user!;
+
+    // checking if user is verified
+    const dbUser = await userDao.findUserById(user.userId as string);
+    if (!dbUser || !dbUser.isVerified) {
+        throw new Forbidden("Your account is not verified. Please verify your email before creating an auction.");
+    }
 
     // getting the request body
     const {
