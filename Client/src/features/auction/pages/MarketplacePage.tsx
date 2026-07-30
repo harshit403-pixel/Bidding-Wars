@@ -15,11 +15,12 @@ const SORT_OPTIONS = [
 function MarketplacePage() {
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<AuctionCategory | "">("");
+    const [selectedStatus, setSelectedStatus] = useState<string>("active");
     const [sort, setSort] = useState("-createdAt");
     const [page, setPage] = useState(1);
 
     const { data, isLoading, isError } = useAuctions({
-        status: "active",
+        status: selectedStatus === "all" ? undefined : (selectedStatus as any),
         category: selectedCategory || undefined,
         search: search || undefined,
         sort,
@@ -73,6 +74,30 @@ function MarketplacePage() {
                             </option>
                         ))}
                     </select>
+                </div>
+
+                <div className="mb-4 flex flex-wrap gap-2 sm:mb-6 sm:gap-3">
+                    {[
+                        { key: "active", label: "Live Active" },
+                        { key: "upcoming", label: "Upcoming" },
+                        { key: "ended", label: "Ended" },
+                        { key: "all", label: "All Statuses" },
+                    ].map((tab) => (
+                        <button
+                            key={tab.key}
+                            onClick={() => {
+                                setSelectedStatus(tab.key);
+                                setPage(1);
+                            }}
+                            className={`rounded-full px-4 py-1.5 text-xs font-semibold uppercase tracking-wider transition ${
+                                selectedStatus === tab.key
+                                    ? "bg-black text-white"
+                                    : "bg-neutral-200 text-neutral-600 hover:bg-neutral-300"
+                            }`}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
                 </div>
 
                 <div className="mb-8 flex flex-wrap gap-2 sm:mb-10 sm:gap-3">

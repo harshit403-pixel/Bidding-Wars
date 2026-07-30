@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 import AuctionForm from "../shared/components/create-auction/AuctionForm";
@@ -43,6 +44,7 @@ const initialFormData: AuctionFormData = {
 
 function CreateAuctionPage() {
     const navigate = useNavigate();
+    const queryClient = useQueryClient();
     const [form, setForm] = useState<AuctionFormData>(initialFormData);
     const [images, setImages] = useState<UploadedImage[]>([]);
     const [submitting, setSubmitting] = useState(false);
@@ -215,7 +217,7 @@ function CreateAuctionPage() {
 
         setSubmitting(true);
         try {
-            await createAuction({
+            const response = await createAuction({
                 title: form.title.trim(),
                 description: form.description.trim(),
                 category: form.category,
@@ -230,7 +232,15 @@ function CreateAuctionPage() {
             });
 
             toast.success("Auction created successfully!");
-            navigate("/dashboard");
+            queryClient.invalidateQueries({ queryKey: ["auctions"] });
+            queryClient.invalidateQueries({ queryKey: ["dashboard"] });
+
+            const roomId = response?.data?.roomId || response?.data?.auction?.roomId;
+            if (roomId) {
+                navigate(`/auction/${roomId}`);
+            } else {
+                navigate("/auctions");
+            }
         } catch (error: unknown) {
             const err = error as {
                 response?: { data?: { message?: string } };
