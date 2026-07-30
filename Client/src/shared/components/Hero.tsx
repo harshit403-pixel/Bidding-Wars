@@ -1,96 +1,112 @@
-import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+import { motion } from "framer-motion";
+import heroVideo from "../../assets/hero.mp4";
 
 function Hero() {
     return (
-        <section className="relative overflow-hidden border-b border-neutral-200">
-            <div className="mx-auto flex min-h-[calc(100vh-64px)] max-w-7xl flex-col justify-center px-4 py-12 sm:min-h-[calc(100vh-80px)] sm:px-6 sm:py-16 md:min-h-[calc(100vh-96px)] md:px-8 md:py-20">
+        <section className="relative flex min-h-screen items-center overflow-hidden">
+            {/* Background Video */}
+            <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    className="absolute inset-0 h-full w-full object-cover"
+>
+    <source src={heroVideo} type="video/mp4" />
+</video>
 
+            {/* Overlay */}
+           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/70" />
 
-                <h1
-                    className="leading-[0.82] font-black uppercase"
-                    style={{
-                        fontFamily: "Bebas Neue",
-                        fontSize: "clamp(3.5rem,18vw,16rem)",
-                    }}
+            {/* Content */}
+            <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-col justify-between gap-16 px-6 pt-70 pb-24 lg:flex-row lg:items-end">
+
+                {/* Left */}
+
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: .8 }}
+                    className="max-w-3xl"
                 >
-                    BIDDING
-                 
-                    WARS
-                </h1>
-
-                <div className="mt-8 grid gap-8 sm:mt-12 sm:gap-12 lg:grid-cols-[1.2fr_420px]">
-
-                    {/* Left */}
-
-                    <div>
-                        <p className="max-w-xl text-base leading-7 text-neutral-600 sm:text-xl sm:leading-9">
-                            Discover curated luxury products, rare collectibles,
-                            sneakers, electronics and premium fashion in
-                            real-time auctions where every second matters.
-                        </p>
-
-                        <div className="mt-6 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:gap-6">
-
-                            <Link
-                                to="/auctions"
-                                className="inline-flex w-fit items-center gap-2 border-b-2 border-[#FF3B00] pb-1.5 text-base font-medium text-[#FF3B00] sm:gap-3 sm:pb-2 sm:text-lg"
-                            >
-                                Explore Auctions
-                                <ArrowRight size={16} className="sm:size-[18px]" />
-                            </Link>
-
-                            <Link
-                                to="/register"
-                                className="text-base text-neutral-500 transition hover:text-black sm:text-lg"
-                            >
-                                Create Account
-                            </Link>
-
-                        </div>
+                    <div className="mb-2 inline-flex items-center gap-2  px-4 py-2 text-sm text-white ">
+                       
+                        Live Auctions Happening Now
                     </div>
 
-                    {/* Right */}
+                    <h1 className="text-6xl font-black uppercase leading-[0.9] tracking-tight text-white md:text-8xl xl:text-[9rem]">
+                       
+                        RARE
+                        <br />
+                        ITEMS.
+                    </h1>
+                </motion.div>
 
-                    <div className="space-y-4 sm:space-y-6">
+                {/* Right */}
 
-                        <img
-                            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=1200"
-                            alt=""
-                            className="aspect-square w-full object-cover"
-                        />
+                <motion.div
+                    initial={{ opacity: 0, y: 40 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: .2, duration: .8 }}
+                    className="max-w-md"
+                >
+                    <p className="mb-8 text-lg leading-8 text-white/80">
+                        Experience premium real time auctions where collectors,
+                        creators and sellers connect through transparent,
+                        competitive bidding.
+                    </p>
 
-                        <div className="flex items-end justify-between">
+                    <div className="flex flex-wrap gap-4">
+                        <Link
+                            to="/auctions"
+                            className="rounded-full bg-white px-7 py-4 font-semibold text-black transition hover:scale-105"
+                        >
+                            Explore Auctions
+                        </Link>
 
-                            <div>
+                        <Link
+                            to="/register"
+                            className="rounded-full border border-white/30 bg-white/10 px-7 py-4 font-semibold text-white backdrop-blur-xl transition hover:bg-white/20"
+                        >
+                            Start Selling
+                        </Link>
+                    </div>
 
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:text-sm sm:tracking-[0.25em]">
-                                    Featured Auction
-                                </p>
+                    <div className="mt-12 grid grid-cols-3 gap-8">
 
-                                <h2 className="mt-1 text-xl font-bold sm:mt-2 sm:text-3xl">
-                                    Nike Air Jordan
-                                </h2>
+                        <div>
+                            <h3 className="text-3xl font-bold text-white">
+                                10K+
+                            </h3>
 
-                            </div>
+                            <p className="mt-1 text-sm text-white/60">
+                                Collectors
+                            </p>
+                        </div>
 
-                            <div className="text-right">
+                        <div>
+                            <h3 className="text-3xl font-bold text-white">
+                                5K+
+                            </h3>
 
-                                <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:text-sm sm:tracking-[0.25em]">
-                                    Current Bid
-                                </p>
+                            <p className="mt-1 text-sm text-white/60">
+                                Auctions
+                            </p>
+                        </div>
 
-                                <h2 className="mt-1 text-2xl font-bold text-[#FF3B00] sm:mt-2 sm:text-4xl">
-                                    ₹12,500
-                                </h2>
+                        <div>
+                            <h3 className="text-3xl font-bold text-white">
+                                24/7
+                            </h3>
 
-                            </div>
-
+                            <p className="mt-1 text-sm text-white/60">
+                                Live Bidding
+                            </p>
                         </div>
 
                     </div>
-
-                </div>
+                </motion.div>
 
             </div>
         </section>

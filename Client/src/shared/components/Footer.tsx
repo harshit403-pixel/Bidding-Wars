@@ -1,77 +1,267 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";
+
+import footerVideo from "../../assets/footer.mp4";
 
 function Footer() {
     return (
-        <footer className="border-t border-neutral-300 bg-[#F5F1EB]">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+        <footer className="relative  overflow-hidden">
 
-                <div className="mt-12 grid gap-8 pt-10 sm:mt-16 sm:gap-12 sm:pt-14 md:grid-cols-4">
-                    <div>
-                        <h3 className="mb-3 text-base font-semibold sm:mb-5 sm:text-lg">
-                            About
-                        </h3>
+            {/* Background Video */}
 
-                        <p className="text-sm leading-6 text-neutral-600 sm:leading-8">
-                            Experience live auctions for premium products,
-                            collectibles and exclusive finds from verified
-                            sellers.
+            <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                src={footerVideo}
+                className="absolute inset-0 h-full w-full object-cover object-top"
+            />
+
+            {/* Overlay */}
+
+
+            {/* Content */}
+
+            <div className="relative z-10">
+
+                {/* CTA */}
+
+
+                {/* Floating Footer Card */}
+
+                <section className="mt-90 px-6 pb-8">
+
+                    <div className="mx-auto max-w-7xl rounded-[48px] border border-white/10 bg-[#F6F4EF]/95 p-12 shadow-2xl backdrop-blur-xl">
+
+                        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-5">
+
+                            {/* Brand */}
+
+                            <div className="lg:col-span-1">
+
+                                <h3 className="text-3xl font-black leading-none">
+                                    Bidding
+                                    <br />
+                                    Wars
+                                </h3>
+
+                                <p className="mt-6 leading-7 text-neutral-600">
+                                    Experience modern live auctions for luxury
+                                    goods, electronics and collectibles.
+                                </p>
+
+                            </div>
+
+                            {/* Marketplace Starts Here */}                        {/* Marketplace */}
+
+                        <div>
+
+                            <h4 className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-neutral-900">
+                                Marketplace
+                            </h4>
+
+                            <div className="space-y-4">
+
+                                <Link
+                                    to="/auctions"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Live Auctions
+                                </Link>
+
+                                <Link
+                                    to="/auctions"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Categories
+                                </Link>
+
+                                <Link
+                                    to="/create-auction"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Sell an Item
+                                </Link>
+
+                                <Link
+                                    to="/dashboard"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Dashboard
+                                </Link>
+
+                            </div>
+
+                        </div>
+
+                        {/* Company */}
+
+                        <div>
+
+                            <h4 className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-neutral-900">
+                                Company
+                            </h4>
+
+                            <div className="space-y-4">
+
+                                <Link
+                                    to="/about"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    About Us
+                                </Link>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Careers
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Blog
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Contact
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        {/* Resources */}
+
+                        <div>
+
+                            <h4 className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-neutral-900">
+                                Resources
+                            </h4>
+
+                            <div className="space-y-4">
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Help Center
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    FAQs
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Community
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Documentation
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        {/* Legal */}
+
+                        <div>
+
+                            <h4 className="mb-6 text-sm font-bold uppercase tracking-[0.2em] text-neutral-900">
+                                Legal
+                            </h4>
+
+                            <div className="space-y-4">
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Privacy Policy
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Terms of Service
+                                </a>
+
+                                <a
+                                    href="#"
+                                    className="block transition hover:text-[#FF5A1F]"
+                                >
+                                    Cookie Policy
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {/* Bottom Bar Starts Here */}                    <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-neutral-300 pt-8 md:flex-row">
+
+                        <div>
+                            <h4 className="text-lg font-bold text-neutral-900">
+                                Bidding Wars
+                            </h4>
+
+                            <p className="mt-1 text-sm text-neutral-500">
+                                Built for real-time competitive auctions.
+                            </p>
+                        </div>
+
+                        <p className="text-sm text-neutral-500">
+                            © 2026 Bidding Wars. All rights reserved.
                         </p>
+<div className="flex flex-wrap items-center gap-6 text-sm font-medium">
+
+    <a
+        href="https://github.com/bhavya-dhanwani"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="transition hover:text-[#FF5A1F]"
+    >
+        Harshit
+    </a>
+
+    <a
+        href="https://github.com/harshit403-pixel"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="transition hover:text-[#FF5A1F]"
+    >
+        Bhavya
+    </a>
+
+</div>
+
                     </div>
 
-                    <div>
-                        <h3 className="mb-3 text-base font-semibold sm:mb-5 sm:text-lg">
-                            Marketplace
-                        </h3>
-
-                        <div className="space-y-2 text-sm sm:space-y-4">
-                            <Link to="/auctions" className="block hover:text-[#FF3B00]">
-                                Live Auctions
-                            </Link>
-
-                            <Link to="/auctions" className="block hover:text-[#FF3B00]">
-                                Categories
-                            </Link>
-
-                            <Link to="/dashboard" className="block hover:text-[#FF3B00]">
-                                Dashboard
-                            </Link>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="mb-3 text-base font-semibold sm:mb-5 sm:text-lg">
-                            Company
-                        </h3>
-
-                        <div className="space-y-2 text-sm sm:space-y-4">
-                            <a href="#">About</a>
-                            <a href="#">Privacy</a>
-                            <a href="#">Terms</a>
-                            <a href="#">Support</a>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 className="mb-3 text-base font-semibold sm:mb-5 sm:text-lg">
-                            Connect
-                        </h3>
-
-                        <button className="flex items-center gap-2 border-b border-[#FF3B00] pb-1.5 text-sm text-[#FF3B00] sm:gap-3 sm:pb-2">
-                            Join Live Auction
-
-                            <ArrowUpRight size={16} />
-                        </button>
-                    </div>
                 </div>
 
-                <div className="mt-10 flex flex-col justify-between gap-3 border-t border-neutral-300 pt-6 pb-6 text-xs text-neutral-500 sm:mt-16 sm:gap-4 sm:pt-8 sm:pb-8 sm:text-sm md:flex-row">
-                    <p>© 2026 Bidding Wars. All rights reserved.</p>
+            </section>
 
-                    <p>Designed for competitive real-time auctions.</p>
-                </div>
-            </div>
-        </footer>
+        </div>
+
+    </footer>
     );
 }
 

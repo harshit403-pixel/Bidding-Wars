@@ -2,7 +2,8 @@ import api from "./axios";
 
 interface ImageKitAuthResponse {
     token: string;
-    expiry: number;
+    expiry?: number;
+    expire?: number;
     signature: string;
     publicKey: string;
     urlEndpoint: string;
@@ -43,44 +44,53 @@ export async function uploadToImageKit(
     formData.append("fileName", `${Date.now()}-${file.name}`);
     formData.append("publicKey", auth.publicKey);
     formData.append("token", auth.token);
-    formData.append("expiry", String(auth.expiry));
+    formData.append("expire", String(auth.expire || auth.expiry));
     formData.append("signature", auth.signature);
 
-    return new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open(
-            "POST",
-            "https://upload.imagekit.io/api/v1/files/upload",
-            true
-        );
+    try {
+        return await new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            xhr.open(
+                "POST",
+                "https://upload.imagekit.io/api/v1/files/upload",
+                true
+            );
 
-        xhr.upload.addEventListener("progress", (e) => {
-            if (e.lengthComputable && onProgress) {
-                onProgress(Math.round((e.loaded / e.total) * 100));
-            }
+            xhr.upload.addEventListener("progress", (e) => {
+                if (e.lengthComputable && onProgress) {
+                    onProgress(Math.round((e.loaded / e.total) * 100));
+                }
+            });
+
+            xhr.addEventListener("load", () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                    const res = JSON.parse(xhr.responseText);
+                    resolve(res.url);
+                } else {
+                    let errMsg = "Image upload failed";
+                    try {
+                        const err = JSON.parse(xhr.responseText);
+                        errMsg = err?.message || errMsg;
+                    } catch {}
+                    reject(new Error(errMsg));
+                }
+            });
+
+            xhr.addEventListener("error", () => {
+                reject(new Error("Image upload failed. Check your network."));
+            });
+
+            xhr.addEventListener("timeout", () => {
+                reject(new Error("Image upload timed out"));
+            });
+
+            xhr.timeout = 60000;
+            xhr.send(formData);
         });
-
-        xhr.addEventListener("load", () => {
-            if (xhr.status >= 200 && xhr.status < 300) {
-                const res = JSON.parse(xhr.responseText);
-                resolve(res.url);
-            } else {
-                const err = JSON.parse(xhr.responseText);
-                reject(new Error(err?.message || "Image upload failed"));
-            }
-        });
-
-        xhr.addEventListener("error", () => {
-            reject(new Error("Image upload failed. Check your network."));
-        });
-
-        xhr.addEventListener("timeout", () => {
-            reject(new Error("Image upload timed out"));
-        });
-
-        xhr.timeout = 60000;
-        xhr.send(formData);
-    });
+    } catch (error) {
+        console.warn("ImageKit direct upload failed, falling back to server upload:", error);
+        return uploadViaServer(file, onProgress);
+    }
 }
 
 async function uploadViaServer(

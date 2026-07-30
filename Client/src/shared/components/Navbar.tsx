@@ -1,13 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
-import { Menu, Search, X, Plus } from "lucide-react";
+import { Menu, Plus, Search, X } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { useLogout } from "../../features/auth/hooks/useLogout";
 import type { RootState } from "../../app/store";
 
 function Navbar() {
+    const [showNavbar, setShowNavbar] = useState(true);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
 
     const { isAuthenticated, user } = useSelector(
         (state: RootState) => state.auth
@@ -15,33 +17,83 @@ function Navbar() {
 
     const { mutate: logout } = useLogout();
 
+   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+        const currentScrollY = window.scrollY;
+
+        setScrolled(currentScrollY > 30);
+
+        if (currentScrollY < 80) {
+            setShowNavbar(true);
+        } else if (currentScrollY > lastScrollY) {
+            // Scrolling down
+            setShowNavbar(false);
+        } else {
+            // Scrolling up
+            setShowNavbar(true);
+        }
+
+        lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () =>
+        window.removeEventListener("scroll", handleScroll);
+}, []);
+
     const navClass = ({ isActive }: { isActive: boolean }) =>
-        `transition ${
-            isActive
-                ? "text-[#FF3B00]"
-                : "hover:text-[#FF3B00]"
+        `relative transition duration-300 ${
+            scrolled
+                ? isActive
+                    ? "text-black"
+                    : "text-neutral-600 hover:text-black"
+                : isActive
+                  ? "text-white"
+                  : "text-white/70 hover:text-white"
         }`;
 
     return (
-        <header className="sticky top-0 z-50 border-b border-neutral-200 bg-[#F5F1EB]/90 backdrop-blur-xl">
-            <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:h-20 sm:px-6 md:h-24 md:px-8">
+      <header
+    className={`fixed left-0 top-0 z-50 w-full px-4 py-5 transition-transform duration-500 ${
+        showNavbar ? "translate-y-0" : "-translate-y-full"
+    }`}
+>
+            <div
+                className={`mx-auto flex h-20 max-w-7xl items-center justify-between rounded-full px-8 transition-all duration-500 ${
+                    scrolled
+                        ? "border border-neutral-200 bg-white shadow-xl"
+                        : "border border-white/15 bg-white/10 backdrop-blur-xl"
+                }`}
+            >
+
                 {/* Logo */}
+
                 <Link
                     to="/"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-3"
                 >
-                    <span className="text-3xl font-black text-[#FF3B00] sm:text-4xl">
-                        ++
-                    </span>
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-lg font-black text-black">
+                        BW
+                    </div>
 
-                    <span className="hidden text-lg font-semibold md:block">
+                    <span
+                        className={`hidden text-xl font-semibold lg:block ${
+                            scrolled
+                                ? "text-black"
+                                : "text-white"
+                        }`}
+                    >
                         Bidding Wars
                     </span>
                 </Link>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden items-center gap-10 text-lg md:flex">
-                   
+                {/* Desktop Navigation Starts Here */}
+                                {/* Desktop Navigation */}
+
+                <nav className="hidden items-center gap-10 lg:flex">
 
                     <NavLink
                         to="/auctions"
@@ -50,97 +102,183 @@ function Navbar() {
                         Marketplace
                     </NavLink>
 
-                    {isAuthenticated && (
-                        <>
-                            <NavLink
-                                to="/dashboard"
-                                className={navClass}
-                            >
-                                Dashboard
-                            </NavLink>
+                    <NavLink
+                        to="/categories"
+                        className={navClass}
+                    >
+                        Categories
+                    </NavLink>
 
-                           
-                        </>
+                    <NavLink
+                        to="/about"
+                        className={navClass}
+                    >
+                        About
+                    </NavLink>
+
+                    {isAuthenticated && (
+                        <NavLink
+                            to="/dashboard"
+                            className={navClass}
+                        >
+                            Dashboard
+                        </NavLink>
                     )}
+
                 </nav>
 
-                {/* Desktop Right */}
-                <div className="hidden items-center gap-5 md:flex">
-                    <button className="transition hover:text-[#FF3B00]">
+                {/* Right Side */}
+
+                <div className="hidden items-center gap-5 lg:flex">
+
+                    <button
+                        className={`transition ${
+                            scrolled
+                                ? "text-neutral-600 hover:text-black"
+                                : "text-white/70 hover:text-white"
+                        }`}
+                    >
                         <Search size={20} />
                     </button>
 
                     {isAuthenticated ? (
                         <>
+
                             <Link
                                 to="/create-auction"
-                                className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-white transition hover:bg-[#FF3B00]"
+                                className="flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-medium text-white transition duration-300 hover:scale-105 hover:bg-[#FF5A1F]"
                             >
                                 <Plus size={16} />
-                                Create auction
+                                Create Auction
                             </Link>
 
                             <Link
                                 to="/profile"
-                                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-semibold text-white"
+                                className="flex h-11 w-11 items-center justify-center rounded-full bg-[#111] text-sm font-semibold text-white transition hover:scale-105"
                             >
                                 {user?.name?.charAt(0).toUpperCase()}
                             </Link>
 
                             <button
                                 onClick={() => logout()}
-                                className="transition hover:text-[#FF3B00]"
+                                className={`transition ${
+                                    scrolled
+                                        ? "text-neutral-600 hover:text-black"
+                                        : "text-white/70 hover:text-white"
+                                }`}
                             >
                                 Logout
                             </button>
+
                         </>
                     ) : (
                         <div className="flex items-center gap-4">
+
                             <Link
                                 to="/login"
-                                className="transition hover:text-[#FF3B00]"
+                                className={`transition ${
+                                    scrolled
+                                        ? "text-neutral-700 hover:text-black"
+                                        : "text-white/70 hover:text-white"
+                                }`}
                             >
                                 Login
                             </Link>
 
                             <Link
                                 to="/register"
-                                className="rounded-full bg-white px-5 py-2 text-sm text-black transition hover:bg-[#FF3B00]"
+                                className="rounded-full bg-white px-6 py-3 font-medium text-black transition duration-300 hover:scale-105 hover:bg-neutral-100"
                             >
                                 Get Started
                             </Link>
+
                         </div>
                     )}
+
                 </div>
 
                 {/* Mobile Menu Button */}
+
                 <button
-                    className="md:hidden"
                     onClick={() => setMobileOpen(!mobileOpen)}
+                    className={`lg:hidden ${
+                        scrolled
+                            ? "text-black"
+                            : "text-white"
+                    }`}
                 >
-                    {mobileOpen ? <X size={26} /> : <Menu size={26} />}
+                    {mobileOpen ? (
+                        <X size={28} />
+                    ) : (
+                        <Menu size={28} />
+                    )}
                 </button>
+
             </div>
 
-            {/* Mobile Menu */}
-            {mobileOpen && (
-                <div className="border-t border-neutral-200 bg-[#F5F1EB] px-5 py-6 md:hidden">
-                    <nav className="flex flex-col gap-5 text-lg">
-                        <NavLink
-                            to="/"
-                            end
-                            onClick={() => setMobileOpen(false)}
-                            className={navClass}
-                        >
-                            Home
-                        </NavLink>
+            {/* Mobile Menu Starts Here */}
+                        {mobileOpen && (
+                <div
+                    className={`mt-4 overflow-hidden rounded-3xl transition-all duration-300 lg:hidden ${
+                        scrolled
+                            ? "border border-neutral-200 bg-white shadow-xl"
+                            : "border border-white/15 bg-black/70 backdrop-blur-2xl"
+                    }`}
+                >
+                    <nav className="flex flex-col p-6">
 
                         <NavLink
                             to="/auctions"
                             onClick={() => setMobileOpen(false)}
-                            className={navClass}
+                            className={({ isActive }) =>
+                                `rounded-xl px-4 py-3 transition ${
+                                    scrolled
+                                        ? isActive
+                                            ? "bg-neutral-100 font-medium text-black"
+                                            : "text-neutral-700 hover:bg-neutral-100"
+                                        : isActive
+                                          ? "bg-white/10 text-white"
+                                          : "text-white/70 hover:bg-white/10 hover:text-white"
+                                }`
+                            }
                         >
                             Marketplace
+                        </NavLink>
+
+                        <NavLink
+                            to="/categories"
+                            onClick={() => setMobileOpen(false)}
+                            className={({ isActive }) =>
+                                `rounded-xl px-4 py-3 transition ${
+                                    scrolled
+                                        ? isActive
+                                            ? "bg-neutral-100 font-medium text-black"
+                                            : "text-neutral-700 hover:bg-neutral-100"
+                                        : isActive
+                                          ? "bg-white/10 text-white"
+                                          : "text-white/70 hover:bg-white/10 hover:text-white"
+                                }`
+                            }
+                        >
+                            Categories
+                        </NavLink>
+
+                        <NavLink
+                            to="/about"
+                            onClick={() => setMobileOpen(false)}
+                            className={({ isActive }) =>
+                                `rounded-xl px-4 py-3 transition ${
+                                    scrolled
+                                        ? isActive
+                                            ? "bg-neutral-100 font-medium text-black"
+                                            : "text-neutral-700 hover:bg-neutral-100"
+                                        : isActive
+                                          ? "bg-white/10 text-white"
+                                          : "text-white/70 hover:bg-white/10 hover:text-white"
+                                }`
+                            }
+                        >
+                            About
                         </NavLink>
 
                         {isAuthenticated && (
@@ -148,7 +286,17 @@ function Navbar() {
                                 <NavLink
                                     to="/dashboard"
                                     onClick={() => setMobileOpen(false)}
-                                    className={navClass}
+                                    className={({ isActive }) =>
+                                        `rounded-xl px-4 py-3 transition ${
+                                            scrolled
+                                                ? isActive
+                                                    ? "bg-neutral-100 font-medium text-black"
+                                                    : "text-neutral-700 hover:bg-neutral-100"
+                                                : isActive
+                                                  ? "bg-white/10 text-white"
+                                                  : "text-white/70 hover:bg-white/10 hover:text-white"
+                                        }`
+                                    }
                                 >
                                     Dashboard
                                 </NavLink>
@@ -156,62 +304,99 @@ function Navbar() {
                                 <NavLink
                                     to="/create-auction"
                                     onClick={() => setMobileOpen(false)}
-                                    className={navClass}
+                                    className={({ isActive }) =>
+                                        `rounded-xl px-4 py-3 transition ${
+                                            scrolled
+                                                ? isActive
+                                                    ? "bg-neutral-100 font-medium text-black"
+                                                    : "text-neutral-700 hover:bg-neutral-100"
+                                                : isActive
+                                                  ? "bg-white/10 text-white"
+                                                  : "text-white/70 hover:bg-white/10 hover:text-white"
+                                        }`
+                                    }
                                 >
                                     Create Auction
                                 </NavLink>
-
-                                <NavLink
-                                    to="/profile"
-                                    onClick={() => setMobileOpen(false)}
-                                    className={navClass}
-                                >
-                                    Profile
-                                </NavLink>
                             </>
                         )}
-                    </nav>
+                                                <div
+                            className={`mt-6 border-t pt-6 ${
+                                scrolled
+                                    ? "border-neutral-200"
+                                    : "border-white/10"
+                            }`}
+                        >
+                            {isAuthenticated ? (
+                                <>
+                                    <Link
+                                        to="/profile"
+                                        onClick={() => setMobileOpen(false)}
+                                        className="mb-5 flex items-center gap-4"
+                                    >
+                                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black font-semibold text-white">
+                                            {user?.name?.charAt(0).toUpperCase()}
+                                        </div>
 
-                    <div className="mt-6 border-t border-neutral-200 pt-5">
-                        {isAuthenticated ? (
-                            <div className="flex flex-col gap-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-white">
-                                        {user?.name?.charAt(0).toUpperCase()}
-                                    </div>
+                                        <div>
+                                            <p
+                                                className={`font-medium ${
+                                                    scrolled
+                                                        ? "text-black"
+                                                        : "text-white"
+                                                }`}
+                                            >
+                                                {user?.name}
+                                            </p>
 
-                                    <span>{user?.name}</span>
+                                            <p
+                                                className={`text-sm ${
+                                                    scrolled
+                                                        ? "text-neutral-500"
+                                                        : "text-white/60"
+                                                }`}
+                                            >
+                                                View Profile
+                                            </p>
+                                        </div>
+                                    </Link>
+
+                                    <button
+                                        onClick={() => {
+                                            logout();
+                                            setMobileOpen(false);
+                                        }}
+                                        className="w-full rounded-full bg-black py-3 font-medium text-white transition hover:bg-[#FF5A1F]"
+                                    >
+                                        Logout
+                                    </button>
+                                </>
+                            ) : (
+                                <div className="flex flex-col gap-4">
+                                    <Link
+                                        to="/login"
+                                        onClick={() => setMobileOpen(false)}
+                                        className={`text-center transition ${
+                                            scrolled
+                                                ? "text-neutral-700 hover:text-black"
+                                                : "text-white hover:text-white"
+                                        }`}
+                                    >
+                                        Login
+                                    </Link>
+
+                                    <Link
+                                        to="/register"
+                                        onClick={() => setMobileOpen(false)}
+                                        className="rounded-full bg-black py-3 text-center font-medium text-white transition hover:bg-[#FF5A1F]"
+                                    >
+                                        Get Started
+                                    </Link>
                                 </div>
+                            )}
+                        </div>
 
-                                <button
-                                    onClick={() => {
-                                        logout();
-                                        setMobileOpen(false);
-                                    }}
-                                    className="text-left  transition hover:text-[#FF3B00]"
-                                >
-                                    Logout
-                                </button>
-                            </div>
-                        ) : (
-                            <div className="flex flex-col gap-4">
-                                <Link
-                                    to="/login"
-                                    onClick={() => setMobileOpen(false)}
-                                >
-                                    Login
-                                </Link>
-
-                                <Link
-                                    to="/register"
-                                    onClick={() => setMobileOpen(false)}
-                                    className="rounded-full bg-white px-5 py-3 text-center text-white"
-                                >
-                                    Get Started
-                                </Link>
-                            </div>
-                        )}
-                    </div>
+                    </nav>
                 </div>
             )}
         </header>

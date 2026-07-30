@@ -196,15 +196,23 @@ function VerifyEmailPage() {
                             "Verify Email"
                         )}
                     </button>
+
                     <button
                         onClick={() => logout()}
                         className="w-full border border-neutral-300 px-4 py-3 text-neutral-700 font-medium transition hover:bg-neutral-50"
                     >
-                        Log out
+                        Log Out
                     </button>
+
                 </div>
+
+                <p className="mt-10 text-sm text-neutral-400">
+                    Need help? Contact support if you still haven't received the email after a few minutes.
+                </p>
+
             </div>
-        </section>
+
+        </div>
     );
 }
 
