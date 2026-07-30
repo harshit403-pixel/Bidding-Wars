@@ -7,7 +7,7 @@ loadEnv({
 process.env.NODE_ENV ||= "test";
 process.env.MONGO_URI ||= process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/backend-test";
 process.env.ACCESS_TOKEN_SECRET ||= process.env.JWT_SECRET || "test-access-secret";
-process.env.REFRESH_TOKEN_SECRET ||= process.env.REFRESH_SECRET || "test-refresh-secret";
+process.env.REFRESH_TOKEN_SECRET ||= process.env.JWT_REFRESH_SECRET || "test-refresh-secret";
 process.env.FRONTEND_URL ||= "http://localhost:5173";
 process.env.GOOGLE_CLIENT_ID ||= "test-google-client-id";
 process.env.GOOGLE_CLIENT_SECRET ||= "test-google-client-secret";
@@ -19,3 +19,4 @@ process.env.SMTP_USER ||= process.env.MAIL_USER || "test";
 process.env.SMTP_PASS ||= process.env.MAIL_PASS || "test";
 process.env.SENDING_USER ||= "Server <test@example.com>";
 process.env.SEND_MAIL ||= "false";
+process.env.MONGOMS_VERSION ||= "7.0.20";

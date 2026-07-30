@@ -16,7 +16,7 @@ const config = {
   },
   setupFilesAfterEnv: ["<rootDir>/src/__tests__/setup.cjs"],
   globalTeardown: "<rootDir>/src/__tests__/teardown.ts",
-  testMatch: ["**/__tests__/**/*.test.ts"],
+  testMatch: ["**/__tests__/**/*.test.ts", "**/modules/**/*.test.ts"],
   collectCoverage: false,
   collectCoverageFrom: [
     "src/**/*.ts",
