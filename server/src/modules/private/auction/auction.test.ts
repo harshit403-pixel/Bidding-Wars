@@ -188,7 +188,7 @@ describe("Private Auction API", () => {
 
       it("should reject missing title", async () => {
         const auction = buildAuction();
-        delete (auction as Record<string, unknown>).title;
+        delete (auction as unknown as Record<string, unknown>).title;
 
         const res = await request(app)
           .post("/api/auctions")
@@ -237,7 +237,7 @@ describe("Private Auction API", () => {
 
       it("should reject missing description", async () => {
         const auction = buildAuction();
-        delete (auction as Record<string, unknown>).description;
+        delete (auction as unknown as Record<string, unknown>).description;
 
         const res = await request(app)
           .post("/api/auctions")

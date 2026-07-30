@@ -1,29 +1,54 @@
-version: '3.8'
-
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"
-    environment:
-      - PORT=5000
-      - NODE_ENV=development
-      - MONGODB_URI=mongodb://mongodb:27017/Server
-      - JWT_SECRET=super_secret_jwt_key
-      - JWT_REFRESH_SECRET=super_secret_refresh_key
-    depends_on:
-      - mongodb
-    restart: always
-
   mongodb:
     image: mongo:latest
+    container_name: bids-mongodb-dev
+    command: mongod --quiet --logpath /dev/null
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  server:
+    image: node:20-alpine
+    container_name: bids-server-dev
+    working_dir: /app/server
+    command: sh -c "npm install && node ../scripts/watch-package.js"
+    volumes:
+      - .:/app
+      - server_node_modules:/app/server/node_modules
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./server/.env
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/Server
+    depends_on:
+      mongodb:
+        condition: service_healthy
     restart: always
+
+  client:
+    image: node:20-alpine
+    container_name: bids-client-dev
+    working_dir: /app/Client
+    command: sh -c "npm install && npm run dev -- --host"
+    volumes:
+      - .:/app
+      - client_node_modules:/app/Client/node_modules
+    ports:
+      - "5173:5173"
+    env_file:
+      - ./Client/.env
+    depends_on:
+      - server
 
 volumes:
   mongodb_data:
+  server_node_modules:
+  client_node_modules:
