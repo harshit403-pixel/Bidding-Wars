@@ -129,32 +129,40 @@ async function handleLeaveAuction(socket: AuthenticatedSocket, roomId: string) {
             return emitError(socket, "INVALID_ROOM", "Room ID is required");
         }
 
-        const room = socketManager.getRoom(roomId);
+        let room = socketManager.getRoom(roomId);
+        if (!room) {
+            for (const r of socketManager.getAllRooms().values()) {
+                if (r.auctionId === roomId || r.roomId === roomId) {
+                    room = r;
+                    break;
+                }
+            }
+        }
         if (!room) return;
 
-        const user = socketManager.removeUserFromRoom(roomId, socket.id);
+        const targetRoomId = room.roomId;
+        const user = socketManager.removeUserFromRoom(targetRoomId, socket.id);
         if (user) {
-            socket.leave(roomId);
+            socket.leave(targetRoomId);
 
             await auctionDAO.decrementParticipantsCount(room.auctionId);
 
-            const participantCount = socketManager.getParticipantCount(roomId);
+            const participantCount = socketManager.getParticipantCount(targetRoomId);
 
-            socketManager.broadcastToRoom(roomId, "user_left", {
+            socketManager.broadcastToRoom(targetRoomId, "user_left", {
                 userId: socket.userId,
                 username: socket.username,
                 participants: participantCount,
             });
 
-            socketManager.broadcastToRoom(roomId, "participants_updated", {
+            socketManager.broadcastToRoom(targetRoomId, "participants_updated", {
                 participants: participantCount,
             });
 
-            logger.debug({ socketId: socket.id, roomId, userId: socket.userId }, "Socket: left auction room");
+            logger.debug({ socketId: socket.id, roomId: targetRoomId, userId: socket.userId }, "Socket: left auction room");
         }
     } catch (error) {
         logger.error({ socketId: socket.id, error }, "Socket: leave_auction error");
-        emitError(socket, "LEAVE_ERROR", "Failed to leave auction");
     }
 }
 
@@ -240,8 +248,8 @@ async function handlePlaceBid(socket: AuthenticatedSocket, payload: PlaceBidPayl
 
 async function handleDisconnect(socket: AuthenticatedSocket, reason: string) {
     try {
-        const roomId = socketManager.findRoomBySocketId(socket.id);
-        if (roomId) {
+        const roomIds = socketManager.findAllRoomsBySocketId(socket.id);
+        for (const roomId of roomIds) {
             await handleLeaveAuction(socket, roomId);
         }
 

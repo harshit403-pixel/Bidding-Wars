@@ -120,6 +120,16 @@ class SocketManager {
         return undefined;
     }
 
+    findAllRoomsBySocketId(socketId: string): string[] {
+        const roomIds: string[] = [];
+        for (const [roomId, room] of this.rooms) {
+            if (room.participants.has(socketId)) {
+                roomIds.push(roomId);
+            }
+        }
+        return roomIds;
+    }
+
     getAllRooms(): Map<string, AuctionRoom> {
         return this.rooms;
     }
