@@ -1,26 +1,28 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 
-import * as AuctionDAO from "../../../shared/dao/auction.dao.js";
+import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import { createAuctionSchema, updateAuctionSchema } from "./auction.validator.js";
+import { AuthenticatedRequest } from "../auth/auth.types.js";
 
 import Ok from "../../../shared/responses/Ok.response.js";
 import NotFoundError from "../../../shared/errors/NotFound.error.js";
 import User from "../../../shared/models/user.model.js";
 import BadRequest from "../../../shared/errors/BadRequest.error.js";
 
+const auctionDAO = new AuctionDAO();
 
-export const createAuction = async (req: Request, res: Response) => {
+export const createAuction = async (req: AuthenticatedRequest, res: Response) => {
     const data = createAuctionSchema.parse(req.body);
 
-    const user = (req as any).user;
+    const user = req.user!;
 
-    const auction = await AuctionDAO.createAuction({
+    const auction = await auctionDAO.createAuction({
         ...data,
-        seller: user.userId,
-        currentBid: data.startingBid,
+        seller: user.userId!,
+        currentPrice: data.startingBid,
     });
 
-    await User.findByIdAndUpdate(user.userId, {
+    await User.findByIdAndUpdate(user.userId!, {
         $push: {
             auctionsCreated: auction._id,
         },
@@ -29,10 +31,10 @@ export const createAuction = async (req: Request, res: Response) => {
     return Ok(res, "Auction created successfully", { auction });
 };
 
-export const getAuctions = async (req: Request, res: Response) => {
+export const getAuctions = async (req: AuthenticatedRequest, res: Response) => {
     const { page = "1", limit = "10", status, category, search } = req.query;
 
-    const filter: Record<string, any> = {};
+    const filter: Record<string, unknown> = {};
 
     if (status) filter.status = status;
     if (category) filter.category = category;
@@ -44,21 +46,21 @@ export const getAuctions = async (req: Request, res: Response) => {
         };
     }
 
-    const auctions = await AuctionDAO.getAuctions(filter, {
+    const result = await auctionDAO.findAuctions(filter, {
         page: Number(page),
         limit: Number(limit),
     });
 
-    const total = await AuctionDAO.countAuctions(filter);
-
     return Ok(res, "Auctions fetched successfully", {
-        auctions,
-        total,
+        auctions: result.auctions,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages,
     });
 };
 
-export const getAuction = async (req: Request, res: Response) => {
-    const auction = await AuctionDAO.getAuctionById(req.params.auctionId as string);
+export const getAuction = async (req: AuthenticatedRequest, res: Response) => {
+    const auction = await auctionDAO.findAuctionById(req.params.auctionId as string);
 
     if (!auction) {
         throw new NotFoundError("Auction not found");
@@ -69,10 +71,10 @@ export const getAuction = async (req: Request, res: Response) => {
     });
 };
 
-export const updateAuction = async (req: Request, res: Response) => {
-    const user = (req as any).user;
+export const updateAuction = async (req: AuthenticatedRequest, res: Response) => {
+    const user = req.user!;
 
-    const existingAuction = await AuctionDAO.getAuctionByIdWithoutPopulate(
+    const existingAuction = await auctionDAO.findAuctionByIdLean(
         req.params.auctionId as string,
     );
 
@@ -80,13 +82,13 @@ export const updateAuction = async (req: Request, res: Response) => {
         throw new NotFoundError("Auction not found");
     }
 
-    if (existingAuction.seller.toString() !== user.userId) {
+    if (existingAuction.seller.toString() !== user.userId!) {
         throw new BadRequest("You can only update your own auction");
     }
 
     const data = updateAuctionSchema.parse(req.body);
 
-    const auction = await AuctionDAO.updateAuction(
+    const auction = await auctionDAO.updateAuctionById(
         req.params.auctionId as string,
         data,
     );
@@ -96,10 +98,10 @@ export const updateAuction = async (req: Request, res: Response) => {
     });
 };
 
-export const deleteAuction = async (req: Request, res: Response) => {
-    const user = (req as any).user;
+export const deleteAuction = async (req: AuthenticatedRequest, res: Response) => {
+    const user = req.user!;
 
-    const existingAuction = await AuctionDAO.getAuctionByIdWithoutPopulate(
+    const existingAuction = await auctionDAO.findAuctionByIdLean(
         req.params.auctionId as string,
     );
 
@@ -107,22 +109,22 @@ export const deleteAuction = async (req: Request, res: Response) => {
         throw new NotFoundError("Auction not found");
     }
 
-    if (existingAuction.seller.toString() !== user.userId) {
+    if (existingAuction.seller.toString() !== user.userId!) {
         throw new BadRequest("You can only delete your own auction");
     }
 
-    await AuctionDAO.deleteAuction(req.params.auctionId as string);
+    await auctionDAO.deleteAuctionById(req.params.auctionId as string);
 
     return Ok(res, "Auction deleted successfully");
 };
 
-export const getMyAuctions = async (req: Request, res: Response) => {
-    const user = (req as any).user;
+export const getMyAuctions = async (req: AuthenticatedRequest, res: Response) => {
+    const user = req.user!;
 
     const { page = "1", limit = "10" } = req.query;
 
-    const auctions = await AuctionDAO.getMyAuctions(
-        user.userId,
+    const result = await auctionDAO.findAuctionsBySeller(
+        user.userId!,
         {
             page: Number(page),
             limit: Number(limit),
@@ -130,6 +132,9 @@ export const getMyAuctions = async (req: Request, res: Response) => {
     );
 
     return Ok(res, "My auctions fetched successfully", {
-        auctions,
+        auctions: result.auctions,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages,
     });
 };
