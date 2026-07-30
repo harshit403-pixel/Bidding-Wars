@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
-import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square } from "lucide-react";
+import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square, CreditCard } from "lucide-react";
 import { toast } from "sonner";
+
+import { processRazorpayPayment } from "../shared/utils/razorpay";
 
 import { useAuction } from "../features/auction/hooks/useAuctions";
 import { useAuctionSocket } from "../socket/useAuctionSocket";
@@ -76,6 +78,10 @@ function AuctionDetailPage() {
     const sellerName = sellerObj?.name ?? "Verified Seller";
     const sellerRating = sellerObj?.rating;
     const isSeller = Boolean(user && sellerId && String(sellerId) === String(user._id));
+
+    const winnerObj = typeof auction.winner === "object" && auction.winner !== null ? auction.winner : null;
+    const winnerId = winnerObj ? winnerObj._id : String(auction.winner ?? "");
+    const isWinner = Boolean(user && winnerId && String(winnerId) === String(user._id));
 
     const handleStartNow = async () => {
         if (!auctionId) return;
@@ -334,12 +340,32 @@ function AuctionDetailPage() {
                             )}
 
                             {status === "ended" && (
-                                <div className="border border-neutral-300 bg-neutral-100 p-4 text-center sm:p-6">
+                                <div className="border border-neutral-300 bg-neutral-100 p-4 text-center sm:p-6 space-y-4">
                                     <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 sm:text-sm sm:tracking-[0.25em]">This auction has ended</p>
                                     {auction.winner && (
-                                        <p className="mt-1.5 text-lg font-bold text-[#111111] sm:mt-2 sm:text-xl">
-                                            Won by {auction.winner.name}
+                                        <p className="text-lg font-bold text-[#111111] sm:text-xl">
+                                            {isWinner ? "🏆 You Won this Auction!" : `Won by ${winnerObj?.name ?? "Winner"}`}
                                         </p>
+                                    )}
+                                    {isWinner && (
+                                        <button
+                                            onClick={() => {
+                                                processRazorpayPayment({
+                                                    auctionId: auction._id,
+                                                    auctionTitle: auction.title,
+                                                    amount: currentPrice,
+                                                    user,
+                                                    onSuccess: () => {
+                                                        queryClient.invalidateQueries({ queryKey: ["auction", roomId] });
+                                                        queryClient.invalidateQueries({ queryKey: ["auctions"] });
+                                                    },
+                                                });
+                                            }}
+                                            className="w-full bg-[#FF3B00] hover:bg-[#FF5A2C] text-white py-3.5 px-6 font-semibold uppercase tracking-wider transition shadow-md flex items-center justify-center gap-2"
+                                        >
+                                            <CreditCard className="h-5 w-5" />
+                                            Pay Now ₹{currentPrice.toLocaleString()} (Razorpay)
+                                        </button>
                                     )}
                                 </div>
                             )}

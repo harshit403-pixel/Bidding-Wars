@@ -19,7 +19,7 @@ const chatMessageDAO = new ChatMessageDAO();
 export const getAuctions = async (req: AuthenticatedRequest, res: Response) => {
 
     // getting query params
-    const { page = "1", limit = "10", status, category, seller, search, sort } = req.query;
+    const { page = "1", limit = "10", status, category, seller, winner, search, sort } = req.query;
 
     // building the filter
     const filter: Record<string, unknown> = {};
@@ -27,6 +27,7 @@ export const getAuctions = async (req: AuthenticatedRequest, res: Response) => {
     if (status) filter.status = status;
     if (category) filter.category = category;
     if (seller) filter.seller = seller;
+    if (winner) filter.winner = winner;
 
     if (search) {
         filter.title = {

@@ -20,6 +20,7 @@ export const getAuctions = async (params: AuctionListParams = {}): Promise<Aucti
     if (params.status) searchParams.set("status", params.status);
     if (params.category) searchParams.set("category", params.category);
     if (params.seller) searchParams.set("seller", params.seller);
+    if (params.winner) searchParams.set("winner", params.winner);
     if (params.search) searchParams.set("search", params.search);
     if (params.sort) searchParams.set("sort", params.sort);
 
