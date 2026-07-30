@@ -2,12 +2,18 @@
 import { Response } from "express";
 
 import AuctionDAO from "../../../shared/dao/auction.dao.js";
+import BidDAO from "../../../shared/dao/bid.dao.js";
+import TimelineDAO from "../../../shared/dao/timeline.dao.js";
+import ChatMessageDAO from "../../../shared/dao/chatMessage.dao.js";
 import { AuthenticatedRequest } from "../auth/auth.types.js";
 
 import Ok from "../../../shared/responses/Ok.response.js";
 import NotFound from "../../../shared/errors/NotFound.error.js";
 
 const auctionDAO = new AuctionDAO();
+const bidDAO = new BidDAO();
+const timelineDAO = new TimelineDAO();
+const chatMessageDAO = new ChatMessageDAO();
 
 // Get all auctions (public listing)
 export const getAuctions = async (req: AuthenticatedRequest, res: Response) => {
@@ -82,9 +88,12 @@ export const getAuction = async (req: AuthenticatedRequest, res: Response) => {
 // Get bids for an auction
 export const getAuctionBids = async (req: AuthenticatedRequest, res: Response) => {
 
-    // importing bid dao
-    const BidDAO = (await import("../../../shared/dao/bid.dao.js")).default;
-    const bidDAO = new BidDAO();
+    // verifying auction exists
+    const auction = await auctionDAO.findAuctionByIdLean(req.params.auctionId as string);
+
+    if (!auction) {
+        throw new NotFound("Auction not found");
+    }
 
     // getting query params
     const { page = "1", limit = "20" } = req.query;
@@ -107,9 +116,12 @@ export const getAuctionBids = async (req: AuthenticatedRequest, res: Response) =
 // Get timeline for an auction
 export const getAuctionTimeline = async (req: AuthenticatedRequest, res: Response) => {
 
-    // importing timeline dao
-    const TimelineDAO = (await import("../../../shared/dao/timeline.dao.js")).default;
-    const timelineDAO = new TimelineDAO();
+    // verifying auction exists
+    const auction = await auctionDAO.findAuctionByIdLean(req.params.auctionId as string);
+
+    if (!auction) {
+        throw new NotFound("Auction not found");
+    }
 
     // getting query params
     const { page = "1", limit = "50" } = req.query;
@@ -132,9 +144,12 @@ export const getAuctionTimeline = async (req: AuthenticatedRequest, res: Respons
 // Get messages for an auction
 export const getAuctionMessages = async (req: AuthenticatedRequest, res: Response) => {
 
-    // importing chat message dao
-    const ChatMessageDAO = (await import("../../../shared/dao/chatMessage.dao.js")).default;
-    const chatMessageDAO = new ChatMessageDAO();
+    // verifying auction exists
+    const auction = await auctionDAO.findAuctionByIdLean(req.params.auctionId as string);
+
+    if (!auction) {
+        throw new NotFound("Auction not found");
+    }
 
     // getting query params
     const { page = "1", limit = "50" } = req.query;

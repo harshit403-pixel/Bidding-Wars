@@ -187,6 +187,41 @@ class AuctionDAO {
             startTime: { $lte: date },
         }).lean();
     }
+
+    // Get dashboard stats using aggregation pipeline
+    async getDashboardStats(userId: string) {
+        const result = await this.AuctionModel.aggregate([
+            {
+                $facet: {
+                    activeAuctions: [
+                        { $match: { status: "active" } },
+                        { $count: "count" },
+                    ],
+                    completedAuctions: [
+                        { $match: { status: "ended" } },
+                        { $count: "count" },
+                    ],
+                    wonAuctions: [
+                        { $match: { winner: userId } },
+                        { $count: "count" },
+                    ],
+                    myAuctions: [
+                        { $match: { seller: userId } },
+                        { $count: "count" },
+                    ],
+                },
+            },
+        ]);
+
+        const stats = result[0];
+
+        return {
+            activeAuctions: stats.activeAuctions[0]?.count || 0,
+            completedAuctions: stats.completedAuctions[0]?.count || 0,
+            wonAuctions: stats.wonAuctions[0]?.count || 0,
+            myAuctions: stats.myAuctions[0]?.count || 0,
+        };
+    }
 }
 
 export default AuctionDAO;
