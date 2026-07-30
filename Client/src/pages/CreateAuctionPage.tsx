@@ -42,6 +42,11 @@ const initialFormData: AuctionFormData = {
     endsAt: "",
 };
 
+function toLocalDateTimeString(d: Date): string {
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 function CreateAuctionPage() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
@@ -60,10 +65,10 @@ function CreateAuctionPage() {
         (field: keyof AuctionFormData, value: string) => {
             setForm((prev) => {
                 const next = { ...prev, [field]: value };
-                if (field === "startsAt" && value && !prev.endsAt) {
+                if (field === "startsAt" && value) {
                     const start = new Date(value);
-                    start.setHours(start.getHours() + 1);
-                    next.endsAt = start.toISOString().slice(0, 16);
+                    const end = new Date(start.getTime() + 60 * 60 * 1000);
+                    next.endsAt = toLocalDateTimeString(end);
                 }
                 return next;
             });

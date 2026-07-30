@@ -310,6 +310,28 @@ function AuctionDetailPage() {
                                 </div>
                             )}
 
+                            {status === "upcoming" && (
+                                <div className="border border-[#FF3B00]/30 bg-[#FF3B00]/5 p-4 text-center sm:p-6 space-y-3">
+                                    <p className="text-xs uppercase tracking-[0.2em] text-[#FF3B00] sm:text-sm sm:tracking-[0.25em] font-semibold">
+                                        📅 Auction Scheduled
+                                    </p>
+                                    <p className="text-sm text-neutral-600">
+                                        Starts at {new Date(auction.startTime).toLocaleString()}
+                                    </p>
+                                    {isSeller && (
+                                        <button
+                                            onClick={handleStartNow}
+                                            disabled={actionLoading}
+                                            className="flex w-full items-center justify-center gap-2 border-b-2 border-green-600 bg-green-600 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
+                                            style={{ fontFamily: "Bebas Neue" }}
+                                        >
+                                            <Play className="h-4 w-4 sm:h-5 sm:w-5" />
+                                            {actionLoading ? "Starting..." : "Start Auction Now"}
+                                        </button>
+                                    )}
+                                </div>
+                            )}
+
                             {status === "active" && (
                                 <div className="space-y-3 sm:space-y-4">
                                     <div>
@@ -342,11 +364,37 @@ function AuctionDetailPage() {
                             {status === "ended" && (
                                 <div className="border border-neutral-300 bg-neutral-100 p-4 text-center sm:p-6 space-y-4">
                                     <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 sm:text-sm sm:tracking-[0.25em]">This auction has ended</p>
-                                    {auction.winner && (
-                                        <p className="text-lg font-bold text-[#111111] sm:text-xl">
-                                            {isWinner ? "🏆 You Won this Auction!" : `Won by ${winnerObj?.name ?? "Winner"}`}
+                                    {auction.winner ? (
+                                        isWinner ? (
+                                            <div className="bg-emerald-50 border border-emerald-300 p-4">
+                                                <p className="text-xl font-bold text-emerald-800">
+                                                    🎉 Congratulations! You Won this Auction!
+                                                </p>
+                                                <p className="text-sm text-emerald-600 mt-1">
+                                                    Winning Bid: ₹{currentPrice.toLocaleString()}
+                                                </p>
+                                            </div>
+                                        ) : (
+                                            <div className="bg-neutral-200/60 p-4">
+                                                <p className="text-lg font-bold text-neutral-700">
+                                                    Auction Ended
+                                                </p>
+                                                <p className="text-sm text-neutral-600 mt-1">
+                                                    Won by <strong className="text-neutral-900">{winnerObj?.name ?? "Highest Bidder"}</strong> for ₹{currentPrice.toLocaleString()}
+                                                </p>
+                                                {user && (
+                                                    <p className="text-xs text-amber-700 mt-2 font-medium">
+                                                        You did not win this auction.
+                                                    </p>
+                                                )}
+                                            </div>
+                                        )
+                                    ) : (
+                                        <p className="text-sm font-semibold text-neutral-600">
+                                            Ended with no bids placed.
                                         </p>
                                     )}
+
                                     {isWinner && (
                                         <button
                                             onClick={() => {
@@ -368,18 +416,6 @@ function AuctionDetailPage() {
                                         </button>
                                     )}
                                 </div>
-                            )}
-
-                            {isSeller && status === "upcoming" && (
-                                <button
-                                    onClick={handleStartNow}
-                                    disabled={actionLoading}
-                                    className="flex w-full items-center justify-center gap-2 border-b-2 border-green-600 bg-green-600 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
-                                    style={{ fontFamily: "Bebas Neue" }}
-                                >
-                                    <Play className="h-4 w-4 sm:h-5 sm:w-5" />
-                                    {actionLoading ? "Starting..." : "Start Now"}
-                                </button>
                             )}
 
                             {isSeller && status === "active" && (

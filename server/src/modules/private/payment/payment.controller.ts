@@ -1,6 +1,7 @@
 // Importing modules
 import crypto from "crypto";
 import { Response } from "express";
+import mongoose from "mongoose";
 
 import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import PaymentDAO from "../../../shared/dao/payment.dao.js";
@@ -25,8 +26,13 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     // getting the auction id from request body
     const { auctionId } = req.body;
 
-    // finding the auction
-    const auction = await auctionDAO.findAuctionByIdLean(auctionId);
+    // finding the auction by Mongo _id or roomId UUID
+    let auction = mongoose.Types.ObjectId.isValid(auctionId)
+        ? await auctionDAO.findAuctionByIdLean(auctionId)
+        : null;
+    if (!auction) {
+        auction = await auctionDAO.findAuctionByRoomId(auctionId);
+    }
 
     // checking if auction exists
     if (!auction) {
@@ -49,12 +55,12 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     // checking if payment already exists
-    let payment = await paymentDAO.findPaymentByAuction(auctionId);
+    let payment = await paymentDAO.findPaymentByAuction(auction._id.toString());
 
     if (!payment) {
         // creating the payment record
         payment = await paymentDAO.createPayment({
-            auction: auctionId,
+            auction: auction._id.toString(),
             winner: user.userId!,
             amount: auction.currentPrice,
             provider: "razorpay",
