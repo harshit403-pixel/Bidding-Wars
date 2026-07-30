@@ -30,15 +30,17 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
-            <Card className="w-full max-w-md space-y-6 p-8">
+        <div className="flex min-h-screen items-center justify-center bg-[#F5F1EB] px-4">
+            <Card className="space-y-6">
                 <div className="space-y-2 text-center">
-                    <h1 className="text-3xl font-bold">
+                    <h1
+                        className="text-3xl uppercase font-black sm:text-4xl"
+                        style={{ fontFamily: "Bebas Neue" }}
+                    >
                         Forgot Password
                     </h1>
-
-                    <p className="text-sm text-muted-foreground">
-                        Enter your email and we'll send you a password reset link.
+                    <p className="text-sm text-neutral-500">
+                        Enter your email and we&apos;ll send you a password reset link.
                     </p>
                 </div>
 
@@ -56,20 +58,17 @@ export default function ForgotPasswordPage() {
 
                     <Button
                         type="submit"
-                        className="w-full"
-                        disabled={isPending}
+                        loading={isPending}
                     >
-                        {isPending
-                            ? "Sending..."
-                            : "Send Reset Link"}
+                        Send Reset Link
                     </Button>
                 </form>
 
-                <p className="text-center text-sm">
+                <p className="text-center text-sm text-neutral-500">
                     Remember your password?{" "}
                     <Link
                         to="/login"
-                        className="font-medium underline"
+                        className="font-medium text-[#FF3B00] hover:underline"
                     >
                         Login
                     </Link>

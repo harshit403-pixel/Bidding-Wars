@@ -23,6 +23,7 @@
     "test:modules": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules"
   },
   "dependencies": {
+    "@getbrevo/brevo": "^6.0.2",
     "@jest/types": "^30.4.1",
     "bcryptjs": "^3.0.2",
     "cloudinary": "^2.10.0",

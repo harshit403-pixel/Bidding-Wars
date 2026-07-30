@@ -94,4 +94,23 @@ const googleLoginValidators = [
 
 ];
 
-export { signupValidators, loginValidators, forgotPasswordValidators, resetPasswordValidators, googleLoginValidators };
+const verifyOtpValidators = [
+
+    // validating the email field
+    body("email")
+        .notEmpty()
+        .withMessage("Email is required")
+        .isEmail()
+        .withMessage("Email is invalid"),
+
+    // validating the otp field
+    body("otp")
+        .notEmpty()
+        .withMessage("OTP is required"),
+
+    // validating errors
+    validateErrors
+
+];
+
+export { signupValidators, loginValidators, forgotPasswordValidators, resetPasswordValidators, googleLoginValidators, verifyOtpValidators };

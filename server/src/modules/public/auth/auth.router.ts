@@ -1,7 +1,7 @@
 // Importing modules
 import express from "express";
 import AuthController from "./auth.controller.js";
-import { signupValidators, loginValidators, forgotPasswordValidators, resetPasswordValidators, googleLoginValidators } from "./auth.validator.js";
+import { signupValidators, loginValidators, forgotPasswordValidators, resetPasswordValidators, googleLoginValidators, verifyOtpValidators } from "./auth.validator.js";
 import authMiddleware from "../../../shared/middlewares/auth.middleware.js";
 import refreshMiddleware from "../../../shared/middlewares/refresh.middleware.js";
 import asyncHandler from "../../../shared/utils/asyncHandler.util.js";
@@ -76,6 +76,20 @@ router.post("/forgot-password", forgotPasswordValidators, asyncHandler(authContr
     @access Public
 */
 router.post("/reset-password", resetPasswordValidators, asyncHandler(authController.resetPassword));
+
+/*
+    @route POST /api/auth/resend-otp
+    @desc Resend OTP for email verification
+    @access Public
+*/
+router.post("/resend-otp", forgotPasswordValidators, asyncHandler(authController.resendOtp));
+
+/*
+    @route POST /api/auth/verify-otp
+    @desc Verify email with OTP
+    @access Public
+*/
+router.post("/verify-otp", verifyOtpValidators, asyncHandler(authController.verifyOtp));
 
 // exporting the router
 export default router;

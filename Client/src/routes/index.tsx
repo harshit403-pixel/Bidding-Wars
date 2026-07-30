@@ -25,19 +25,20 @@ export const router = createBrowserRouter([
         element: <RootLayout />,
         children: [
             {
+                index: true,
+                element: <HomePage />,
+            },
+            {
+                path: "auctions",
+                element: <MarketplacePage />,
+            },
+
+            {
                 element: <ProtectedRoute />,
                 children: [
                     {
-                        index: true,
-                        element: <HomePage />,
-                    },
-                    {
                         path: "dashboard",
                         element: <DashboardPage />,
-                    },
-                    {
-                        path: "auctions",
-                        element: <MarketplacePage />,
                     },
                     {
                         path: "auction/:roomId",

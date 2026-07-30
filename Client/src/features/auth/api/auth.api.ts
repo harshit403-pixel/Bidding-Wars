@@ -8,7 +8,8 @@ import type {
       ForgotPasswordResponse,
       ResetPasswordResponse,
       ForgotPasswordPayload,
-      ResetPasswordPayload
+      ResetPasswordPayload,
+      VerifyOtpPayload
 
 } from "../auth.types";
 
@@ -79,6 +80,24 @@ export const resetPassword = async (
     const { data } = await api.post<
         ApiResponse<ResetPasswordResponse>
     >("/auth/reset-password", payload);
+
+    return data;
+};
+
+export const verifyOtp = async (payload: VerifyOtpPayload) => {
+    const { data } = await api.post<ApiResponse<null>>(
+        "/auth/verify-otp",
+        payload
+    );
+
+    return data;
+};
+
+export const resendOtp = async (email: string) => {
+    const { data } = await api.post<ApiResponse<null>>(
+        "/auth/resend-otp",
+        { email }
+    );
 
     return data;
 };

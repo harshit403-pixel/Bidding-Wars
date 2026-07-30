@@ -42,14 +42,16 @@ function RegisterPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-100 px-4">
+        <div className="flex min-h-screen items-center justify-center bg-[#F5F1EB] px-4">
             <Card className="space-y-6">
-                <div>
-                    <h1 className="mb-2 text-3xl font-bold">
+                <div className="text-center">
+                    <h1
+                        className="mb-2 text-3xl uppercase font-black sm:text-4xl"
+                        style={{ fontFamily: "Bebas Neue" }}
+                    >
                         Create Account
                     </h1>
-
-                    <p className="text-slate-500">
+                    <p className="text-sm text-neutral-500">
                         Create your account to get started
                     </p>
                 </div>
@@ -84,8 +86,6 @@ function RegisterPage() {
                         {...register("password")}
                     />
 
-              
-
                     <Button
                         type="submit"
                         loading={isPending}
@@ -95,22 +95,20 @@ function RegisterPage() {
                 </form>
 
                 <div className="flex items-center gap-4">
-                    <div className="h-px flex-1 bg-slate-200" />
-
-                    <span className="text-sm text-slate-500">
+                    <div className="h-px flex-1 bg-neutral-200" />
+                    <span className="text-xs uppercase tracking-wide text-neutral-400">
                         OR
                     </span>
-
-                    <div className="h-px flex-1 bg-slate-200" />
+                    <div className="h-px flex-1 bg-neutral-200" />
                 </div>
 
                 <GoogleButton />
 
-                <p className="text-center text-sm">
+                <p className="text-center text-sm text-neutral-500">
                     Already have an account?{" "}
                     <Link
                         to="/login"
-                        className="font-semibold text-slate-900 hover:underline"
+                        className="font-medium text-[#FF3B00] hover:underline"
                     >
                         Login
                     </Link>

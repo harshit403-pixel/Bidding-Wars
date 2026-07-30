@@ -16,7 +16,8 @@ function Button({
     <button
       {...props}
       disabled={disabled || loading}
-      className={`w-full rounded-lg bg-slate-900 px-4 py-3 text-white font-medium transition hover:bg-slate-800 disabled:opacity-60 disabled:cursor-not-allowed ${className}`}
+      className={`w-full border-b-2 border-[#FF3B00] bg-[#FF3B00] px-4 py-3 text-white font-medium transition hover:bg-[#FF5A2C] disabled:opacity-50 disabled:cursor-not-allowed ${className}`}
+      style={{ fontFamily: "Bebas Neue" }}
     >
       {loading ? "Please wait..." : children}
     </button>

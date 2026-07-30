@@ -37,14 +37,16 @@ export default function ResetPasswordPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
-            <Card className="w-full max-w-md space-y-6 p-8">
+        <div className="flex min-h-screen items-center justify-center bg-[#F5F1EB] px-4">
+            <Card className="space-y-6">
                 <div className="space-y-2 text-center">
-                    <h1 className="text-3xl font-bold">
+                    <h1
+                        className="text-3xl uppercase font-black sm:text-4xl"
+                        style={{ fontFamily: "Bebas Neue" }}
+                    >
                         Reset Password
                     </h1>
-
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-neutral-500">
                         Create a new password for your account.
                     </p>
                 </div>
@@ -69,20 +71,17 @@ export default function ResetPasswordPage() {
 
                     <Button
                         type="submit"
-                        className="w-full"
-                        disabled={isPending}
+                        loading={isPending}
                     >
-                        {isPending
-                            ? "Resetting..."
-                            : "Reset Password"}
+                        Reset Password
                     </Button>
                 </form>
 
-                <p className="text-center text-sm">
+                <p className="text-center text-sm text-neutral-500">
                     Back to{" "}
                     <Link
                         to="/login"
-                        className="font-medium underline"
+                        className="font-medium text-[#FF3B00] hover:underline"
                     >
                         Login
                     </Link>

@@ -10,6 +10,8 @@ const envConstants = {
     SMTP_USER: "username",
     SMTP_PASS: "pass",
     SENDING_USER: "Server <user>",
+    MAIL_FROM: "noreply@example.com",
+    BREVO_API_KEY: "",
     GOOGLE_CLIENT_ID: "",
     GOOGLE_CLIENT_SECRET: "",
     GOOGLE_REDIRECT_URI: "http://localhost:5000/api/auth/google/callback",

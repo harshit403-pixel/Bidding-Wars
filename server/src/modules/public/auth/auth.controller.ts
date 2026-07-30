@@ -63,11 +63,11 @@ class AuthController {
 			expiresAt: new Date(Date.now() + OTP_EXPIRY_TIME),
 		});
 
-		sendMail(
-			user.email,
-			"Verify your email",
-			`Your OTP is ${otp}. It will expire in ${OTP_EXPIRY_TIME / 60000} minutes.`,
-		);
+		sendMail({
+			to: user.email,
+			subject: "Verify your email",
+			text: `Your OTP is ${otp}. It will expire in ${OTP_EXPIRY_TIME / 60000} minutes.`,
+		});
 
 		// returning otp verification response with access token
 		return Created(res, "Otp Sent Successfully for verification", {
@@ -344,11 +344,12 @@ class AuthController {
 		});
 
 		// sending the reset password token as a magic link to the email
-		sendMail(
-			email,
-			"Your reset Password Link",
-			`Click the link and reset your password <a href="${env.FRONTEND_URL}/reset-password/${resetToken}">Reset Your Password</a>`,
-		);
+		sendMail({
+			to: email,
+			subject: "Your reset Password Link",
+			text: `Click the link and reset your password`,
+			html: `<a href="${env.FRONTEND_URL}/reset-password/${resetToken}">Reset Your Password</a>`,
+		});
 
 		// returning success response
 		return Ok(res, "Reset password Mail sent Successfully");
@@ -382,6 +383,84 @@ class AuthController {
 
 		// returning success response
 		return Ok(res, "Password reset Successfully");
+	};
+
+	// resend OTP for email verification
+	resendOtp = async (req: Request, res: Response) => {
+		const { email } = req.body;
+
+		if (!email) {
+			throw new Unauthorized("Email is required");
+		}
+
+		// finding the user
+		const user = await this.userDao.findUserByEmail(email);
+		if (!user) {
+			throw new NotFound("User not found");
+		}
+
+		// deleting any existing otp tokens for this email
+		await this.tokenDao.deleteTokenByEmail(email, "otp");
+
+		// generating new otp
+		const otp = generateOTPToken();
+
+		// setting otp in the database
+		await this.tokenDao.createToken({
+			email: email,
+			type: "otp",
+			value: otp,
+			expiresAt: new Date(Date.now() + OTP_EXPIRY_TIME),
+		});
+
+		sendMail({
+			to: email,
+			subject: "Verify your email",
+			text: `Your OTP is ${otp}. It will expire in ${OTP_EXPIRY_TIME / 60000} minutes.`,
+		});
+
+		return Ok(res, "OTP sent successfully");
+	};
+
+	// verify email with OTP
+	verifyOtp = async (req: Request, res: Response) => {
+		const { email, otp } = req.body;
+
+		if (!email || !otp) {
+			throw new Unauthorized("Email and OTP are required");
+		}
+
+		// finding the otp token
+		const token = await this.tokenDao.findTokenByValue(otp);
+
+		// checking if the token exists and is of type otp
+		if (!token || token.type !== "otp") {
+			throw new Unauthorized("Invalid OTP");
+		}
+
+		// checking if the token has expired
+		if (new Date(token.expiresAt).getTime() < Date.now()) {
+			await this.tokenDao.deleteTokenByValue(otp);
+			throw new Unauthorized("OTP has expired");
+		}
+
+		// checking if the email matches
+		if (token.email !== email) {
+			throw new Unauthorized("Invalid OTP for this email");
+		}
+
+		// finding the user and marking as verified
+		const user = await this.userDao.findUserByEmail(email);
+		if (!user) {
+			throw new NotFound("User not found");
+		}
+
+		await this.userDao.updateUserById(user._id.toString(), { isVerified: true });
+
+		// deleting the otp token after successful verification
+		await this.tokenDao.deleteTokenByValue(otp);
+
+		return Ok(res, "Email verified successfully");
 	};
 }
 
