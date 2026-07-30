@@ -21,9 +21,20 @@ class SocketManager {
     }
 
     createRoom(roomId: string, auctionId: string, endTime: number, startTime?: number, status?: string): AuctionRoom {
-        const room: AuctionRoom = { roomId, auctionId, endTime, startTime, status, participants: new Map() };
+        const room: AuctionRoom = { roomId, auctionId, endTime, startTime, status, chatMessages: [], participants: new Map() };
         this.rooms.set(roomId, room);
         return room;
+    }
+
+    addChatMessage(roomId: string, message: unknown) {
+        const room = this.rooms.get(roomId);
+        if (room) {
+            if (!room.chatMessages) room.chatMessages = [];
+            room.chatMessages.push(message as any);
+            if (room.chatMessages.length > 100) {
+                room.chatMessages = room.chatMessages.slice(-100);
+            }
+        }
     }
 
     deleteRoom(roomId: string) {

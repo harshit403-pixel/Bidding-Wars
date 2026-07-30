@@ -58,3 +58,18 @@ export const getAuctionTimeline = async (
     );
     return data.data;
 };
+
+export const updateAuctionApi = async (
+    auctionId: string,
+    updateData: Record<string, unknown>
+): Promise<Auction> => {
+    const { data } = await api.patch<ApiResponse<{ auction: Auction }>>(
+        `/auctions/${auctionId}`,
+        updateData
+    );
+    return data.data.auction;
+};
+
+export const deleteAuctionApi = async (auctionId: string): Promise<void> => {
+    await api.delete(`/auctions/${auctionId}`);
+};

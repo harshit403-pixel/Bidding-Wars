@@ -11,6 +11,8 @@ import GoogleButton from "../components/GoogleButton";
 import { loginSchema, type LoginFormData } from "../auth.schema";
 import { useLogin } from "../hooks/useLogin";
 
+import loginVideo from "../../../assets/loginVideo.webm";
+
 function LoginPage() {
     const navigate = useNavigate();
 
@@ -39,14 +41,62 @@ function LoginPage() {
     return (
         <div className="flex min-h-screen bg-[#F8F7F5]">
 
-            {/* Left Side */}
+            {/* Left Side Video */}
+            <div className="relative hidden overflow-hidden lg:block lg:w-1/2">
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    src={loginVideo}
+                    className="absolute inset-0 h-full w-full object-cover"
+                />
 
+                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/70" />
+
+                <div className="relative flex h-full flex-col justify-between p-16 text-white">
+                    <div className="max-w-xl">
+                        <h2 className="text-7xl font-black uppercase leading-[0.9]">
+                            Live.
+                            <br />
+                            Bidding.
+                            <br />
+                            Arena.
+                        </h2>
+
+                        <p className="mt-8 text-lg leading-8 text-white/80">
+                            Experience real-time competitive auctions. Place bids, win luxury items, and track your marketplace portfolio.
+                        </p>
+
+                        <div className="mt-14 grid grid-cols-2 gap-5">
+                            <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl">
+                                <p className="text-4xl font-black">30K+</p>
+                                <p className="mt-2 text-sm text-white/70">Registered Users</p>
+                            </div>
+
+                            <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl">
+                                <p className="text-4xl font-black">15K+</p>
+                                <p className="mt-2 text-sm text-white/70">Products Listed</p>
+                            </div>
+
+                            <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl">
+                                <p className="text-4xl font-black">₹75M+</p>
+                                <p className="mt-2 text-sm text-white/70">Transactions</p>
+                            </div>
+
+                            <div className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl">
+                                <p className="text-4xl font-black">100%</p>
+                                <p className="mt-2 text-sm text-white/70">Secure Platform</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Right Side Form */}
             <div className="flex w-full items-center justify-center px-8 py-12 lg:w-1/2">
-
                 <div className="w-full max-w-md">
-
                     <div className="mb-12">
-
                         <Link
                             to="/"
                             className="text-lg font-bold tracking-tight"
@@ -64,14 +114,13 @@ function LoginPage() {
                             Sign in to continue bidding on premium auctions and
                             manage your marketplace activity.
                         </p>
-
                     </div>
 
                     <form
                         onSubmit={handleSubmit(onSubmit)}
                         className="space-y-6"
                     >
-                                                <Input
+                        <Input
                             label="Email"
                             type="email"
                             placeholder="Enter your email"
@@ -88,14 +137,14 @@ function LoginPage() {
                             {...register("password")}
                         />
 
-                    <div className="flex justify-end">
-                        <Link
-                            to="/forgot-password"
-                            className="text-sm text-slate-600 hover:text-slate-900"
-                        >
-                            Forgot Password?
-                        </Link>
-                    </div>
+                        <div className="flex justify-end">
+                            <Link
+                                to="/forgot-password"
+                                className="text-sm text-slate-600 hover:text-slate-900"
+                            >
+                                Forgot Password?
+                            </Link>
+                        </div>
 
                         <Button
                             type="submit"
@@ -104,32 +153,27 @@ function LoginPage() {
                         >
                             Login
                         </Button>
-
                     </form>
 
-                <div className="flex items-center gap-4">
-                    <div className="h-px flex-1 bg-slate-200" />
-
-                    <span className="text-sm text-slate-500">
-                        OR
-                    </span>
-
-                    <div className="h-px flex-1 bg-slate-200" />
-                </div>
+                    <div className="flex items-center gap-4 my-6">
+                        <div className="h-px flex-1 bg-slate-200" />
+                        <span className="text-sm text-slate-500">OR</span>
+                        <div className="h-px flex-1 bg-slate-200" />
+                    </div>
 
                     <GoogleButton />
 
-                <p className="text-center text-sm">
-                    Don't have an account?{" "}
-                    <Link
-                        to="/register"
-                        className="font-semibold text-slate-900 hover:underline"
-                    >
-                        Register
-                    </Link>
-                </p>
+                    <p className="mt-6 text-center text-sm">
+                        Don't have an account?{" "}
+                        <Link
+                            to="/register"
+                            className="font-semibold text-slate-900 hover:underline"
+                        >
+                            Register
+                        </Link>
+                    </p>
+                </div>
             </div>
-        </div>
         </div>
     );
 }

@@ -7,6 +7,7 @@ import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import BidDAO from "../../../shared/dao/bid.dao.js";
 import TimelineDAO from "../../../shared/dao/timeline.dao.js";
 import ChatMessageDAO from "../../../shared/dao/chatMessage.dao.js";
+import socketManager from "../../../shared/socket/socket.manager.js";
 import { AuthenticatedRequest } from "../../public/auth/auth.types.js";
 
 import Created from "../../../shared/responses/Created.response.js";
@@ -178,9 +179,20 @@ export const deleteAuction = async (req: AuthenticatedRequest, res: Response) =>
         throw new Forbidden("You can only delete your own auction");
     }
 
-    // checking if auction can be deleted
-    if (existingAuction.status === "active" || existingAuction.status === "ended") {
-        throw new BadRequest("Cannot delete an active or ended auction");
+    // checking if auction can be deleted (cannot delete after it has ended)
+    if (existingAuction.status === "ended") {
+        throw new BadRequest("Cannot delete an auction after it has ended");
+    }
+
+    // if active/room exists, notify connected sockets and cleanup room
+    if (existingAuction.roomId) {
+        socketManager.broadcastToRoom(existingAuction.roomId, "auction_ended", {
+            auction: {
+                ...existingAuction,
+                status: "ended",
+            },
+        });
+        socketManager.deleteRoom(existingAuction.roomId);
     }
 
     // cascade deleting associated data
