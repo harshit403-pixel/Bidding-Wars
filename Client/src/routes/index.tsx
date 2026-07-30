@@ -24,6 +24,9 @@ export const router = createBrowserRouter([
         path: "/",
         element: <RootLayout />,
         children: [
+            // ==========================
+            // Public Routes
+            // ==========================
             {
                 index: true,
                 element: <HomePage />,
@@ -32,21 +35,14 @@ export const router = createBrowserRouter([
                 path: "auctions",
                 element: <MarketplacePage />,
             },
-
             {
-                element: <ProtectedRoute />,
-                children: [
-                    {
-                        path: "dashboard",
-                        element: <DashboardPage />,
-                    },
-                    {
-                        path: "auction/:roomId",
-                        element: <AuctionDetailPage />,
-                    },
-                ],
+                path: "auction/:roomId",
+                element: <AuctionDetailPage />,
             },
 
+            // ==========================
+            // Guest Only Routes
+            // ==========================
             {
                 element: <PublicRoute />,
                 children: [
@@ -77,6 +73,33 @@ export const router = createBrowserRouter([
                         path: "verify-email",
                         element: <VerifyEmailPage />,
                     },
+                ],
+            },
+
+            // ==========================
+            // Protected Routes
+            // ==========================
+            {
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        path: "dashboard",
+                        element: <DashboardPage />,
+                    },
+
+                    // Future Routes
+                    // {
+                    //     path: "profile",
+                    //     element: <ProfilePage />,
+                    // },
+                    // {
+                    //     path: "create-auction",
+                    //     element: <CreateAuctionPage />,
+                    // },
+                    // {
+                    //     path: "my-auctions",
+                    //     element: <MyAuctionsPage />,
+                    // },
                 ],
             },
         ],
