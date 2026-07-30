@@ -5,20 +5,21 @@ interface ScheduleSectionProps {
     onEndsAtChange: (value: string) => void;
 }
 
+function toLocalDateTimeString(d: Date): string {
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 function ScheduleSection({
     startsAt,
     endsAt,
     onStartsAtChange,
     onEndsAtChange,
 }: ScheduleSectionProps) {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-    const minDateTime = now.toISOString().slice(0, 16);
+    const minDateTime = toLocalDateTimeString(new Date());
 
     const minEndDateTime = startsAt
-        ? new Date(new Date(startsAt).getTime() + 60 * 60 * 1000)
-              .toISOString()
-              .slice(0, 16)
+        ? toLocalDateTimeString(new Date(new Date(startsAt).getTime() + 60 * 60 * 1000))
         : minDateTime;
 
     return (

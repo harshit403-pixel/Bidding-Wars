@@ -17,7 +17,44 @@ function applyMiddlewares(app: Express) {
         credentials: true,
     }));
 
-    app.use(helmet());
+    app.use(
+        helmet({
+            contentSecurityPolicy: {
+                directives: {
+                    defaultSrc: ["'self'"],
+                    scriptSrc: [
+                        "'self'",
+                        "'unsafe-inline'",
+                        "'unsafe-eval'",
+                        "https://checkout.razorpay.com",
+                    ],
+                    connectSrc: [
+                        "'self'",
+                        "https://upload.imagekit.io",
+                        "https://*.imagekit.io",
+                        "https://api.razorpay.com",
+                        "https://*.razorpay.com",
+                        "wss:",
+                        "ws:",
+                    ],
+                    imgSrc: [
+                        "'self'",
+                        "data:",
+                        "blob:",
+                        "https://ik.imagekit.io",
+                        "https://*.imagekit.io",
+                        "https://*.razorpay.com",
+                    ],
+                    frameSrc: ["'self'", "https://api.razorpay.com"],
+                    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+                    fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
+                    objectSrc: ["'none'"],
+                },
+            },
+            crossOriginResourcePolicy: { policy: "cross-origin" },
+            crossOriginEmbedderPolicy: false,
+        })
+    );
 
     app.use(cookieParser());
 
