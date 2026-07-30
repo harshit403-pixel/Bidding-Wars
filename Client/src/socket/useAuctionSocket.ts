@@ -75,10 +75,16 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
         }
 
         function onUserJoined(data: UserJoined) {
+            if (data.participants !== undefined) {
+                setAuction((prev) => (prev ? { ...prev, participants: data.participants! } : prev));
+            }
             toast.info(`${data.username} joined the auction`);
         }
 
         function onUserLeft(data: UserLeft) {
+            if (data.participants !== undefined) {
+                setAuction((prev) => (prev ? { ...prev, participants: data.participants! } : prev));
+            }
             toast.info(`${data.username} left the auction`);
         }
 
