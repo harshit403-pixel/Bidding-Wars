@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router";
-import { Menu, Search, X } from "lucide-react";
+import { Link, NavLink } from "react-router";
+import { Menu, Search, X, Plus } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { useLogout } from "../../features/auth/hooks/useLogout";
@@ -8,8 +8,19 @@ import type { RootState } from "../../app/store";
 
 function Navbar() {
     const [mobileOpen, setMobileOpen] = useState(false);
-    const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
+
+    const { isAuthenticated, user } = useSelector(
+        (state: RootState) => state.auth
+    );
+
     const { mutate: logout } = useLogout();
+
+    const navClass = ({ isActive }: { isActive: boolean }) =>
+        `transition ${
+            isActive
+                ? "text-[#FF3B00]"
+                : "hover:text-[#FF3B00]"
+        }`;
 
     return (
         <header className="sticky top-0 z-50 border-b border-neutral-200 bg-[#F5F1EB]/90 backdrop-blur-xl">
@@ -17,68 +28,92 @@ function Navbar() {
                 {/* Logo */}
                 <Link
                     to="/"
-                    className="flex items-center gap-3"
+                    className="flex items-center gap-2"
                 >
-                    <div className="text-3xl font-black text-[#FF3B00] sm:text-4xl">
+                    <span className="text-3xl font-black text-[#FF3B00] sm:text-4xl">
                         ++
-                    </div>
+                    </span>
+
+                    <span className="hidden text-lg font-semibold md:block">
+                        Bidding Wars
+                    </span>
                 </Link>
 
-                {/* Desktop Nav */}
-                <nav className="hidden items-center gap-10 text-lg md:flex lg:gap-14">
-                    <Link
-                        to="/"
-                        className="transition hover:text-[#FF3B00]"
-                    >
-                        Home
-                    </Link>
+                {/* Desktop Navigation */}
+                <nav className="hidden items-center gap-10 text-lg md:flex">
+                   
 
-                    <Link
+                    <NavLink
                         to="/auctions"
-                        className="transition hover:text-[#FF3B00]"
+                        className={navClass}
                     >
-                        Auctions
-                    </Link>
+                        Marketplace
+                    </NavLink>
 
                     {isAuthenticated && (
-                        <Link
-                            to="/dashboard"
-                            className="transition hover:text-[#FF3B00]"
-                        >
-                            Dashboard
-                        </Link>
+                        <>
+                            <NavLink
+                                to="/dashboard"
+                                className={navClass}
+                            >
+                                Dashboard
+                            </NavLink>
+
+                           
+                        </>
                     )}
                 </nav>
 
                 {/* Desktop Right */}
-                <div className="hidden items-center gap-6 md:flex lg:gap-8">
+                <div className="hidden items-center gap-5 md:flex">
                     <button className="transition hover:text-[#FF3B00]">
                         <Search size={20} />
                     </button>
 
                     {isAuthenticated ? (
-                        <div className="flex items-center gap-5">
-                            <span className="text-xs uppercase tracking-[0.25em] text-neutral-500 lg:text-sm">
-                                {user?.name}
-                            </span>
+                        <>
+                            <Link
+                                to="/create-auction"
+                                className="flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm text-white transition hover:bg-[#FF3B00]"
+                            >
+                                <Plus size={16} />
+                                Create auction
+                            </Link>
+
+                            <Link
+                                to="/profile"
+                                className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-semibold text-white"
+                            >
+                                {user?.name?.charAt(0).toUpperCase()}
+                            </Link>
+
                             <button
                                 onClick={() => logout()}
-                                className="border-b border-transparent pb-1 transition hover:border-[#FF3B00] hover:text-[#FF3B00]"
+                                className="transition hover:text-[#FF3B00]"
                             >
                                 Logout
                             </button>
-                        </div>
+                        </>
                     ) : (
-                        <Link
-                            to="/login"
-                            className="border-b border-transparent pb-1 transition hover:border-[#FF3B00] hover:text-[#FF3B00]"
-                        >
-                            Login
-                        </Link>
+                        <div className="flex items-center gap-4">
+                            <Link
+                                to="/login"
+                                className="transition hover:text-[#FF3B00]"
+                            >
+                                Login
+                            </Link>
+
+                            <Link
+                                to="/register"
+                                className="rounded-full bg-white px-5 py-2 text-sm text-black transition hover:bg-[#FF3B00]"
+                            >
+                                Get Started
+                            </Link>
+                        </div>
                     )}
                 </div>
 
-                {/* Mobile hamburger */}
+                {/* Mobile Menu Button */}
                 <button
                     className="md:hidden"
                     onClick={() => setMobileOpen(!mobileOpen)}
@@ -89,59 +124,92 @@ function Navbar() {
 
             {/* Mobile Menu */}
             {mobileOpen && (
-                <div className="border-t border-neutral-200 bg-[#F5F1EB] px-4 pb-6 pt-4 md:hidden">
-                    <nav className="flex flex-col gap-4 text-lg">
-                        <Link
+                <div className="border-t border-neutral-200 bg-[#F5F1EB] px-5 py-6 md:hidden">
+                    <nav className="flex flex-col gap-5 text-lg">
+                        <NavLink
                             to="/"
+                            end
                             onClick={() => setMobileOpen(false)}
-                            className="transition hover:text-[#FF3B00]"
+                            className={navClass}
                         >
                             Home
-                        </Link>
+                        </NavLink>
 
-                        <Link
+                        <NavLink
                             to="/auctions"
                             onClick={() => setMobileOpen(false)}
-                            className="transition hover:text-[#FF3B00]"
+                            className={navClass}
                         >
-                            Auctions
-                        </Link>
+                            Marketplace
+                        </NavLink>
 
                         {isAuthenticated && (
-                            <Link
-                                to="/dashboard"
-                                onClick={() => setMobileOpen(false)}
-                                className="transition hover:text-[#FF3B00]"
-                            >
-                                Dashboard
-                            </Link>
+                            <>
+                                <NavLink
+                                    to="/dashboard"
+                                    onClick={() => setMobileOpen(false)}
+                                    className={navClass}
+                                >
+                                    Dashboard
+                                </NavLink>
+
+                                <NavLink
+                                    to="/create-auction"
+                                    onClick={() => setMobileOpen(false)}
+                                    className={navClass}
+                                >
+                                    Create Auction
+                                </NavLink>
+
+                                <NavLink
+                                    to="/profile"
+                                    onClick={() => setMobileOpen(false)}
+                                    className={navClass}
+                                >
+                                    Profile
+                                </NavLink>
+                            </>
                         )}
                     </nav>
 
-                    <div className="mt-6 border-t border-neutral-200 pt-4">
+                    <div className="mt-6 border-t border-neutral-200 pt-5">
                         {isAuthenticated ? (
                             <div className="flex flex-col gap-4">
-                                <span className="text-sm uppercase tracking-[0.25em] text-neutral-500">
-                                    {user?.name}
-                                </span>
+                                <div className="flex items-center gap-3">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white text-white">
+                                        {user?.name?.charAt(0).toUpperCase()}
+                                    </div>
+
+                                    <span>{user?.name}</span>
+                                </div>
+
                                 <button
                                     onClick={() => {
                                         logout();
                                         setMobileOpen(false);
                                     }}
-                                    className="text-left transition hover:text-[#FF3B00]"
+                                    className="text-left  transition hover:text-[#FF3B00]"
                                 >
                                     Logout
                                 </button>
                             </div>
                         ) : (
-                            <Link
-                                to="/login"
-                                onClick={() => setMobileOpen(false)}
-                                className="transition hover:text-[#FF3B00]"
-                            >
-                                Login
-                            </Link>
+                            <div className="flex flex-col gap-4">
+                                <Link
+                                    to="/login"
+                                    onClick={() => setMobileOpen(false)}
+                                >
+                                    Login
+                                </Link>
+
+                                <Link
+                                    to="/register"
+                                    onClick={() => setMobileOpen(false)}
+                                    className="rounded-full bg-white px-5 py-3 text-center text-white"
+                                >
+                                    Get Started
+                                </Link>
+                            </div>
                         )}
                     </div>
                 </div>

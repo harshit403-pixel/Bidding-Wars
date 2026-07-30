@@ -24,28 +24,25 @@ export const router = createBrowserRouter([
         path: "/",
         element: <RootLayout />,
         children: [
+            // ==========================
+            // Public Routes
+            // ==========================
             {
-                element: <ProtectedRoute />,
-                children: [
-                    {
-                        index: true,
-                        element: <HomePage />,
-                    },
-                    {
-                        path: "dashboard",
-                        element: <DashboardPage />,
-                    },
-                    {
-                        path: "auctions",
-                        element: <MarketplacePage />,
-                    },
-                    {
-                        path: "auction/:roomId",
-                        element: <AuctionDetailPage />,
-                    },
-                ],
+                index: true,
+                element: <HomePage />,
+            },
+            {
+                path: "auctions",
+                element: <MarketplacePage />,
+            },
+            {
+                path: "auction/:roomId",
+                element: <AuctionDetailPage />,
             },
 
+            // ==========================
+            // Guest Only Routes
+            // ==========================
             {
                 element: <PublicRoute />,
                 children: [
@@ -76,6 +73,33 @@ export const router = createBrowserRouter([
                         path: "verify-email",
                         element: <VerifyEmailPage />,
                     },
+                ],
+            },
+
+            // ==========================
+            // Protected Routes
+            // ==========================
+            {
+                element: <ProtectedRoute />,
+                children: [
+                    {
+                        path: "dashboard",
+                        element: <DashboardPage />,
+                    },
+
+                    // Future Routes
+                    // {
+                    //     path: "profile",
+                    //     element: <ProfilePage />,
+                    // },
+                    // {
+                    //     path: "create-auction",
+                    //     element: <CreateAuctionPage />,
+                    // },
+                    // {
+                    //     path: "my-auctions",
+                    //     element: <MyAuctionsPage />,
+                    // },
                 ],
             },
         ],
