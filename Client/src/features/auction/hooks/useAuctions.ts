@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getAuctions, getAuction, getAuctionBids, updateAuctionApi, deleteAuctionApi } from "../api/auction.api";
+import { getAuctions, getAuction, getAuctionBids, getAuctionTimeline, updateAuctionApi, deleteAuctionApi } from "../api/auction.api";
 import type { AuctionListParams } from "../auction.types";
 
 export function useAuctions(params: AuctionListParams = {}) {
@@ -23,6 +23,15 @@ export function useAuctionBids(auctionId: string | undefined, page = 1) {
         queryKey: ["auction-bids", auctionId, page],
         queryFn: () => getAuctionBids(auctionId!, page),
         enabled: !!auctionId,
+    });
+}
+
+export function useAuctionTimeline(auctionId: string | undefined, page = 1) {
+    return useQuery({
+        queryKey: ["auction-timeline", auctionId, page],
+        queryFn: () => getAuctionTimeline(auctionId!, page),
+        enabled: !!auctionId,
+        refetchInterval: 3000,
     });
 }
 
