@@ -333,32 +333,52 @@ function AuctionDetailPage() {
                             )}
 
                             {status === "active" && (
-                                <div className="space-y-3 sm:space-y-4">
-                                    <div>
-                                        <label className="mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:mb-2 sm:text-xs sm:tracking-[0.25em]">
-                                            Your bid (min ₹{minBid})
-                                        </label>
-                                        <input
-                                            type="number"
-                                            value={bidAmount}
-                                            onChange={(e) => setBidAmount(e.target.value)}
-                                            placeholder={`${minBid}`}
-                                            min={minBid}
-                                            step={auction.minimumIncrement}
-                                            className="w-full border border-neutral-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#FF3B00] sm:px-4 sm:py-3 sm:text-lg"
-                                        />
+                                isSeller ? (
+                                    <div className="border border-amber-300 bg-amber-50 p-4 text-center sm:p-6 space-y-3">
+                                        <p className="text-sm font-bold text-amber-900">
+                                            🏷️ You are the seller of this active auction
+                                        </p>
+                                        <p className="text-xs text-amber-700">
+                                            Sellers cannot place bids on their own listings.
+                                        </p>
+                                        <button
+                                            onClick={handleEndNow}
+                                            disabled={actionLoading}
+                                            className="flex w-full items-center justify-center gap-2 border-b-2 border-neutral-800 bg-neutral-800 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
+                                            style={{ fontFamily: "Bebas Neue" }}
+                                        >
+                                            <Square className="h-4 w-4 sm:h-5 sm:w-5" />
+                                            {actionLoading ? "Ending..." : "End Auction Now"}
+                                        </button>
                                     </div>
-                                    <button
-                                        onClick={handlePlaceBid}
-                                        disabled={!connected}
-                                        className="w-full border-b-2 border-[#FF3B00] bg-[#FF3B00] py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-[#FF5A2C] disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
-                                        style={{ fontFamily: "Bebas Neue" }}
-                                    >
-                                        {connected
-                                            ? `Place Bid — ₹${bidAmount || minBid}`
-                                            : "Connecting..."}
-                                    </button>
-                                </div>
+                                ) : (
+                                    <div className="space-y-3 sm:space-y-4">
+                                        <div>
+                                            <label className="mb-1.5 block text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:mb-2 sm:text-xs sm:tracking-[0.25em]">
+                                                Your bid (min ₹{minBid})
+                                            </label>
+                                            <input
+                                                type="number"
+                                                value={bidAmount}
+                                                onChange={(e) => setBidAmount(e.target.value)}
+                                                placeholder={`${minBid}`}
+                                                min={minBid}
+                                                step={auction.minimumIncrement}
+                                                className="w-full border border-neutral-300 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-[#FF3B00] sm:px-4 sm:py-3 sm:text-lg"
+                                            />
+                                        </div>
+                                        <button
+                                            onClick={handlePlaceBid}
+                                            disabled={!connected}
+                                            className="w-full border-b-2 border-[#FF3B00] bg-[#FF3B00] py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-[#FF5A2C] disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
+                                            style={{ fontFamily: "Bebas Neue" }}
+                                        >
+                                            {connected
+                                                ? `Place Bid — ₹${bidAmount || minBid}`
+                                                : "Connecting..."}
+                                        </button>
+                                    </div>
+                                )
                             )}
 
                             {status === "ended" && (
@@ -418,17 +438,7 @@ function AuctionDetailPage() {
                                 </div>
                             )}
 
-                            {isSeller && status === "active" && (
-                                <button
-                                    onClick={handleEndNow}
-                                    disabled={actionLoading}
-                                    className="flex w-full items-center justify-center gap-2 border-b-2 border-neutral-800 bg-neutral-800 py-3 text-base font-medium uppercase tracking-[0.15em] text-white transition hover:bg-neutral-900 disabled:opacity-50 disabled:cursor-not-allowed sm:py-4 sm:text-lg"
-                                    style={{ fontFamily: "Bebas Neue" }}
-                                >
-                                    <Square className="h-4 w-4 sm:h-5 sm:w-5" />
-                                    {actionLoading ? "Ending..." : "End Auction Now"}
-                                </button>
-                            )}
+                            {/* Footer info */}
 
                             <div className="mt-4 flex items-center gap-2 border-t border-neutral-200 pt-4 text-xs text-neutral-500 sm:mt-6 sm:pt-5 sm:text-sm">
                                 <Clock className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
