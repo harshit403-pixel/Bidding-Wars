@@ -3,6 +3,9 @@ import { Response } from "express";
 import crypto from "crypto";
 
 import AuctionDAO from "../../../shared/dao/auction.dao.js";
+import BidDAO from "../../../shared/dao/bid.dao.js";
+import TimelineDAO from "../../../shared/dao/timeline.dao.js";
+import ChatMessageDAO from "../../../shared/dao/chatMessage.dao.js";
 import { AuthenticatedRequest } from "../../public/auth/auth.types.js";
 
 import Created from "../../../shared/responses/Created.response.js";
@@ -12,6 +15,9 @@ import BadRequest from "../../../shared/errors/BadRequest.error.js";
 import Forbidden from "../../../shared/errors/Forbidden.error.js";
 
 const auctionDAO = new AuctionDAO();
+const bidDAO = new BidDAO();
+const timelineDAO = new TimelineDAO();
+const chatMessageDAO = new ChatMessageDAO();
 
 // Create a new auction
 export const createAuction = async (req: AuthenticatedRequest, res: Response) => {
@@ -164,6 +170,11 @@ export const deleteAuction = async (req: AuthenticatedRequest, res: Response) =>
     if (existingAuction.status === "active" || existingAuction.status === "ended") {
         throw new BadRequest("Cannot delete an active or ended auction");
     }
+
+    // cascade deleting associated data
+    await bidDAO.deleteBidsByAuction(req.params.auctionId as string);
+    await timelineDAO.deleteEventsByAuction(req.params.auctionId as string);
+    await chatMessageDAO.deleteMessagesByAuction(req.params.auctionId as string);
 
     // deleting the auction
     await auctionDAO.deleteAuctionById(req.params.auctionId as string);
