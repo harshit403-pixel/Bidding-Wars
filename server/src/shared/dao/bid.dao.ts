@@ -61,6 +61,14 @@ class BidDAO {
             .lean();
     }
 
+    // Find the highest bid with tiebreaker: same amount → oldest bid wins (placedAt ascending)
+    async findHighestBidWithTiebreaker(auctionId: string) {
+        return await this.BidModel.findOne({ auction: auctionId })
+            .sort({ amount: -1, placedAt: 1 })
+            .populate("bidder", "name avatar")
+            .lean();
+    }
+
     // Mark a bid as the winning bid
     async markWinningBid(bidId: string) {
         return await this.BidModel.findByIdAndUpdate(
@@ -70,11 +78,11 @@ class BidDAO {
         );
     }
 
-    // Mark the highest bid of an auction as the winning bid (by auction + highest amount)
+    // Mark the highest bid of an auction as the winning bid (by auction + highest amount + oldest tiebreaker)
     async markWinningBidByAuction(auctionId: string) {
         // Use a lean-less query here since we need the _id for the subsequent update
         const highestBid = await this.BidModel.findOne({ auction: auctionId })
-            .sort({ amount: -1 });
+            .sort({ amount: -1, placedAt: 1 });
         if (!highestBid) return null;
 
         return await this.BidModel.findByIdAndUpdate(

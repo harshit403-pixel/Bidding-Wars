@@ -1,0 +1,1113 @@
+﻿node.exe : npm warn Unknown cli config "--testPathPattern". This will stop working in the next major version of npm.
+At D:\nvm4w\nodejs\npm.ps1:16 char:5
++     & "$basedir/node$exe"  "$basedir/node_modules/npm/bin/npm-cli.js" ...
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...version of npm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> Server@1.0.0 test
+> node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js
+
+(node:34280) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+[2026-07-30 10:16:00.563 +0530] [32mINFO[39m: [36mScheduler: found 1 upcoming auctions to activate[39m
+[2026-07-30 10:16:00.584 +0530] [34mDEBUG[39m: [36mSocket emit: auction_started (stub)[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470d5"
+[2026-07-30 10:16:00.585 +0530] [34mDEBUG[39m: [36mScheduler: activated upcoming auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470d5"
+[2026-07-30 10:16:00.585 +0530] [32mINFO[39m: [36mScheduler: activated 1 upcoming auctions, 0 failed[39m
+[2026-07-30 10:16:00.626 +0530] [32mINFO[39m: [36mScheduler: found 2 upcoming auctions to activate[39m
+[2026-07-30 10:16:00.642 +0530] [34mDEBUG[39m: [36mSocket emit: auction_started (stub)[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470e4"
+[2026-07-30 10:16:00.642 +0530] [34mDEBUG[39m: [36mScheduler: activated upcoming auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470e4"
+[2026-07-30 10:16:00.643 +0530] [34mDEBUG[39m: [36mSocket emit: auction_started (stub)[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470e5"
+[2026-07-30 10:16:00.643 +0530] [34mDEBUG[39m: [36mScheduler: activated upcoming auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470e5"
+[2026-07-30 10:16:00.643 +0530] [32mINFO[39m: [36mScheduler: activated 2 upcoming auctions, 0 failed[39m
+[2026-07-30 10:16:00.686 +0530] [32mINFO[39m: [36mScheduler: found 1 upcoming auctions to activate[39m
+[2026-07-30 10:16:00.694 +0530] [34mDEBUG[39m: [36mSocket emit: auction_started (stub)[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470f8"
+[2026-07-30 10:16:00.694 +0530] [34mDEBUG[39m: [36mScheduler: activated upcoming auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e31432470f8"
+[2026-07-30 10:16:00.695 +0530] [32mINFO[39m: [36mScheduler: activated 1 upcoming auctions, 0 failed[39m
+[2026-07-30 10:16:00.717 +0530] [32mINFO[39m: [36mScheduler: found 1 upcoming auctions to activate[39m
+[2026-07-30 10:16:00.725 +0530] [34mDEBUG[39m: [36mScheduler: activated upcoming auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247102"
+[2026-07-30 10:16:00.725 +0530] [32mINFO[39m: [36mScheduler: activated 1 upcoming auctions, 0 failed[39m
+[2026-07-30 10:16:00.741 +0530] [32mINFO[39m: [36mScheduler: found 1 upcoming auctions to activate[39m
+[2026-07-30 10:16:00.742 +0530] [31mERROR[39m: [36mScheduler: failed to activate auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e314324710b"
+    error: {}
+[2026-07-30 10:16:00.742 +0530] [32mINFO[39m: [36mScheduler: activated 0 upcoming auctions, 1 failed[39m
+[2026-07-30 10:16:00.764 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:00.792 +0530] [34mDEBUG[39m: [36mSocket emit: auction_ended (stub)[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247111"
+[2026-07-30 10:16:00.792 +0530] [34mDEBUG[39m: [36mScheduler: ended auction with no bids[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247111"
+[2026-07-30 10:16:00.792 +0530] [32mINFO[39m: [36mScheduler: ended 1 active auctions, 0 failed[39m
+[2026-07-30 10:16:00.820 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:00.830 +0530] [31mERROR[39m: [36mScheduler: failed to end auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e314324711e"
+    error: {}
+[2026-07-30 10:16:00.830 +0530] [32mINFO[39m: [36mScheduler: ended 0 active auctions, 1 failed[39m
+[2026-07-30 10:16:00.880 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:00.896 +0530] [34mDEBUG[39m: [36mSocket emit: auction_ended (stub)[39m
+    [35mauctionId[39m: "6a6ad708a63e3e314324712a"
+[2026-07-30 10:16:00.896 +0530] [34mDEBUG[39m: [36mScheduler: ended auction with no bids[39m
+    [35mauctionId[39m: "6a6ad708a63e3e314324712a"
+[2026-07-30 10:16:00.896 +0530] [32mINFO[39m: [36mScheduler: ended 1 active auctions, 0 failed[39m
+[2026-07-30 10:16:00.918 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:00.922 +0530] [31mERROR[39m: [36mScheduler: failed to end auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247137"
+    error: {}
+[2026-07-30 10:16:00.922 +0530] [32mINFO[39m: [36mScheduler: ended 0 active auctions, 1 failed[39m
+[2026-07-30 10:16:00.939 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:00.956 +0530] [34mDEBUG[39m: [36mSocket emit: auction_ended (stub)[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247143"
+[2026-07-30 10:16:00.956 +0530] [34mDEBUG[39m: [36mScheduler: ended auction with no bids[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247143"
+[2026-07-30 10:16:00.957 +0530] [32mINFO[39m: [36mScheduler: ended 1 active auctions, 0 failed[39m
+[2026-07-30 10:16:00.971 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:00.983 +0530] [34mDEBUG[39m: [36mScheduler: ended auction with no bids[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247150"
+[2026-07-30 10:16:00.983 +0530] [32mINFO[39m: [36mScheduler: ended 1 active auctions, 0 failed[39m
+[2026-07-30 10:16:01.006 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:01.010 +0530] [31mERROR[39m: [36mScheduler: failed to end auction[39m
+    [35mauctionId[39m: "6a6ad708a63e3e3143247162"
+    error: {}
+[2026-07-30 10:16:01.010 +0530] [32mINFO[39m: [36mScheduler: ended 0 active auctions, 1 failed[39m
+[2026-07-30 10:16:01.030 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:01.033 +0530] [31mERROR[39m: [36mScheduler: failed to end auction[39m
+    [35mauctionId[39m: "6a6ad709a63e3e3143247169"
+    error: {}
+[2026-07-30 10:16:01.034 +0530] [32mINFO[39m: [36mScheduler: ended 0 active auctions, 1 failed[39m
+[2026-07-30 10:16:01.052 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:01.056 +0530] [31mERROR[39m: [36mScheduler: failed to end auction[39m
+    [35mauctionId[39m: "6a6ad709a63e3e3143247176"
+    error: {}
+[2026-07-30 10:16:01.056 +0530] [32mINFO[39m: [36mScheduler: ended 0 active auctions, 1 failed[39m
+[2026-07-30 10:16:01.071 +0530] [32mINFO[39m: [36mScheduler: found 1 upcoming auctions to activate[39m
+[2026-07-30 10:16:01.077 +0530] [34mDEBUG[39m: [36mSocket emit: auction_started (stub)[39m
+    [35mauctionId[39m: "6a6ad709a63e3e3143247180"
+[2026-07-30 10:16:01.078 +0530] [34mDEBUG[39m: [36mScheduler: activated upcoming auction[39m
+    [35mauctionId[39m: "6a6ad709a63e3e3143247180"
+[2026-07-30 10:16:01.078 +0530] [32mINFO[39m: [36mScheduler: activated 1 upcoming auctions, 0 failed[39m
+[2026-07-30 10:16:01.080 +0530] [32mINFO[39m: [36mScheduler: found 1 active auctions to end[39m
+[2026-07-30 10:16:01.092 +0530] [34mDEBUG[39m: [36mSocket emit: auction_ended (stub)[39m
+    [35mauctionId[39m: "6a6ad709a63e3e3143247181"
+[2026-07-30 10:16:01.092 +0530] [34mDEBUG[39m: [36mScheduler: ended auction with no bids[39m
+    [35mauctionId[39m: "6a6ad709a63e3e3143247181"
+[2026-07-30 10:16:01.092 +0530] [32mINFO[39m: [36mScheduler: ended 1 active auctions, 0 failed[39m
+FAIL src/shared/scheduler/auction.scheduler.test.ts
+  Scheduler: upcoming auctions ΓåÆ active
+    ΓêÜ should activate a single upcoming auction when its startTime has passed (144 ms)
+    ΓêÜ should activate multiple upcoming auctions simultaneously (57 ms)
+    ΓêÜ should not activate auctions whose startTime is still in the future (16 ms)
+    ΓêÜ should create a timeline event when activating an auction (31 ms)
+    ΓêÜ should emit auction_started event on socket (27 ms)
+    ΓêÜ should handle database errors gracefully for individual auctions (16 ms)
+  Scheduler: active auctions ΓåÆ ended
+    ΓêÜ should end a single active auction when its endTime has passed (52 ms)
+    ├ù should set the winner to the highest bidder (39 ms)
+    ΓêÜ should handle auctions with no bids (32 ms)
+    ├ù should handle auctions with same amount bids (oldest wins) (26 ms)
+    ΓêÜ should create timeline event when auction ends (33 ms)
+    ΓêÜ should emit auction_ended event on socket (23 ms)
+    ΓêÜ should not end auctions whose endTime is still in the future (11 ms)
+    ΓêÜ should handle database errors gracefully for individual auctions (16 ms)
+    ├ù should mark the winning bid as isWinningBid (29 ms)
+    ΓêÜ should set paymentStatus to pending when there is a winner (18 ms)
+  Scheduler: combined scenarios
+    ΓêÜ should handle both activation and ending in sequence (40 ms)
+
+  ΓùÅ Scheduler: active auctions ΓåÆ ended ΓÇ║ should set the winner to the highest bidder
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "6a6ad708a63e3e31432470c9"
+    Received: undefined
+
+    [0m [90m 287 |[39m
+     [90m 288 |[39m         [36mconst[39m updated [33m=[39m [36mawait[39m 
+[33mAuction[39m[33m.[39mfindById(auction[33m.[39m_id)[33m;[39m
+    [31m[1m>[22m[39m[90m 289 |[39m         expect(updated[33m?[39m[33m.[39mwinner[33m?[39m[33m.[39mtoStri
+ng())[33m.[39mtoBe(userId2[33m.[39mtoString())[33m;[39m
+     [90m     |[39m                                             [31m[1m^[22m[39m
+     [90m 290 |[39m         
+expect(updated[33m?[39m[33m.[39mcurrentPrice)[33m.[39mtoBe([35m200[39m)[33m;[39m
+     [90m 291 |[39m     })[33m;[39m
+     [90m 292 |[39m[0m
+
+      at Object.<anonymous> (src/shared/scheduler/auction.scheduler.test.ts:289:45)
+
+  ΓùÅ Scheduler: active auctions ΓåÆ ended ΓÇ║ should handle auctions with same amount bids (oldest wins)
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "6a6ad708a63e3e31432470c8"
+    Received: undefined
+
+    [0m [90m 356 |[39m
+     [90m 357 |[39m         [36mconst[39m updated [33m=[39m [36mawait[39m 
+[33mAuction[39m[33m.[39mfindById(auction[33m.[39m_id)[33m;[39m
+    [31m[1m>[22m[39m[90m 358 |[39m         expect(updated[33m?[39m[33m.[39mwinner[33m?[39m[33m.[39mtoStri
+ng())[33m.[39mtoBe(userId1[33m.[39mtoString())[33m;[39m
+     [90m     |[39m                                             [31m[1m^[22m[39m
+     [90m 359 |[39m     })[33m;[39m
+     [90m 360 |[39m
+     [90m 361 |[39m     it([32m"should create timeline event when auction ends"[39m[33m,[39m [36masync[39m () 
+[33m=>[39m {[0m
+
+      at Object.<anonymous> (src/shared/scheduler/auction.scheduler.test.ts:358:45)
+
+  ΓùÅ Scheduler: active auctions ΓåÆ ended ΓÇ║ should mark the winning bid as isWinningBid
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: true
+    Received: false
+
+    [0m [90m 506 |[39m
+     [90m 507 |[39m         
+expect(updatedBid1[33m?[39m[33m.[39misWinningBid)[33m.[39mtoBe([36mfalse[39m)[33m;[39m
+    [31m[1m>[22m[39m[90m 508 |[39m         
+expect(updatedBid2[33m?[39m[33m.[39misWinningBid)[33m.[39mtoBe([36mtrue[39m)[33m;[39m
+     [90m     |[39m                                           [31m[1m^[22m[39m
+     [90m 509 |[39m     })[33m;[39m
+     [90m 510 |[39m
+     [90m 511 |[39m     it([32m"should set paymentStatus to pending when there is a winner"[39m[33m,[39m 
+[36masync[39m () [33m=>[39m {[0m
+
+      at Object.<anonymous> (src/shared/scheduler/auction.scheduler.test.ts:508:43)
+
+[2026-07-30 10:16:05.116 +0530] [31mERROR[39m: [36mUser unauthenticated.[39m
+    err: {
+      "type": "Unauthorized",
+      "message": "User unauthenticated.",
+      "stack":
+          Error: User unauthenticated.
+              at authMiddleware (D:\work\Kodex\collabs\bids\server\src\shared\middlewares\auth.middleware.ts:16:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:688:15
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:276:14)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at read (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:42:5)
+              at urlencodedParser (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\types\urlencoded.js:51:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:171:5
+              at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+              at invokeCallback (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:238:16)
+              at done (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:227:7)
+              at IncomingMessage.onEnd (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:287:7)
+              at IncomingMessage.emit (node:events:519:28)
+              at endReadableNT (node:internal/streams/readable:1698:12)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+      "statusCode": 401,
+      "data": null
+    }
+[2026-07-30 10:16:05.156 +0530] [31mERROR[39m: [36mAccess token expired or invalid.[39m
+    err: {
+      "type": "Unauthorized",
+      "message": "Access token expired or invalid.",
+      "stack":
+          Error: Access token expired or invalid.
+              at authMiddleware (D:\work\Kodex\collabs\bids\server\src\shared\middlewares\auth.middleware.ts:33:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:688:15
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:276:14)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at read (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:42:5)
+              at urlencodedParser (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\types\urlencoded.js:51:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:171:5
+              at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+              at invokeCallback (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:238:16)
+              at done (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:227:7)
+              at IncomingMessage.onEnd (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:287:7)
+              at IncomingMessage.emit (node:events:519:28)
+              at endReadableNT (node:internal/streams/readable:1698:12)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+      "statusCode": 401,
+      "data": null
+    }
+[2026-07-30 10:16:05.179 +0530] [31mERROR[39m: [36mAccess token expired or invalid.[39m
+    err: {
+      "type": "Unauthorized",
+      "message": "Access token expired or invalid.",
+      "stack":
+          Error: Access token expired or invalid.
+              at authMiddleware (D:\work\Kodex\collabs\bids\server\src\shared\middlewares\auth.middleware.ts:33:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:688:15
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:276:14)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at read (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:42:5)
+              at urlencodedParser (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\types\urlencoded.js:51:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:171:5
+              at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+              at invokeCallback (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:238:16)
+              at done (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:227:7)
+              at IncomingMessage.onEnd (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:287:7)
+              at IncomingMessage.emit (node:events:519:28)
+              at endReadableNT (node:internal/streams/readable:1698:12)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+      "statusCode": 401,
+      "data": null
+    }
+[2026-07-30 10:16:05.197 +0530] [31mERROR[39m: [36mUser unauthenticated.[39m
+    err: {
+      "type": "Unauthorized",
+      "message": "User unauthenticated.",
+      "stack":
+          Error: User unauthenticated.
+              at authMiddleware (D:\work\Kodex\collabs\bids\server\src\shared\middlewares\auth.middleware.ts:16:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:688:15
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:276:14)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at read (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:42:5)
+              at urlencodedParser (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\types\urlencoded.js:51:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:171:5
+              at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+              at invokeCallback (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:238:16)
+              at done (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:227:7)
+              at IncomingMessage.onEnd (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:287:7)
+              at IncomingMessage.emit (node:events:519:28)
+              at endReadableNT (node:internal/streams/readable:1698:12)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+      "statusCode": 401,
+      "data": null
+    }
+[2026-07-30 10:16:05.219 +0530] [31mERROR[39m: [36mTitle is required[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Title is required",
+      "stack":
+          Error: Title is required
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.249 +0530] [31mERROR[39m: [36mTitle is required[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Title is required",
+      "stack":
+          Error: Title is required
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.284 +0530] [31mERROR[39m: [36mTitle is required[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Title is required",
+      "stack":
+          Error: Title is required
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.307 +0530] [31mERROR[39m: [36mTitle must be between 5 and 100 characters[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Title must be between 5 and 100 characters",
+      "stack":
+          Error: Title must be between 5 and 100 characters
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.328 +0530] [31mERROR[39m: [36mTitle must be between 5 and 100 characters[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Title must be between 5 and 100 characters",
+      "stack":
+          Error: Title must be between 5 and 100 characters
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.353 +0530] [31mERROR[39m: [36mDescription is required[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Description is required",
+      "stack":
+          Error: Description is required
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.376 +0530] [31mERROR[39m: [36mDescription must be between 20 and 2000 characters[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Description must be between 20 and 2000 characters",
+      "stack":
+          Error: Description must be between 20 and 2000 characters
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.394 +0530] [31mERROR[39m: [36mCategory must be one of: Electronics, Fashion, Home, Books, Sports, Vehicles, Collectibles, Others[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Category must be one of: Electronics, Fashion, Home, Books, Sports, Vehicles, Collectibles, Others",
+      "stack":
+          Error: Category must be one of: Electronics, Fashion, Home, Books, Sports, Vehicles, Collectibles, Others
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.414 +0530] [31mERROR[39m: [36mCondition must be one of: New, Like New, Good, Fair, Poor[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Condition must be one of: New, Like New, Good, Fair, Poor",
+      "stack":
+          Error: Condition must be one of: New, Like New, Good, Fair, Poor
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.433 +0530] [31mERROR[39m: [36mAt least one image is required[39m
+    err: {
+      "type": "BadRequest",
+      "message": "At least one image is required",
+      "stack":
+          Error: At least one image is required
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.451 +0530] [31mERROR[39m: [36mEach image must be a valid URL[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Each image must be a valid URL",
+      "stack":
+          Error: Each image must be a valid URL
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.468 +0530] [31mERROR[39m: [36mStarting bid must be greater than 0[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Starting bid must be greater than 0",
+      "stack":
+          Error: Starting bid must be greater than 0
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.482 +0530] [31mERROR[39m: [36mStarting bid must be greater than 0[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Starting bid must be greater than 0",
+      "stack":
+          Error: Starting bid must be greater than 0
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.496 +0530] [31mERROR[39m: [36mMinimum increment must be greater than 0[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Minimum increment must be greater than 0",
+      "stack":
+          Error: Minimum increment must be greater than 0
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.512 +0530] [31mERROR[39m: [36mStart time must be a valid date[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Start time must be a valid date",
+      "stack":
+          Error: Start time must be a valid date
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.528 +0530] [31mERROR[39m: [36mEnd time must be a valid date[39m
+    err: {
+      "type": "BadRequest",
+      "message": "End time must be a valid date",
+      "stack":
+          Error: End time must be a valid date
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.544 +0530] [31mERROR[39m: [36mEnd time must be after start time[39m
+    err: {
+      "type": "BadRequest",
+      "message": "End time must be after start time",
+      "stack":
+          Error: End time must be after start time
+              at createAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:43:15)
+              at D:\work\Kodex\collabs\bids\server\src\shared\utils\asyncHandler.util.ts:7:25
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:23:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.711 +0530] [31mERROR[39m: [36mUser unauthenticated.[39m
+    err: {
+      "type": "Unauthorized",
+      "message": "User unauthenticated.",
+      "stack":
+          Error: User unauthenticated.
+              at authMiddleware (D:\work\Kodex\collabs\bids\server\src\shared\middlewares\auth.middleware.ts:16:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:688:15
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:276:14)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at read (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:42:5)
+              at urlencodedParser (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\types\urlencoded.js:51:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:171:5
+              at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+              at invokeCallback (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:238:16)
+              at done (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:227:7)
+              at IncomingMessage.onEnd (D:\work\Kodex\collabs\bids\server\node_modules\raw-body\index.js:287:7)
+              at IncomingMessage.emit (node:events:519:28)
+              at endReadableNT (node:internal/streams/readable:1698:12)
+              at processTicksAndRejections (node:internal/process/task_queues:89:21)
+      "statusCode": 401,
+      "data": null
+    }
+[2026-07-30 10:16:05.744 +0530] [31mERROR[39m: [36mYou can only update your own auction[39m
+    err: {
+      "type": "Forbidden",
+      "message": "You can only update your own auction",
+      "stack":
+          Error: You can only update your own auction
+              at updateAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:92:15)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 403,
+      "data": null
+    }
+[2026-07-30 10:16:05.763 +0530] [31mERROR[39m: [36mAuction not found[39m
+    err: {
+      "type": "NotFound",
+      "message": "Auction not found",
+      "stack":
+          Error: Auction not found
+              at updateAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:87:15)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 404,
+      "data": null
+    }
+[2026-07-30 10:16:05.797 +0530] [31mERROR[39m: [36mCannot update auction after it has started[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Cannot update auction after it has started",
+      "stack":
+          Error: Cannot update auction after it has started
+              at updateAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:97:15)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.815 +0530] [31mERROR[39m: [36mCast to ObjectId failed for value "invalid-id" (type string) at path "_id" for model "Auction"[39m
+    err: {
+      "type": "CastError",
+      "message": "Cast to ObjectId failed for value \"invalid-id\" (type string) at path \"_id\" for model \"Auction\"",
+      "stack":
+          CastError: Cast to ObjectId failed for value "invalid-id" (type string) at path "_id" for model "Auction"
+              at SchemaObjectId.Object.<anonymous>.SchemaObjectId.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schema\objectId.js:253:11)
+              at SchemaObjectId.Object.<anonymous>.SchemaType.applySetters (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1288:12)
+              at SchemaObjectId.Object.<anonymous>.SchemaType.castForQuery (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1718:17)
+              at cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\cast.js:390:32)
+              at model.Query.Object.<anonymous>.Query.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:5060:12)
+              at model.Query.Object.<anonymous>.Query._castConditions (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2374:10)
+              at model.Query._findOne (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2697:8)
+              at model.Query.exec (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:4627:80)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+              at AuctionDAO.findAuctionByIdLean (D:\work\Kodex\collabs\bids\server\src\shared\dao\auction.dao.ts:30:16)
+              at updateAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:81:29)
+      "stringValue": "\"invalid-id\"",
+      "kind": "ObjectId",
+      "value": "invalid-id",
+      "path": "_id",
+      "reason": {
+        "type": "BSONError",
+        "message": "input must be a 24 character hex string, 12 byte Uint8Array, or an integer",
+        "stack":
+            BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+                at new ObjectId (D:\work\Kodex\collabs\bids\server\node_modules\bson\src\objectid.ts:120:15)
+                at castObjectId (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\cast\objectid.js:25:12)
+                at SchemaObjectId.Object.<anonymous>.SchemaObjectId.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schema\objectId.js:251:12)
+                at SchemaObjectId.Object.<anonymous>.SchemaType.applySetters (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1288:12)
+                at SchemaObjectId.Object.<anonymous>.SchemaType.castForQuery (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1718:17)
+                at cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\cast.js:390:32)
+                at model.Query.Object.<anonymous>.Query.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:5060:12)
+                at model.Query.Object.<anonymous>.Query._castConditions (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2374:10)
+                at model.Query._findOne (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2697:8)
+                at model.Query.exec (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:4627:80)
+                at processTicksAndRejections (node:internal/process/task_queues:103:5)
+                at AuctionDAO.findAuctionByIdLean (D:\work\Kodex\collabs\bids\server\src\shared\dao\auction.dao.ts:30:16)
+                at updateAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:81:29)
+      },
+      "valueType": "string"
+    }
+[2026-07-30 10:16:05.930 +0530] [31mERROR[39m: [36mCategory must be one of: Electronics, Fashion, Home, Books, Sports, Vehicles, Collectibles, Others[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Category must be one of: Electronics, Fashion, Home, Books, Sports, Vehicles, Collectibles, Others",
+      "stack":
+          Error: Category must be one of: Electronics, Fashion, Home, Books, Sports, Vehicles, Collectibles, Others
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:05.956 +0530] [31mERROR[39m: [36mStarting bid must be greater than 0[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Starting bid must be greater than 0",
+      "stack":
+          Error: Starting bid must be greater than 0
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:06.023 +0530] [31mERROR[39m: [36mUser unauthenticated.[39m
+    err: {
+      "type": "Unauthorized",
+      "message": "User unauthenticated.",
+      "stack":
+          Error: User unauthenticated.
+              at authMiddleware (D:\work\Kodex\collabs\bids\server\src\shared\middlewares\auth.middleware.ts:16:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:688:15
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:276:14)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+              at router (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:60:12)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at read (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:53:5)
+              at urlencodedParser (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\types\urlencoded.js:51:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at read (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\read.js:53:5)
+              at jsonParser (D:\work\Kodex\collabs\bids\server\node_modules\body-parser\lib\types\json.js:60:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at cookieParser (D:\work\Kodex\collabs\bids\server\node_modules\cookie-parser\index.js:57:14)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:554:6)
+              at xXssProtectionMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:334:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at xPoweredByMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:327:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at xPermittedCrossDomainPoliciesMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:320:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at xFrameOptionsMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:304:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at xDownloadOptionsMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:284:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at xDnsPrefetchControlMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:277:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at xContentTypeOptionsMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:269:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at strictTransportSecurityMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:262:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at referrerPolicyMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:230:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at originAgentClusterMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:205:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at crossOriginResourcePolicyMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:198:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at crossOriginOpenerPolicyMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:182:3)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at contentSecurityPolicyMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:138:4)
+              at internalNext (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:552:6)
+              at helmetMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\helmet\index.mjs:556:6)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at cors (D:\work\Kodex\collabs\bids\server\node_modules\cors\lib\index.js:188:7)
+              at D:\work\Kodex\collabs\bids\server\node_modules\cors\lib\index.js:224:17
+              at originCallback (D:\work\Kodex\collabs\bids\server\node_modules\cors\lib\index.js:214:15)
+              at D:\work\Kodex\collabs\bids\server\node_modules\cors\lib\index.js:219:13
+              at optionsCallback (D:\work\Kodex\collabs\bids\server\node_modules\cors\lib\index.js:199:9)
+              at corsMiddleware (D:\work\Kodex\collabs\bids\server\node_modules\cors\lib\index.js:204:7)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at compression (D:\work\Kodex\collabs\bids\server\node_modules\compression\index.js:243:5)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at trimPrefix (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:342:13)
+              at D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:297:9
+              at processParams (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:582:12)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:291:5)
+              at Function.handle (D:\work\Kodex\collabs\bids\server\node_modules\router\index.js:186:3)
+      "statusCode": 401,
+      "data": null
+    }
+[2026-07-30 10:16:06.057 +0530] [31mERROR[39m: [36mYou can only delete your own auction[39m
+    err: {
+      "type": "Forbidden",
+      "message": "You can only delete your own auction",
+      "stack":
+          Error: You can only delete your own auction
+              at deleteAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:166:15)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 403,
+      "data": null
+    }
+[2026-07-30 10:16:06.081 +0530] [31mERROR[39m: [36mAuction not found[39m
+    err: {
+      "type": "NotFound",
+      "message": "Auction not found",
+      "stack":
+          Error: Auction not found
+              at deleteAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:161:15)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 404,
+      "data": null
+    }
+[2026-07-30 10:16:06.108 +0530] [31mERROR[39m: [36mCannot delete an active or ended auction[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Cannot delete an active or ended auction",
+      "stack":
+          Error: Cannot delete an active or ended auction
+              at deleteAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:171:15)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+[2026-07-30 10:16:06.121 +0530] [31mERROR[39m: [36mCast to ObjectId failed for value "invalid-id" (type string) at path "_id" for model "Auction"[39m
+    err: {
+      "type": "CastError",
+      "message": "Cast to ObjectId failed for value \"invalid-id\" (type string) at path \"_id\" for model \"Auction\"",
+      "stack":
+          CastError: Cast to ObjectId failed for value "invalid-id" (type string) at path "_id" for model "Auction"
+              at SchemaObjectId.Object.<anonymous>.SchemaObjectId.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schema\objectId.js:253:11)
+              at SchemaObjectId.Object.<anonymous>.SchemaType.applySetters (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1288:12)
+              at SchemaObjectId.Object.<anonymous>.SchemaType.castForQuery (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1718:17)
+              at cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\cast.js:390:32)
+              at model.Query.Object.<anonymous>.Query.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:5060:12)
+              at model.Query.Object.<anonymous>.Query._castConditions (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2374:10)
+              at model.Query._findOne (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2697:8)
+              at model.Query.exec (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:4627:80)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+              at AuctionDAO.findAuctionByIdLean (D:\work\Kodex\collabs\bids\server\src\shared\dao\auction.dao.ts:30:16)
+              at deleteAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:155:29)
+      "stringValue": "\"invalid-id\"",
+      "kind": "ObjectId",
+      "value": "invalid-id",
+      "path": "_id",
+      "reason": {
+        "type": "BSONError",
+        "message": "input must be a 24 character hex string, 12 byte Uint8Array, or an integer",
+        "stack":
+            BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+                at new ObjectId (D:\work\Kodex\collabs\bids\server\node_modules\bson\src\objectid.ts:120:15)
+                at castObjectId (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\cast\objectid.js:25:12)
+                at SchemaObjectId.Object.<anonymous>.SchemaObjectId.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schema\objectId.js:251:12)
+                at SchemaObjectId.Object.<anonymous>.SchemaType.applySetters (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1288:12)
+                at SchemaObjectId.Object.<anonymous>.SchemaType.castForQuery (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\schemaType.js:1718:17)
+                at cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\cast.js:390:32)
+                at model.Query.Object.<anonymous>.Query.cast (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:5060:12)
+                at model.Query.Object.<anonymous>.Query._castConditions (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2374:10)
+                at model.Query._findOne (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:2697:8)
+                at model.Query.exec (D:\work\Kodex\collabs\bids\server\node_modules\mongoose\lib\query.js:4627:80)
+                at processTicksAndRejections (node:internal/process/task_queues:103:5)
+                at AuctionDAO.findAuctionByIdLean (D:\work\Kodex\collabs\bids\server\src\shared\dao\auction.dao.ts:30:16)
+                at deleteAuction (D:\work\Kodex\collabs\bids\server\src\modules\private\auction\auction.controller.ts:155:29)
+      },
+      "valueType": "string"
+    }
+[2026-07-30 10:16:06.135 +0530] [31mERROR[39m: [36mAuction ID must be a valid MongoDB ObjectId[39m
+    err: {
+      "type": "BadRequest",
+      "message": "Auction ID must be a valid MongoDB ObjectId",
+      "stack":
+          Error: Auction ID must be a valid MongoDB ObjectId
+              at validateErrors (D:\work\Kodex\collabs\bids\server\src\shared\utils\validateErrors.util.ts:19:15)
+              at Layer.handleRequest (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\layer.js:152:17)
+              at next (D:\work\Kodex\collabs\bids\server\node_modules\router\lib\route.js:157:13)
+              at middleware (D:\work\Kodex\collabs\bids\server\node_modules\express-validator\lib\middlewares\check.js:16:13)
+              at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      "statusCode": 400,
+      "data": null
+    }
+PASS src/modules/private/auction/auction.test.ts
+  Private Auction API
+    POST /api/auctions
+      Success Cases
+        ΓêÜ should create an auction successfully (233 ms)
+        ΓêÜ should create an auction with active status when startsAt is in the past (49 ms)
+        ΓêÜ should set minimumIncrement to 1 when not provided (27 ms)
+      Authentication
+        ΓêÜ should reject unauthenticated users (40 ms)
+        ΓêÜ should reject invalid token (26 ms)
+        ΓêÜ should reject expired token (20 ms)
+        ΓêÜ should reject malformed authorization header (20 ms)
+      Validation
+        ΓêÜ should reject missing body (23 ms)
+        ΓêÜ should reject missing title (27 ms)
+        ΓêÜ should reject empty title (37 ms)
+        ΓêÜ should reject title too short (18 ms)
+        ΓêÜ should reject title too long (21 ms)
+        ΓêÜ should reject missing description (27 ms)
+        ΓêÜ should reject description too short (20 ms)
+        ΓêÜ should reject invalid category (18 ms)
+        ΓêÜ should reject invalid condition (21 ms)
+        ΓêÜ should reject empty images array (17 ms)
+        ΓêÜ should reject invalid image URL (19 ms)
+        ΓêÜ should reject zero startingBid (15 ms)
+        ΓêÜ should reject negative startingBid (13 ms)
+        ΓêÜ should reject negative minimumIncrement (15 ms)
+        ΓêÜ should reject invalid startsAt date (15 ms)
+        ΓêÜ should reject invalid endsAt date (17 ms)
+        ΓêÜ should reject endsAt before startsAt (26 ms)
+      Database State
+        ΓêÜ should persist auction in database (29 ms)
+      Response Validation
+        ΓêÜ should return correct response shape (23 ms)
+    PATCH /api/auctions/:auctionId
+      Success Cases
+        ΓêÜ should update an auction successfully (44 ms)
+        ΓêÜ should update multiple fields (34 ms)
+      Authentication
+        ΓêÜ should reject unauthenticated users (25 ms)
+      Authorization
+        ΓêÜ should reject non-owner (32 ms)
+      Business Logic
+        ΓêÜ should reject update for non-existent auction (18 ms)
+        ΓêÜ should reject update for active auction (34 ms)
+        ΓêÜ should reject update for invalid auction ID (105 ms)
+      Validation
+        ΓêÜ should reject invalid category (27 ms)
+        ΓêÜ should reject negative startingBid (26 ms)
+    DELETE /api/auctions/:auctionId
+      Success Cases
+        ΓêÜ should delete an auction successfully (40 ms)
+      Authentication
+        ΓêÜ should reject unauthenticated users (28 ms)
+      Authorization
+        ΓêÜ should reject non-owner (32 ms)
+      Business Logic
+        ΓêÜ should reject delete for non-existent auction (23 ms)
+        ΓêÜ should reject delete for active auction (27 ms)
+        ΓêÜ should reject delete for invalid auction ID (13 ms)
+    GET /api/auctions/my
+      ΓêÜ should return 400 due to routing conflict with public /:auctionId (14 ms)
+
+PASS src/__tests__/health.test.ts
+  GET /api/health
+    ΓêÜ should return 200 OK with server status (26 ms)
+
+PASS src/__tests__/auth.test.ts
+  Authentication API
+    POST /api/auth/signup
+      ΓêÜ should signup a new user (37 ms)
+      ΓêÜ should not allow duplicate email (20 ms)
+      ΓêÜ should reject invalid email (10 ms)
+      ΓêÜ should reject empty name (7 ms)
+      ΓêÜ should reject short password (8 ms)
+      ΓêÜ should reject missing body (6 ms)
+    POST /api/auth/login
+      ΓêÜ should login successfully (8 ms)
+      ΓêÜ should fail if user does not exist (11 ms)
+      ΓêÜ should fail with incorrect password (16 ms)
+      ΓêÜ should reject invalid email format (7 ms)
+      ΓêÜ should reject missing password (7 ms)
+    GET /api/auth/me
+      ΓêÜ should return authenticated user (10 ms)
+      ΓêÜ should fail without token (9 ms)
+      ΓêÜ should fail with invalid token (6 ms)
+      ΓêÜ should fail with malformed authorization header (4 ms)
+    POST /api/auth/refresh
+      ΓêÜ should refresh access token (11 ms)
+      ΓêÜ should fail without refresh cookie (6 ms)
+      ΓêÜ should reject invalid refresh token (4 ms)
+    POST /api/auth/logout
+      ΓêÜ should logout successfully (7 ms)
+      ΓêÜ should succeed even if user is already logged out (5 ms)
+    POST /api/auth/logoutall
+      ΓêÜ should logout from all sessions (7 ms)
+      ΓêÜ should fail without token (5 ms)
+      ΓêÜ should fail with invalid token (3 ms)
+    POST /api/auth/forgot-password
+      ΓêÜ should send reset password email (8 ms)
+      ΓêÜ should reject invalid email (5 ms)
+      ΓêÜ should reject missing email (6 ms)
+    POST /api/auth/reset-password
+      ΓêÜ should fail with invalid reset token (6 ms)
+      ΓêÜ should reject missing token (6 ms)
+      ΓêÜ should reject missing password (6 ms)
+      ΓêÜ should reject weak password (5 ms)
+    POST /api/auth/google-login
+      ΓêÜ should reject invalid google credential (6 ms)
+      ΓêÜ should reject missing credential (6 ms)
+    Security
+      ΓêÜ should not allow invalid authorization header (6 ms)
+      ΓêÜ should reject unsupported http method (6 ms)
+      ΓêÜ should return 404 for unknown auth route (5 ms)
+
+Test Suites: 1 failed, 3 passed, 4 total
+Tests:       3 failed, 92 passed, 95 total
+Snapshots:   0 total
+Time:        10.899 s, estimated 11 s
+Ran all test suites.

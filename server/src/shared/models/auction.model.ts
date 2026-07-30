@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
+import { AUCTION_STATUS } from "../constants/auction.constants.js";
+import PAYMENT_STATUSES from "../constants/payment.constant.js";
 
-// Auction status lifecycle: draft → upcoming → active → ended / cancelled
-const AUCTION_STATUSES = ["draft", "upcoming", "active", "ended", "cancelled"] as const;
-const PAYMENT_STATUSES = ["pending", "paid", "failed"] as const;
+const AUCTION_STATUSES = Object.values(AUCTION_STATUS);
 
 const auctionSchema = new mongoose.Schema(
   {
