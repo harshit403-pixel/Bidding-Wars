@@ -1,37 +1,46 @@
-import { Router } from "express";
-
+// Importing modules
+import express from "express";
 import * as AuctionController from "./auction.controller.js";
+import { auctionIdParamValidators } from "./auction.validator.js";
+import asyncHandler from "../../../shared/utils/asyncHandler.util.js";
 
-import authUser from "../../../shared/middlewares/auth.middleware.js";
+// making the router
+const router = express.Router();
 
-const router = Router();
+/*
+    @route GET /api/auctions
+    @desc Get all auctions (public listing)
+    @access Public
+*/
+router.get("/", asyncHandler(AuctionController.getAuctions));
 
-router.get("/", AuctionController.getAuctions);
+/*
+    @route GET /api/auctions/:auctionId
+    @desc Get auction by ID
+    @access Public
+*/
+router.get("/:auctionId", auctionIdParamValidators, asyncHandler(AuctionController.getAuction));
 
-router.get(
-    "/my",
-    authUser,
-    AuctionController.getMyAuctions,
-);
+/*
+    @route GET /api/auctions/:auctionId/bids
+    @desc Get bids for an auction
+    @access Public
+*/
+router.get("/:auctionId/bids", auctionIdParamValidators, asyncHandler(AuctionController.getAuctionBids));
 
-router.get("/:auctionId", AuctionController.getAuction);
+/*
+    @route GET /api/auctions/:auctionId/timeline
+    @desc Get timeline for an auction
+    @access Public
+*/
+router.get("/:auctionId/timeline", auctionIdParamValidators, asyncHandler(AuctionController.getAuctionTimeline));
 
-router.post(
-    "/",
-    authUser,
-    AuctionController.createAuction,
-);
+/*
+    @route GET /api/auctions/:auctionId/messages
+    @desc Get messages for an auction
+    @access Public
+*/
+router.get("/:auctionId/messages", auctionIdParamValidators, asyncHandler(AuctionController.getAuctionMessages));
 
-router.patch(
-    "/:auctionId",
-    authUser,
-    AuctionController.updateAuction,
-);
-
-router.delete(
-    "/:auctionId",
-    authUser,
-    AuctionController.deleteAuction,
-);
-
+// exporting the router
 export default router;

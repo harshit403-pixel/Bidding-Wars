@@ -10,7 +10,17 @@
     "dev": "tsx watch server.ts",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js",
     "test:watch": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --watch --config ./jest.config.js",
-    "test:coverage": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage --config ./jest.config.js"
+    "test:coverage": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --coverage --config ./jest.config.js",
+    "test:legacy": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/__tests__",
+    "test:private:auction": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/private/auction",
+    "test:private:payment": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/private/payment",
+    "test:private:dashboard": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/private/dashboard",
+    "test:public:auction": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/public/auction",
+    "test:public:auth": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/public/auth",
+    "test:public:upload": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/public/upload",
+    "test:private": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/private",
+    "test:public": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules/public",
+    "test:modules": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js src/modules"
   },
   "dependencies": {
     "@jest/types": "^30.4.1",
@@ -51,6 +61,7 @@
     "@types/swagger-ui-express": "^4.1.8",
     "eslint": "^10.8.0",
     "jest": "^29.7.0",
+    "mongodb-memory-server": "^11.2.0",
     "pino-pretty": "^13.0.0",
     "prettier": "^3.4.2",
     "supertest": "^7.2.2",

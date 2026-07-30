@@ -1,41 +1,32 @@
-import { Request, Response } from "express";
+// Importing modules
+import { Response } from "express";
 
-import * as AuctionDAO from "../../../shared/dao/auction.dao.js";
-import { createAuctionSchema, updateAuctionSchema } from "./auction.validator.js";
+import AuctionDAO from "../../../shared/dao/auction.dao.js";
+import BidDAO from "../../../shared/dao/bid.dao.js";
+import TimelineDAO from "../../../shared/dao/timeline.dao.js";
+import ChatMessageDAO from "../../../shared/dao/chatMessage.dao.js";
+import { AuthenticatedRequest } from "../auth/auth.types.js";
 
 import Ok from "../../../shared/responses/Ok.response.js";
-import NotFoundError from "../../../shared/errors/NotFound.error.js";
-import User from "../../../shared/models/user.model.js";
-import BadRequest from "../../../shared/errors/BadRequest.error.js";
+import NotFound from "../../../shared/errors/NotFound.error.js";
 
+const auctionDAO = new AuctionDAO();
+const bidDAO = new BidDAO();
+const timelineDAO = new TimelineDAO();
+const chatMessageDAO = new ChatMessageDAO();
 
-export const createAuction = async (req: Request, res: Response) => {
-    const data = createAuctionSchema.parse(req.body);
+// Get all auctions (public listing)
+export const getAuctions = async (req: AuthenticatedRequest, res: Response) => {
 
-    const user = (req as any).user;
+    // getting query params
+    const { page = "1", limit = "10", status, category, seller, search, sort } = req.query;
 
-    const auction = await AuctionDAO.createAuction({
-        ...data,
-        seller: user.userId,
-        currentBid: data.startingBid,
-    });
-
-    await User.findByIdAndUpdate(user.userId, {
-        $push: {
-            auctionsCreated: auction._id,
-        },
-    });
-
-    return Ok(res, "Auction created successfully", { auction });
-};
-
-export const getAuctions = async (req: Request, res: Response) => {
-    const { page = "1", limit = "10", status, category, search } = req.query;
-
-    const filter: Record<string, any> = {};
+    // building the filter
+    const filter: Record<string, unknown> = {};
 
     if (status) filter.status = status;
     if (category) filter.category = category;
+    if (seller) filter.seller = seller;
 
     if (search) {
         filter.title = {
@@ -44,92 +35,136 @@ export const getAuctions = async (req: Request, res: Response) => {
         };
     }
 
-    const auctions = await AuctionDAO.getAuctions(filter, {
+    // building the sort object
+    let sortObj: Record<string, 1 | -1> = { createdAt: -1 };
+
+    if (sort) {
+        if (sort === "endingSoon") {
+            sortObj = { endTime: 1 };
+        } else if (sort === "-createdAt") {
+            sortObj = { createdAt: -1 };
+        } else if (sort === "currentPrice") {
+            sortObj = { currentPrice: 1 };
+        } else if (sort === "-currentPrice") {
+            sortObj = { currentPrice: -1 };
+        } else if (sort === "-endTime") {
+            sortObj = { endTime: -1 };
+        }
+    }
+
+    // finding auctions
+    const result = await auctionDAO.findAuctions(filter, {
         page: Number(page),
         limit: Number(limit),
+        sort: sortObj,
     });
 
-    const total = await AuctionDAO.countAuctions(filter);
-
+    // returning the response
     return Ok(res, "Auctions fetched successfully", {
-        auctions,
-        total,
+        auctions: result.auctions,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages,
     });
 };
 
-export const getAuction = async (req: Request, res: Response) => {
-    const auction = await AuctionDAO.getAuctionById(req.params.auctionId as string);
+// Get auction by ID
+export const getAuction = async (req: AuthenticatedRequest, res: Response) => {
 
+    // finding the auction
+    const auction = await auctionDAO.findAuctionById(req.params.auctionId as string);
+
+    // checking if auction exists
     if (!auction) {
-        throw new NotFoundError("Auction not found");
+        throw new NotFound("Auction not found");
     }
 
+    // returning the response
     return Ok(res, "Auction fetched successfully", {
         auction,
     });
 };
 
-export const updateAuction = async (req: Request, res: Response) => {
-    const user = (req as any).user;
+// Get bids for an auction
+export const getAuctionBids = async (req: AuthenticatedRequest, res: Response) => {
 
-    const existingAuction = await AuctionDAO.getAuctionByIdWithoutPopulate(
-        req.params.auctionId as string,
-    );
+    // verifying auction exists
+    const auction = await auctionDAO.findAuctionByIdLean(req.params.auctionId as string);
 
-    if (!existingAuction) {
-        throw new NotFoundError("Auction not found");
+    if (!auction) {
+        throw new NotFound("Auction not found");
     }
 
-    if (existingAuction.seller.toString() !== user.userId) {
-        throw new BadRequest("You can only update your own auction");
-    }
+    // getting query params
+    const { page = "1", limit = "20" } = req.query;
 
-    const data = updateAuctionSchema.parse(req.body);
+    // finding bids
+    const result = await bidDAO.findBidsByAuction(req.params.auctionId as string, {
+        page: Number(page),
+        limit: Number(limit),
+    });
 
-    const auction = await AuctionDAO.updateAuction(
-        req.params.auctionId as string,
-        data,
-    );
-
-    return Ok(res, "Auction updated successfully", {
-        auction,
+    // returning the response
+    return Ok(res, "Bids fetched successfully", {
+        bids: result.bids,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages,
     });
 };
 
-export const deleteAuction = async (req: Request, res: Response) => {
-    const user = (req as any).user;
+// Get timeline for an auction
+export const getAuctionTimeline = async (req: AuthenticatedRequest, res: Response) => {
 
-    const existingAuction = await AuctionDAO.getAuctionByIdWithoutPopulate(
-        req.params.auctionId as string,
-    );
+    // verifying auction exists
+    const auction = await auctionDAO.findAuctionByIdLean(req.params.auctionId as string);
 
-    if (!existingAuction) {
-        throw new NotFoundError("Auction not found");
+    if (!auction) {
+        throw new NotFound("Auction not found");
     }
 
-    if (existingAuction.seller.toString() !== user.userId) {
-        throw new BadRequest("You can only delete your own auction");
-    }
+    // getting query params
+    const { page = "1", limit = "50" } = req.query;
 
-    await AuctionDAO.deleteAuction(req.params.auctionId as string);
+    // finding events
+    const result = await timelineDAO.findEventsByAuction(req.params.auctionId as string, {
+        page: Number(page),
+        limit: Number(limit),
+    });
 
-    return Ok(res, "Auction deleted successfully");
+    // returning the response
+    return Ok(res, "Timeline fetched successfully", {
+        events: result.events,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages,
+    });
 };
 
-export const getMyAuctions = async (req: Request, res: Response) => {
-    const user = (req as any).user;
+// Get messages for an auction
+export const getAuctionMessages = async (req: AuthenticatedRequest, res: Response) => {
 
-    const { page = "1", limit = "10" } = req.query;
+    // verifying auction exists
+    const auction = await auctionDAO.findAuctionByIdLean(req.params.auctionId as string);
 
-    const auctions = await AuctionDAO.getMyAuctions(
-        user.userId,
-        {
-            page: Number(page),
-            limit: Number(limit),
-        },
-    );
+    if (!auction) {
+        throw new NotFound("Auction not found");
+    }
 
-    return Ok(res, "My auctions fetched successfully", {
-        auctions,
+    // getting query params
+    const { page = "1", limit = "50" } = req.query;
+
+    // finding messages
+    const result = await chatMessageDAO.findMessagesByAuction(req.params.auctionId as string, {
+        page: Number(page),
+        limit: Number(limit),
+    });
+
+    // returning the response
+    return Ok(res, "Messages fetched successfully", {
+        messages: result.messages,
+        total: result.total,
+        page: result.page,
+        totalPages: result.totalPages,
     });
 };

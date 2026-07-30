@@ -1,0 +1,132 @@
+// Importing modules
+import { Response } from "express";
+
+import AuctionDAO from "../../../shared/dao/auction.dao.js";
+import PaymentDAO from "../../../shared/dao/payment.dao.js";
+import { AuthenticatedRequest } from "../../public/auth/auth.types.js";
+
+import Created from "../../../shared/responses/Created.response.js";
+import Ok from "../../../shared/responses/Ok.response.js";
+import NotFound from "../../../shared/errors/NotFound.error.js";
+import BadRequest from "../../../shared/errors/BadRequest.error.js";
+import Forbidden from "../../../shared/errors/Forbidden.error.js";
+
+const auctionDAO = new AuctionDAO();
+const paymentDAO = new PaymentDAO();
+
+// Create a payment order
+export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
+
+    // getting the authenticated user
+    const user = req.user!;
+
+    // getting the auction id from request body
+    const { auctionId } = req.body;
+
+    // finding the auction
+    const auction = await auctionDAO.findAuctionByIdLean(auctionId);
+
+    // checking if auction exists
+    if (!auction) {
+        throw new NotFound("Auction not found");
+    }
+
+    // checking if auction has ended
+    if (auction.status !== "ended") {
+        throw new BadRequest("Auction has not ended yet");
+    }
+
+    // checking if auction has a winner
+    if (!auction.winner) {
+        throw new BadRequest("No winner for this auction");
+    }
+
+    // checking if the user is the winner
+    if (auction.winner.toString() !== user.userId!) {
+        throw new Forbidden("Only the winner can create a payment order");
+    }
+
+    // checking if payment already exists
+    const paymentExists = await paymentDAO.paymentExistsForAuction(auctionId);
+
+    if (paymentExists) {
+        throw new BadRequest("Payment order already exists for this auction");
+    }
+
+    // creating the payment record
+    const payment = await paymentDAO.createPayment({
+        auction: auctionId,
+        winner: user.userId!,
+        amount: auction.currentPrice,
+        provider: "manual",
+        status: "pending",
+    });
+
+    // returning the response
+    return Created(res, "Payment order created successfully", {
+        payment,
+        amount: auction.currentPrice,
+    });
+};
+
+// Verify a payment
+export const verifyPayment = async (req: AuthenticatedRequest, res: Response) => {
+
+    // getting the request body
+    const { providerOrderId, providerPaymentId, providerSignature } = req.body;
+
+    // finding the payment by provider order id
+    const payment = await paymentDAO.findPaymentByProviderOrderId(providerOrderId);
+
+    // checking if payment exists
+    if (!payment) {
+        throw new NotFound("Payment not found");
+    }
+
+    // checking if payment is already verified
+    if (payment.status === "paid") {
+        throw new BadRequest("Payment already verified");
+    }
+
+    // TODO: Verify provider signature using payment provider SDK
+    // This is a placeholder for actual signature verification
+    // Example for Razorpay: razorpay.utils.verifyPaymentSignature({ razorpay_order_id, razorpay_payment_id, razorpay_signature })
+    const isSignatureValid = true;
+
+    if (!isSignatureValid) {
+        throw new BadRequest("Invalid payment signature");
+    }
+
+    // updating the payment
+    const updatedPayment = await paymentDAO.updatePaymentVerification(providerOrderId, {
+        providerPaymentId,
+        providerSignature,
+        status: "paid",
+        paidAt: new Date(),
+    });
+
+    // updating the auction payment status
+    await auctionDAO.updatePaymentStatus(payment.auction.toString(), "paid");
+
+    // returning the response
+    return Ok(res, "Payment verified successfully", {
+        payment: updatedPayment,
+    });
+};
+
+// Get payment details for an auction
+export const getPayment = async (req: AuthenticatedRequest, res: Response) => {
+
+    // finding the payment
+    const payment = await paymentDAO.findPaymentByAuction(req.params.auctionId as string);
+
+    // checking if payment exists
+    if (!payment) {
+        throw new NotFound("Payment not found");
+    }
+
+    // returning the response
+    return Ok(res, "Payment fetched successfully", {
+        payment,
+    });
+};
