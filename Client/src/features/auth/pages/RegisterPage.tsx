@@ -234,7 +234,8 @@ function RegisterPage() {
                         Login
                     </Link>
                 </p>
-            </Card>
+            </div>
+        </div>
         </div>
     );
 }

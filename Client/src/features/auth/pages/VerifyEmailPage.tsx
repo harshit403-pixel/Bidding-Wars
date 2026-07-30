@@ -212,7 +212,7 @@ function VerifyEmailPage() {
 
             </div>
 
-        </div>
+        </section>
     );
 }
 

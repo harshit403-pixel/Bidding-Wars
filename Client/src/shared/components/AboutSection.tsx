@@ -1,5 +1,3 @@
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router";
 import { motion } from "framer-motion";
 
 function AboutSection() {

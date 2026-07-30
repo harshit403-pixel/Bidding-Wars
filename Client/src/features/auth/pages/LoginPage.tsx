@@ -11,8 +11,6 @@ import GoogleButton from "../components/GoogleButton";
 import { loginSchema, type LoginFormData } from "../auth.schema";
 import { useLogin } from "../hooks/useLogin";
 
-import loginVideo from "../../../assets/loginVideo.webm";
-
 function LoginPage() {
     const navigate = useNavigate();
 
@@ -130,7 +128,8 @@ function LoginPage() {
                         Register
                     </Link>
                 </p>
-            </Card>
+            </div>
+        </div>
         </div>
     );
 }
