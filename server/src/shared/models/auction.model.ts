@@ -1,47 +1,29 @@
 import mongoose from "mongoose";
 
+// Auction status lifecycle: draft → upcoming → active → ended / cancelled
+const AUCTION_STATUSES = ["draft", "upcoming", "active", "ended", "cancelled"] as const;
+const PAYMENT_STATUSES = ["pending", "paid", "failed"] as const;
+
 const auctionSchema = new mongoose.Schema(
   {
     seller: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: true,
+      required: [true, "Seller is required"],
     },
 
     title: {
       type: String,
-      required: true,
+      required: [true, "Title is required"],
       trim: true,
-      minlength: 5,
-      maxlength: 100,
+      minlength: [3, "Title must be at least 3 characters"],
+      maxlength: [150, "Title cannot exceed 150 characters"],
     },
 
     description: {
       type: String,
-      required: true,
-      minlength: 20,
-      maxlength: 2000,
-    },
-
-    category: {
-      type: String,
-      required: true,
-      enum: [
-        "Electronics",
-        "Fashion",
-        "Home",
-        "Books",
-        "Sports",
-        "Vehicles",
-        "Collectibles",
-        "Others",
-      ],
-    },
-
-    condition: {
-      type: String,
-      enum: ["New", "Like New", "Good", "Fair", "Poor"],
-      default: "Good",
+      trim: true,
+      default: "",
     },
 
     images: [
@@ -50,39 +32,39 @@ const auctionSchema = new mongoose.Schema(
       },
     ],
 
-    startingBid: {
-      type: Number,
-      required: true,
-      min: 1,
+    category: {
+      type: String,
+      trim: true,
+      default: "",
     },
 
-    currentBid: {
+    // Pricing
+    startingPrice: {
       type: Number,
-      default: 0,
+      required: [true, "Starting price is required"],
+      min: [0, "Starting price cannot be negative"],
+    },
+
+    currentPrice: {
+      type: Number,
+      default: 0, // Will be set to startingPrice via pre-save hook
+      min: [0, "Current price cannot be negative"],
     },
 
     minimumIncrement: {
       type: Number,
-      default: 10,
+      default: 1,
+      min: [1, "Minimum increment must be at least 1"],
     },
 
-    status: {
-      type: String,
-      enum: ["draft", "upcoming", "active", "ended", "cancelled"],
-      default: "draft",
-    },
-
-    startsAt: {
-      type: Date,
-      required: true,
-    },
-
-    endsAt: {
-      type: Date,
-      required: true,
-    },
-
+    // Bidding references
     highestBidder: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
+
+    winner: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       default: null,
@@ -93,21 +75,69 @@ const auctionSchema = new mongoose.Schema(
       default: 0,
     },
 
-    spectators: {
+    participantsCount: {
       type: Number,
       default: 0,
     },
 
-    winner: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+    // Real-time room identifier for socket connections
+    roomId: {
+      type: String,
+      unique: true,
+      sparse: true, // Allows multiple null values while enforcing uniqueness on non-null
+      trim: true,
+    },
+
+    // Auction lifecycle
+    status: {
+      type: String,
+      enum: {
+        values: AUCTION_STATUSES,
+        message: "{VALUE} is not a valid auction status",
+      },
+      default: "draft",
+    },
+
+    startTime: {
+      type: Date,
+    },
+
+    endTime: {
+      type: Date,
+    },
+
+    endedAt: {
+      type: Date,
       default: null,
+    },
+
+    // Payment tracking
+    paymentStatus: {
+      type: String,
+      enum: {
+        values: PAYMENT_STATUSES,
+        message: "{VALUE} is not a valid payment status",
+      },
+      default: "pending",
     },
   },
   {
     timestamps: true,
   }
 );
+
+// Set currentPrice to startingPrice if not explicitly provided
+auctionSchema.pre("save", function () {
+  if (this.isNew && this.currentPrice === 0 && this.startingPrice > 0) {
+    this.currentPrice = this.startingPrice;
+  }
+});
+
+// Indexes for common query patterns
+auctionSchema.index({ seller: 1 });
+auctionSchema.index({ status: 1 });
+auctionSchema.index({ endTime: 1 });
+auctionSchema.index({ status: 1, endTime: 1 }); // Compound: find active auctions ending soon
 
 const Auction = mongoose.model("Auction", auctionSchema);
 
