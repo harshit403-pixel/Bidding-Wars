@@ -193,13 +193,15 @@ function RegisterPage() {
                             {...register("email")}
                         />
 
-                        <PasswordInput
-                            label="Password"
-                            placeholder="Create a strong password"
-                            autoComplete="new-password"
-                            error={errors.password?.message}
-                            {...register("password")}
-                        />
+                    <PasswordInput
+                        label="Password"
+                        placeholder="Enter your password"
+                        autoComplete="new-password"
+                        error={errors.password?.message}
+                        {...register("password")}
+                    />
+
+              
 
                         <Button
                             type="submit"
@@ -211,37 +213,29 @@ function RegisterPage() {
 
                     </form>
 
-                    <div className="my-8 flex items-center gap-4">
+                <div className="flex items-center gap-4">
+                    <div className="h-px flex-1 bg-slate-200" />
 
-                        <div className="h-px flex-1 bg-neutral-300" />
+                    <span className="text-sm text-slate-500">
+                        OR
+                    </span>
 
-                        <span className="text-sm uppercase tracking-[0.2em] text-neutral-400">
-                            OR
-                        </span>
-
-                        <div className="h-px flex-1 bg-neutral-300" />
-
-                    </div>
+                    <div className="h-px flex-1 bg-slate-200" />
+                </div>
 
                     <GoogleButton />
 
-                    <p className="mt-8 text-center text-sm text-neutral-500">
-
-                        Already have an account?{" "}
-
-                        <Link
-                            to="/login"
-                            className="font-semibold text-black transition hover:text-[#FF5A1F]"
-                        >
-                            Sign In
-                        </Link>
-
-                    </p>
-
-                </div>
-
+                <p className="text-center text-sm">
+                    Already have an account?{" "}
+                    <Link
+                        to="/login"
+                        className="font-semibold text-slate-900 hover:underline"
+                    >
+                        Login
+                    </Link>
+                </p>
             </div>
-
+        </div>
         </div>
     );
 }

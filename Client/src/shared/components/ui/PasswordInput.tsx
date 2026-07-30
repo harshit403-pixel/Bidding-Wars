@@ -23,7 +23,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
         return (
             <div className="space-y-2">
                 {label && (
-                    <label className="text-sm font-medium">
+                    <label className="text-xs font-medium uppercase tracking-wide text-neutral-700">
                         {label}
                     </label>
                 )}
@@ -32,7 +32,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                     <input
                         ref={ref}
                         type={showPassword ? "text" : "password"}
-                        className={`w-full rounded-lg border border-slate-300 px-4 py-3 pr-12 outline-none transition focus:border-slate-900 ${className}`}
+                        className={`w-full border border-neutral-300 bg-white px-4 py-3 pr-12 outline-none transition focus:border-[#FF3B00] ${className}`}
                         {...props}
                     />
 
@@ -41,7 +41,7 @@ const PasswordInput = forwardRef<HTMLInputElement, PasswordInputProps>(
                         onClick={() =>
                             setShowPassword((prev) => !prev)
                         }
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-[#111111]"
                     >
                         {showPassword ? (
                             <EyeOff size={20} />

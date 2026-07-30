@@ -8,7 +8,7 @@ function Card({ children, className = "", ...props }: CardProps) {
   return (
     <div
       {...props}
-      className={`w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 shadow-sm ${className}`}
+      className={`w-full max-w-md border border-neutral-200 bg-white p-8 ${className}`}
     >
       {children}
     </div>

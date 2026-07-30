@@ -47,9 +47,8 @@ export default function ForgotPasswordPage() {
                         Password?
                     </h1>
 
-                    <p className="mt-5 text-lg leading-8 text-neutral-500">
-                        No worries. Enter your registered email address and
-                        we'll send you a secure password reset link.
+                    <p className="text-sm text-muted-foreground">
+                        Enter your email and we'll send you a password reset link.
                     </p>
 
                 </div>
@@ -70,35 +69,20 @@ export default function ForgotPasswordPage() {
 
                     <Button
                         type="submit"
+                        className="w-full"
                         disabled={isPending}
-                        className="h-14 rounded-full bg-black text-base font-semibold transition hover:bg-[#FF5A1F]"
                     >
-                        {isPending
-                            ? "Sending..."
-                            : "Send Reset Link"}
+                        Send Reset Link
                     </Button>
 
                 </form>
 
-                <div className="my-10 flex items-center gap-4">
-
-                    <div className="h-px flex-1 bg-neutral-300" />
-
-                    <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">
-                        OR
-                    </span>
-
-                    <div className="h-px flex-1 bg-neutral-300" />
-
-                </div>
-
-                <p className="text-center text-sm text-neutral-500">
-
+                <p className="text-center text-sm">
                     Remember your password?{" "}
 
                     <Link
                         to="/login"
-                        className="font-semibold text-black transition hover:text-[#FF5A1F]"
+                        className="font-medium underline"
                     >
                         Back to Login
                     </Link>

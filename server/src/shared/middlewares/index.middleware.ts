@@ -12,7 +12,10 @@ function applyMiddlewares(app: Express) {
     // applying middlewares
     app.use(compression());
 
-    app.use(cors());
+    app.use(cors({
+        origin: env.FRONTEND_URL,
+        credentials: true,
+    }));
 
     app.use(helmet());
 

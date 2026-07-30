@@ -19,6 +19,8 @@ const envSchema = z.object({
     SMTP_USER: z.string().default(envConstants.SMTP_USER),
     SMTP_PASS: z.string().default(envConstants.SMTP_PASS),
     SENDING_USER: z.string().default(envConstants.SENDING_USER),
+    MAIL_FROM: z.string().default(envConstants.MAIL_FROM),
+    BREVO_API_KEY: z.string().default(envConstants.BREVO_API_KEY),
     GOOGLE_CLIENT_ID: z.string().default(envConstants.GOOGLE_CLIENT_ID),
     GOOGLE_CLIENT_SECRET: z.string().default(envConstants.GOOGLE_CLIENT_SECRET),
     GOOGLE_REDIRECT_URI: z.string().url().default(envConstants.GOOGLE_REDIRECT_URI),
@@ -34,6 +36,9 @@ const envSchema = z.object({
     CLOUDINARY_CLOUD_NAME: z.string().default(""),
 CLOUDINARY_API_KEY: z.string().default(""),
 CLOUDINARY_API_SECRET: z.string().default(""),
+    IMAGEKIT_PUBLIC_KEY: z.string().default(""),
+    IMAGEKIT_PRIVATE_KEY: z.string().default(""),
+    IMAGEKIT_URL_ENDPOINT: z.string().default(""),
 });
 
 // parsing and validating environment variables

@@ -38,3 +38,8 @@ export interface ForgotPasswordResponse {
 export interface ResetPasswordResponse {
     message: string;
 }
+
+export interface VerifyOtpPayload {
+    email: string;
+    otp: string;
+}

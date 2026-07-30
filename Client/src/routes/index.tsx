@@ -5,9 +5,9 @@ import RootLayout from "../layouts/RootLayout";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuctionDetailPage from "../pages/AuctionDetailPage";
+import CreateAuctionPage from "../pages/CreateAuctionPage";
 import DashboardPage from "../pages/DashboardPage";
 
-import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
 import VerifyEmailPage from "../features/auth/pages/VerifyEmailPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
@@ -47,10 +47,6 @@ export const router = createBrowserRouter([
                 element: <PublicRoute />,
                 children: [
                     {
-                        path: "login",
-                        element: <LoginPage />,
-                    },
-                    {
                         path: "register",
                         element: <RegisterPage />,
                     },
@@ -86,20 +82,10 @@ export const router = createBrowserRouter([
                         path: "dashboard",
                         element: <DashboardPage />,
                     },
-
-                    // Future Routes
-                    // {
-                    //     path: "profile",
-                    //     element: <ProfilePage />,
-                    // },
-                    // {
-                    //     path: "create-auction",
-                    //     element: <CreateAuctionPage />,
-                    // },
-                    // {
-                    //     path: "my-auctions",
-                    //     element: <MyAuctionsPage />,
-                    // },
+                    {
+                        path: "create-auction",
+                        element: <CreateAuctionPage />,
+                    },
                 ],
             },
         ],

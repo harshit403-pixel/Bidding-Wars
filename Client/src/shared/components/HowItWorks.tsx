@@ -2,7 +2,6 @@ import {
     Search,
     Gavel,
     Trophy,
-    ArrowRight,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
