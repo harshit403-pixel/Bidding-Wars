@@ -2998,20 +2998,29 @@ Possible enhancements include:
 
 ---
 
+# 🌟 Recent Key Enhancements
+
+The platform has been enhanced with the following production-ready features:
+
+- **💬 Real-Time Live Auction Chat**: Integrated Socket.IO chat widget inside live auction rooms allowing bidders to chat in real-time with automatic message persistence.
+- **🌐 Guest Browsing & Live Feed Access**: Unauthenticated visitors can browse all marketplace auctions, enter live auction rooms, and track real-time bid streams.
+- **📦 Full Seller Controls (Edit & Delete)**: Sellers can edit listing parameters or delete unended/active listings directly from their unified Profile hub.
+- **🎨 Brand Aesthetics & Navigation**: Dynamic high-contrast brand bar and high-impact login video experience.
+
+---
+
 # Future Improvements
 
 Some planned enhancements for future releases include:
 
 - Watchlist functionality
 - AI-powered price recommendations
-- Live auction chat
 - Push notifications
 - Multi-language support
 - Advanced search filters
 - Auction analytics
 - Seller verification
 - Mobile application
-- Dark mode customization
 
 ---
 

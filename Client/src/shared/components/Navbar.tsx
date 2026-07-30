@@ -126,11 +126,7 @@ function Navbar() {
 
                             <button
                                 onClick={() => logout()}
-                                className={`transition ${
-                                    scrolled
-                                        ? "text-neutral-600 hover:text-black"
-                                        : "text-white/70 hover:text-white"
-                                }`}
+                                className="text-sm font-bold text-black transition hover:text-[#FF3B00]"
                             >
                                 Logout
                             </button>
