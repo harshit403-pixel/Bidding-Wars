@@ -54,7 +54,8 @@ async function handleJoinAuction(socket: AuthenticatedSocket, payload: JoinAucti
 
         let room = socketManager.getRoom(roomId);
         if (!room) {
-            room = socketManager.createRoom(roomId, auction._id.toString());
+            const endTimeMs = auction.endTime ? new Date(auction.endTime).getTime() : Date.now();
+            room = socketManager.createRoom(roomId, auction._id.toString(), endTimeMs);
         }
 
         const existingParticipant = room.participants.get(socket.id);
@@ -80,7 +81,7 @@ async function handleJoinAuction(socket: AuthenticatedSocket, payload: JoinAucti
 
         const participantCount = socketManager.getParticipantCount(roomId);
         const highestBid = await bidDAO.findHighestBidWithTiebreaker(auction._id.toString());
-        const remainingSeconds = Math.max(0, Math.floor((auction.endTime.getTime() - Date.now()) / 1000));
+        const remainingSeconds = Math.max(0, Math.floor(((auction.endTime ? new Date(auction.endTime).getTime() : Date.now()) - Date.now()) / 1000));
 
         const auctionState = {
             auction: {
@@ -178,7 +179,7 @@ async function handlePlaceBid(socket: AuthenticatedSocket, payload: PlaceBidPayl
             return emitError(socket, "AUCTION_NOT_ACTIVE", "Auction is not active");
         }
 
-        if (auction.endTime.getTime() <= Date.now()) {
+        if (auction.endTime && new Date(auction.endTime).getTime() <= Date.now()) {
             return emitError(socket, "AUCTION_ENDED", "Auction has ended");
         }
 

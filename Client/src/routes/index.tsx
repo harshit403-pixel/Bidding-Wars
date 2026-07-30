@@ -1,16 +1,19 @@
-import { createBrowserRouter, Navigate } from "react-router";
+import { createBrowserRouter } from "react-router";
 
 import RootLayout from "../layouts/RootLayout";
 
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuctionDetailPage from "../pages/AuctionDetailPage";
+import DashboardPage from "../pages/DashboardPage";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
 import VerifyEmailPage from "../features/auth/pages/VerifyEmailPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
 import ForgotPasswordPage from "../features/auth/pages/ForgetPasswordPage";
+
+import MarketplacePage from "../features/auction/pages/MarketplacePage";
 
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
@@ -30,7 +33,11 @@ export const router = createBrowserRouter([
                     },
                     {
                         path: "dashboard",
-                        element: <Navigate to="/" replace />,
+                        element: <DashboardPage />,
+                    },
+                    {
+                        path: "auctions",
+                        element: <MarketplacePage />,
                     },
                     {
                         path: "auction/:roomId",
