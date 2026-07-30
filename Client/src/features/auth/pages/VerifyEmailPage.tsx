@@ -6,47 +6,97 @@ import type { RootState } from "../../../app/store";
 import { useLogout } from "../hooks/useLogout";
 
 function VerifyEmailPage() {
-    const user = useSelector((state: RootState) => state.auth.user);
+    const user = useSelector(
+        (state: RootState) => state.auth.user
+    );
+
     const { mutate: logout } = useLogout();
     const navigate = useNavigate();
 
     return (
-        <section className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-            <div className="w-full max-w-md space-y-6 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm text-center">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-                    <Mail className="h-8 w-8 text-blue-600" />
+        <div className="flex min-h-screen items-center justify-center bg-[#F8F7F5] px-6">
+
+            <div className="w-full max-w-lg text-center">
+
+                <div className="mx-auto flex h-24 w-24 items-center justify-center rounded-full bg-[#FFE9DF]">
+
+                    <Mail
+                        size={42}
+                        className="text-[#FF5A1F]"
+                    />
+
                 </div>
 
-                <h1 className="text-2xl font-bold text-slate-900">
-                    Verify your email
+                <h1 className="mt-10 text-5xl font-black leading-tight">
+
+                    Verify
+                    <br />
+                    Your Email
+
                 </h1>
 
-                <p className="text-gray-500">
-                    We sent a verification link to{" "}
-                    <span className="font-medium text-slate-900">{user?.email}</span>.
-                    Please check your inbox and click the link to verify your account.
+                <p className="mx-auto mt-6 max-w-md text-lg leading-8 text-neutral-500">
+
+                    We've sent a verification link to
+
+                    <span className="font-semibold text-black">
+                        {" "}
+                        {user?.email}
+                    </span>
+
+                    . Open your inbox and click the link to activate your account.
+
                 </p>
 
-                <p className="text-sm text-gray-400">
-                    Didn&apos;t receive the email? Check your spam folder or contact support.
-                </p>
+                <div className="mt-8 rounded-3xl border border-neutral-200 bg-white p-6 text-left">
 
-                <div className="space-y-3 pt-2">
+                    <h3 className="font-semibold">
+                        What's next?
+                    </h3>
+
+                    <ul className="mt-4 space-y-3 text-sm leading-7 text-neutral-500">
+
+                        <li>
+                            • Check your inbox for the verification email.
+                        </li>
+
+                        <li>
+                            • If you don't see it, check your spam or promotions folder.
+                        </li>
+
+                        <li>
+                            • After verification, return here and log in.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div className="mt-10 space-y-4">
+
                     <button
                         onClick={() => navigate("/")}
-                        className="w-full rounded-lg bg-slate-900 px-4 py-3 text-white font-medium transition hover:bg-slate-800"
+                        className="h-14 w-full rounded-full bg-black font-semibold text-white transition hover:bg-[#FF5A1F]"
                     >
                         Go to Home
                     </button>
+
                     <button
                         onClick={() => logout()}
-                        className="w-full rounded-lg border border-slate-300 px-4 py-3 text-slate-700 font-medium transition hover:bg-slate-50"
+                        className="h-14 w-full rounded-full border border-neutral-300 bg-white font-semibold transition hover:bg-neutral-100"
                     >
-                        Log out
+                        Log Out
                     </button>
+
                 </div>
+
+                <p className="mt-10 text-sm text-neutral-400">
+                    Need help? Contact support if you still haven't received the email after a few minutes.
+                </p>
+
             </div>
-        </section>
+
+        </div>
     );
 }
 

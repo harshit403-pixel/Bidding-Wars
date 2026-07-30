@@ -1,9 +1,7 @@
 import { Link } from "react-router";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Card from "../../../shared/components/ui/Card";
 import Input from "../../../shared/components/ui/Input";
 import Button from "../../../shared/components/ui/Button";
 
@@ -11,8 +9,8 @@ import {
     forgotPasswordSchema,
     type ForgotPasswordFormData,
 } from "../auth.schema";
-import { useForgotPassword } from "../hooks/useForgetPassword";
 
+import { useForgotPassword } from "../hooks/useForgetPassword";
 
 export default function ForgotPasswordPage() {
     const { mutate, isPending } = useForgotPassword();
@@ -30,51 +28,85 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
-            <Card className="w-full max-w-md space-y-6 p-8">
-                <div className="space-y-2 text-center">
-                    <h1 className="text-3xl font-bold">
-                        Forgot Password
+        <div className="flex min-h-screen items-center justify-center bg-[#F8F7F5] px-6">
+
+            <div className="w-full max-w-md">
+
+                <Link
+                    to="/"
+                    className="text-lg font-bold tracking-tight"
+                >
+                    Bidding Wars
+                </Link>
+
+                <div className="mt-12">
+
+                    <h1 className="text-5xl font-black leading-tight">
+                        Forgot
+                        <br />
+                        Password?
                     </h1>
 
-                    <p className="text-sm text-muted-foreground">
-                        Enter your email and we'll send you a password reset link.
+                    <p className="mt-5 text-lg leading-8 text-neutral-500">
+                        No worries. Enter your registered email address and
+                        we'll send you a secure password reset link.
                     </p>
+
                 </div>
 
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="space-y-5"
+                    className="mt-12 space-y-6"
                 >
+
                     <Input
-                        label="Email"
+                        label="Email Address"
                         type="email"
                         placeholder="Enter your email"
+                        autoComplete="email"
                         error={errors.email?.message}
                         {...register("email")}
                     />
 
                     <Button
                         type="submit"
-                        className="w-full"
                         disabled={isPending}
+                        className="h-14 rounded-full bg-black text-base font-semibold transition hover:bg-[#FF5A1F]"
                     >
                         {isPending
                             ? "Sending..."
                             : "Send Reset Link"}
                     </Button>
+
                 </form>
 
-                <p className="text-center text-sm">
+                <div className="my-10 flex items-center gap-4">
+
+                    <div className="h-px flex-1 bg-neutral-300" />
+
+                    <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">
+                        OR
+                    </span>
+
+                    <div className="h-px flex-1 bg-neutral-300" />
+
+                </div>
+
+                <p className="text-center text-sm text-neutral-500">
+
                     Remember your password?{" "}
+
                     <Link
                         to="/login"
-                        className="font-medium underline"
+                        className="font-semibold text-black transition hover:text-[#FF5A1F]"
                     >
-                        Login
+                        Back to Login
                     </Link>
+
                 </p>
-            </Card>
+
+            </div>
+
         </div>
     );
 }

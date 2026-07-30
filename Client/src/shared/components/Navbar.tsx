@@ -7,6 +7,7 @@ import { useLogout } from "../../features/auth/hooks/useLogout";
 import type { RootState } from "../../app/store";
 
 function Navbar() {
+    const [showNavbar, setShowNavbar] = useState(true);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -16,15 +17,32 @@ function Navbar() {
 
     const { mutate: logout } = useLogout();
 
-    useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 30);
-        };
+   useEffect(() => {
+    let lastScrollY = window.scrollY;
 
-        window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+        const currentScrollY = window.scrollY;
 
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+        setScrolled(currentScrollY > 30);
+
+        if (currentScrollY < 80) {
+            setShowNavbar(true);
+        } else if (currentScrollY > lastScrollY) {
+            // Scrolling down
+            setShowNavbar(false);
+        } else {
+            // Scrolling up
+            setShowNavbar(true);
+        }
+
+        lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () =>
+        window.removeEventListener("scroll", handleScroll);
+}, []);
 
     const navClass = ({ isActive }: { isActive: boolean }) =>
         `relative transition duration-300 ${
@@ -38,8 +56,11 @@ function Navbar() {
         }`;
 
     return (
-        <header className="fixed left-0 top-0 z-50 w-full px-4 py-5">
-
+      <header
+    className={`fixed left-0 top-0 z-50 w-full px-4 py-5 transition-transform duration-500 ${
+        showNavbar ? "translate-y-0" : "-translate-y-full"
+    }`}
+>
             <div
                 className={`mx-auto flex h-20 max-w-7xl items-center justify-between rounded-full px-8 transition-all duration-500 ${
                     scrolled
