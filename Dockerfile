@@ -3,12 +3,12 @@
 # =========================
 FROM node:20-alpine AS client-builder
 
-WORKDIR /app/client
+WORKDIR /app/Client
 
-COPY client/package*.json ./
+COPY Client/package*.json ./
 RUN npm ci
 
-COPY client/ ./
+COPY Client/ ./
 RUN npm run build
 
 
@@ -27,7 +27,7 @@ RUN npm ci
 COPY server/ ./
 
 # Copy client build into server/public
-COPY --from=client-builder /app/client/dist ./public
+COPY --from=client-builder /app/Client/dist ./public
 
 RUN npm run build
 

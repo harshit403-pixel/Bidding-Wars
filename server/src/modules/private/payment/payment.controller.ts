@@ -47,20 +47,18 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     // checking if payment already exists
-    const paymentExists = await paymentDAO.paymentExistsForAuction(auctionId);
+    let payment = await paymentDAO.findPaymentByAuction(auctionId);
 
-    if (paymentExists) {
-        throw new BadRequest("Payment order already exists for this auction");
+    if (!payment) {
+        // creating the payment record
+        payment = await paymentDAO.createPayment({
+            auction: auctionId,
+            winner: user.userId!,
+            amount: auction.currentPrice,
+            provider: "razorpay",
+            status: "pending",
+        });
     }
-
-    // creating the payment record
-    const payment = await paymentDAO.createPayment({
-        auction: auctionId,
-        winner: user.userId!,
-        amount: auction.currentPrice,
-        provider: "manual",
-        status: "pending",
-    });
 
     // returning the response
     return Created(res, "Payment order created successfully", {

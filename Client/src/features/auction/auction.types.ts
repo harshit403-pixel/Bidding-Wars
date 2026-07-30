@@ -55,6 +55,7 @@ export interface Auction {
     totalBids: number;
     participantsCount: number;
     status: AuctionStatus;
+    paymentStatus?: "pending" | "paid" | "failed" | "cancelled";
     startTime: string;
     endTime: string;
     endedAt?: string;
@@ -79,6 +80,7 @@ export interface AuctionListParams {
     status?: AuctionStatus;
     category?: AuctionCategory;
     seller?: string;
+    winner?: string;
     search?: string;
     sort?: string;
 }
