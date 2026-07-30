@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Button from "../../../shared/components/ui/Button";
-import Card from "../../../shared/components/ui/Card";
 import PasswordInput from "../../../shared/components/ui/PasswordInput";
 
 import {
@@ -29,6 +28,7 @@ export default function ResetPasswordPage() {
 
     const onSubmit = (data: ResetPasswordFormData) => {
         if (!token) return;
+
         mutate({
             token,
             password: data.password,
@@ -37,25 +37,41 @@ export default function ResetPasswordPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center px-4">
-            <Card className="w-full max-w-md space-y-6 p-8">
-                <div className="space-y-2 text-center">
-                    <h1 className="text-3xl font-bold">
-                        Reset Password
+        <div className="flex min-h-screen items-center justify-center bg-[#F8F7F5] px-6">
+
+            <div className="w-full max-w-md">
+
+                <Link
+                    to="/"
+                    className="text-lg font-bold tracking-tight"
+                >
+                    Bidding Wars
+                </Link>
+
+                <div className="mt-12">
+
+                    <h1 className="text-5xl font-black leading-tight">
+                        Reset
+                        <br />
+                        Password
                     </h1>
 
-                    <p className="text-sm text-muted-foreground">
-                        Create a new password for your account.
+                    <p className="mt-5 text-lg leading-8 text-neutral-500">
+                        Create a new secure password to regain access to your
+                        account and continue bidding.
                     </p>
+
                 </div>
 
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="space-y-5"
+                    className="mt-12 space-y-6"
                 >
+
                     <PasswordInput
                         label="New Password"
                         placeholder="Enter your new password"
+                        autoComplete="new-password"
                         error={errors.password?.message}
                         {...register("password")}
                     />
@@ -63,31 +79,50 @@ export default function ResetPasswordPage() {
                     <PasswordInput
                         label="Confirm Password"
                         placeholder="Confirm your password"
+                        autoComplete="new-password"
                         error={errors.confirmPassword?.message}
                         {...register("confirmPassword")}
                     />
 
                     <Button
                         type="submit"
-                        className="w-full"
                         disabled={isPending}
+                        className="h-14 rounded-full bg-black text-base font-semibold transition hover:bg-[#FF5A1F]"
                     >
                         {isPending
                             ? "Resetting..."
                             : "Reset Password"}
                     </Button>
+
                 </form>
 
-                <p className="text-center text-sm">
+                <div className="my-10 flex items-center gap-4">
+
+                    <div className="h-px flex-1 bg-neutral-300" />
+
+                    <span className="text-xs uppercase tracking-[0.2em] text-neutral-400">
+                        OR
+                    </span>
+
+                    <div className="h-px flex-1 bg-neutral-300" />
+
+                </div>
+
+                <p className="text-center text-sm text-neutral-500">
+
                     Back to{" "}
+
                     <Link
                         to="/login"
-                        className="font-medium underline"
+                        className="font-semibold text-black transition hover:text-[#FF5A1F]"
                     >
                         Login
                     </Link>
+
                 </p>
-            </Card>
+
+            </div>
+
         </div>
     );
 }
