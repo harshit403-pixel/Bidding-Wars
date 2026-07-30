@@ -102,19 +102,9 @@ function Navbar() {
                         Marketplace
                     </NavLink>
 
-                    <NavLink
-                        to="/categories"
-                        className={navClass}
-                    >
-                        Categories
-                    </NavLink>
 
-                    <NavLink
-                        to="/about"
-                        className={navClass}
-                    >
-                        About
-                    </NavLink>
+
+
 
                     {isAuthenticated && (
                         <NavLink
@@ -131,15 +121,6 @@ function Navbar() {
 
                 <div className="hidden items-center gap-5 lg:flex">
 
-                    <button
-                        className={`transition ${
-                            scrolled
-                                ? "text-neutral-600 hover:text-black"
-                                : "text-white/70 hover:text-white"
-                        }`}
-                    >
-                        <Search size={20} />
-                    </button>
 
                     {isAuthenticated ? (
                         <>
@@ -263,23 +244,7 @@ function Navbar() {
                             Categories
                         </NavLink>
 
-                        <NavLink
-                            to="/about"
-                            onClick={() => setMobileOpen(false)}
-                            className={({ isActive }) =>
-                                `rounded-xl px-4 py-3 transition ${
-                                    scrolled
-                                        ? isActive
-                                            ? "bg-neutral-100 font-medium text-black"
-                                            : "text-neutral-700 hover:bg-neutral-100"
-                                        : isActive
-                                          ? "bg-white/10 text-white"
-                                          : "text-white/70 hover:bg-white/10 hover:text-white"
-                                }`
-                            }
-                        >
-                            About
-                        </NavLink>
+
 
                         {isAuthenticated && (
                             <>
