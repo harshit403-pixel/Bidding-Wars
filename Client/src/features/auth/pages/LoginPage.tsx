@@ -27,9 +27,12 @@ function LoginPage() {
 
     const onSubmit = (data: LoginFormData) => {
         login(data, {
-            onSuccess: () => {
-                navigate("/");
-                // navigate("/dashboard");
+            onSuccess: (response) => {
+                if (response.user.isVerified) {
+                    navigate("/");
+                } else {
+                    navigate("/verify-email");
+                }
             },
         });
     };

@@ -5,15 +5,19 @@ import RootLayout from "../layouts/RootLayout";
 import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuctionDetailPage from "../pages/AuctionDetailPage";
+import DashboardPage from "../pages/DashboardPage";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
-
+import VerifyEmailPage from "../features/auth/pages/VerifyEmailPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
+import ForgotPasswordPage from "../features/auth/pages/ForgetPasswordPage";
+
+import MarketplacePage from "../features/auction/pages/MarketplacePage";
 
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
-import ForgotPasswordPage from "../features/auth/pages/ForgetPasswordPage";
+import VerifyEmailRoute from "./VerifyEmailRoute";
 
 export const router = createBrowserRouter([
     {
@@ -26,6 +30,14 @@ export const router = createBrowserRouter([
                     {
                         index: true,
                         element: <HomePage />,
+                    },
+                    {
+                        path: "dashboard",
+                        element: <DashboardPage />,
+                    },
+                    {
+                        path: "auctions",
+                        element: <MarketplacePage />,
                     },
                     {
                         path: "auction/:roomId",
@@ -49,9 +61,20 @@ export const router = createBrowserRouter([
                         path: "forgot-password",
                         element: <ForgotPasswordPage />,
                     },
+                ],
+            },
+
+            {
+                path: "reset-password/:token",
+                element: <ResetPasswordPage />,
+            },
+
+            {
+                element: <VerifyEmailRoute />,
+                children: [
                     {
-                        path: "reset-password",
-                        element: <ResetPasswordPage />,
+                        path: "verify-email",
+                        element: <VerifyEmailPage />,
                     },
                 ],
             },

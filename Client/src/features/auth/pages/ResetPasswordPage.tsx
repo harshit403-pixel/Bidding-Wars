@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from "react-router";
+import { Link, useParams } from "react-router";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,9 +15,7 @@ import {
 import { useResetPassword } from "../hooks/useResetPassword";
 
 export default function ResetPasswordPage() {
-    const [searchParams] = useSearchParams();
-
-    const token = searchParams.get("token") ?? "";
+    const { token } = useParams<{ token: string }>();
 
     const { mutate, isPending } = useResetPassword();
 
@@ -30,6 +28,7 @@ export default function ResetPasswordPage() {
     });
 
     const onSubmit = (data: ResetPasswordFormData) => {
+        if (!token) return;
         mutate({
             token,
             password: data.password,

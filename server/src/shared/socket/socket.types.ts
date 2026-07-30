@@ -14,6 +14,7 @@ export interface SocketUser {
 export interface AuctionRoom {
     roomId: string;
     auctionId: string;
+    endTime: number;
     participants: Map<string, SocketUser>;
 }
 

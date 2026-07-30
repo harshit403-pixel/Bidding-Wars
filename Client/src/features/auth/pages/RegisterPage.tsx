@@ -31,9 +31,12 @@ function RegisterPage() {
 
     const onSubmit = (data: RegisterFormData) => {
         registerUser(data, {
-            onSuccess: () => {
-                navigate("/");
-                // navigate("/login");
+            onSuccess: (response) => {
+                if (response.user.isVerified) {
+                    navigate("/");
+                } else {
+                    navigate("/verify-email");
+                }
             },
         });
     };

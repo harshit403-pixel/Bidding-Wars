@@ -20,8 +20,8 @@ class SocketManager {
         return this.rooms.get(roomId);
     }
 
-    createRoom(roomId: string, auctionId: string): AuctionRoom {
-        const room: AuctionRoom = { roomId, auctionId, participants: new Map() };
+    createRoom(roomId: string, auctionId: string, endTime: number): AuctionRoom {
+        const room: AuctionRoom = { roomId, auctionId, endTime, participants: new Map() };
         this.rooms.set(roomId, room);
         return room;
     }
@@ -107,6 +107,10 @@ class SocketManager {
             }
         }
         return undefined;
+    }
+
+    getAllRooms(): Map<string, AuctionRoom> {
+        return this.rooms;
     }
 }
 
