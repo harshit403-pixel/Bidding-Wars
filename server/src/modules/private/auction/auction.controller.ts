@@ -218,7 +218,7 @@ export const startNow = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { getIO } = await import("../../../shared/socket/socket.js");
         const io = getIO();
-        if (io) {
+        if (io && existingAuction.roomId) {
             io.to(existingAuction.roomId).emit("auction_started", {
                 auction: auction!,
             });
@@ -277,7 +277,7 @@ export const endNow = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { getIO } = await import("../../../shared/socket/socket.js");
         const io = getIO();
-        if (io) {
+        if (io && existingAuction.roomId) {
             io.to(existingAuction.roomId).emit("auction_ended", {
                 auction: auction!,
             });

@@ -38,7 +38,7 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
 
         function onNewHighestBid(data: NewHighestBid) {
             setAuction((prev) => {
-                if (!prev) return prev;
+                if (!prev) return null;
                 return {
                     ...prev,
                     auction: data.auction,
@@ -51,10 +51,11 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
         function onTimerUpdate(data: TimerUpdate) {
             setAuction((prev) => {
                 if (!prev) return prev;
+                const newStatus = data.remainingSeconds <= 0 ? "ended" : data.status || prev.status;
                 return {
                     ...prev,
                     remainingSeconds: data.remainingSeconds,
-                    status: data.status,
+                    status: newStatus,
                 };
             });
         }
@@ -75,18 +76,26 @@ export function useAuctionSocket(roomId: string | undefined): UseAuctionSocketRe
         }
 
         function onAuctionStarted(data: AuctionStarted) {
-            setAuction((prev) => {
-                if (!prev) return prev;
-                return { ...prev, auction: data.auction, status: data.auction.status };
-            });
+            setAuction((prev) => ({
+                auction: data.auction,
+                highestBidder: data.auction.highestBidder ?? prev?.highestBidder ?? null,
+                currentPrice: data.auction.currentPrice,
+                remainingSeconds: prev?.remainingSeconds ?? 0,
+                participants: prev?.participants ?? 0,
+                status: data.auction.status || "active",
+            }));
             toast.info("Auction has started!");
         }
 
         function onAuctionEnded(data: AuctionEnded) {
-            setAuction((prev) => {
-                if (!prev) return prev;
-                return { ...prev, auction: data.auction, status: data.auction.status };
-            });
+            setAuction((prev) => ({
+                auction: data.auction,
+                highestBidder: data.auction.highestBidder ?? prev?.highestBidder ?? null,
+                currentPrice: data.auction.currentPrice,
+                remainingSeconds: 0,
+                participants: prev?.participants ?? 0,
+                status: "ended",
+            }));
             toast.info("Auction has ended!");
         }
 

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useSelector } from "react-redux";
+import { useQueryClient } from "@tanstack/react-query";
 import { Clock, Tag, Shield, ChevronLeft, ChevronRight, Gavel, Play, Square } from "lucide-react";
 import { toast } from "sonner";
 
@@ -13,6 +14,7 @@ import api from "../api/axios";
 
 function AuctionDetailPage() {
     const { roomId } = useParams<{ roomId: string }>();
+    const queryClient = useQueryClient();
     const user = useSelector((state: RootState) => state.auth.user);
     const { auction: socketAuction, connected, placeBid } = useAuctionSocket(roomId);
     const { connected: socketConnected } = useSocket();
@@ -23,6 +25,7 @@ function AuctionDetailPage() {
     const { data: apiAuction, isLoading: apiLoading } = useAuction(roomId);
 
     const auction = socketAuction?.auction ?? apiAuction;
+    const auctionId = auction?._id;
     const currentPrice = socketAuction?.currentPrice ?? auction?.currentPrice ?? 0;
     const remainingSeconds = socketAuction?.remainingSeconds ?? 0;
     const participants = socketAuction?.participants ?? 0;
@@ -68,7 +71,11 @@ function AuctionDetailPage() {
 
     const images = auction.images ?? [];
     const minBid = currentPrice + auction.minimumIncrement;
-    const isSeller = user && auction.seller._id === user._id;
+    const sellerObj = typeof auction.seller === "object" && auction.seller !== null ? auction.seller : null;
+    const sellerId = sellerObj ? sellerObj._id : String(auction.seller ?? "");
+    const sellerName = sellerObj?.name ?? "Verified Seller";
+    const sellerRating = sellerObj?.rating;
+    const isSeller = Boolean(user && sellerId && String(sellerId) === String(user._id));
 
     const handleStartNow = async () => {
         if (!auctionId) return;
@@ -76,6 +83,8 @@ function AuctionDetailPage() {
         try {
             await api.post(`/auctions/${auctionId}/start-now`);
             toast.success("Auction started!");
+            queryClient.invalidateQueries({ queryKey: ["auction", roomId] });
+            queryClient.invalidateQueries({ queryKey: ["auctions"] });
         } catch (error: unknown) {
             const err = error as { response?: { data?: { message?: string } } };
             toast.error(err.response?.data?.message || "Failed to start auction");
@@ -90,6 +99,8 @@ function AuctionDetailPage() {
         try {
             await api.post(`/auctions/${auctionId}/end-now`);
             toast.success("Auction ended!");
+            queryClient.invalidateQueries({ queryKey: ["auction", roomId] });
+            queryClient.invalidateQueries({ queryKey: ["auctions"] });
         } catch (error: unknown) {
             const err = error as { response?: { data?: { message?: string } } };
             toast.error(err.response?.data?.message || "Failed to end auction");
@@ -233,13 +244,13 @@ function AuctionDetailPage() {
                                 </h2>
                                 <div className="flex items-center gap-3 sm:gap-4">
                                     <div className="flex h-10 w-10 items-center justify-center bg-neutral-200 text-sm font-bold text-[#111111] sm:h-14 sm:w-14 sm:text-lg">
-                                        {auction.seller.name.charAt(0).toUpperCase()}
+                                        {sellerName.charAt(0).toUpperCase()}
                                     </div>
                                     <div>
-                                        <p className="text-base font-semibold sm:text-xl">{auction.seller.name}</p>
-                                        {auction.seller.rating != null && (
+                                        <p className="text-base font-semibold sm:text-xl">{sellerName}</p>
+                                        {sellerRating != null && (
                                             <p className="mt-0.5 text-xs uppercase tracking-[0.2em] text-neutral-500 sm:mt-1 sm:text-sm sm:tracking-[0.25em]">
-                                                Rating: {auction.seller.rating}/5
+                                                Rating: {sellerRating}/5
                                             </p>
                                         )}
                                     </div>

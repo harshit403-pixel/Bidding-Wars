@@ -32,7 +32,11 @@ class AuctionDAO {
 
     // Find auction by roomId (used for socket room lookups)
     async findAuctionByRoomId(roomId: string) {
-        return await this.AuctionModel.findOne({ roomId }).lean();
+        return await this.AuctionModel.findOne({ roomId })
+            .populate("seller", "name email avatar rating")
+            .populate("highestBidder", "name avatar")
+            .populate("winner", "name avatar")
+            .lean();
     }
 
     // Paginated auction listing with filters and sorting
