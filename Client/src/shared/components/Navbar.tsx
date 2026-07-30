@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
-import { Menu, Plus, Search, X } from "lucide-react";
+import { Menu, Plus, X } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { useLogout } from "../../features/auth/hooks/useLogout";
@@ -75,7 +75,7 @@ function Navbar() {
                     to="/"
                     className="flex items-center gap-3"
                 >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-lg font-black text-black">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#FF3B00] text-lg font-black text-white shadow-sm">
                         BW
                     </div>
 
@@ -90,8 +90,7 @@ function Navbar() {
                     </span>
                 </Link>
 
-                {/* Desktop Navigation Starts Here */}
-                                {/* Desktop Navigation */}
+                {/* Desktop Navigation */}
 
                 <nav className="hidden items-center gap-10 lg:flex">
 
@@ -117,22 +116,12 @@ function Navbar() {
 
                 <div className="hidden items-center gap-5 lg:flex">
 
-                    <button
-                        className={`transition ${
-                            scrolled
-                                ? "text-neutral-600 hover:text-black"
-                                : "text-white/70 hover:text-white"
-                        }`}
-                    >
-                        <Search size={20} />
-                    </button>
-
                     {isAuthenticated ? (
                         <>
 
                             <Link
                                 to="/create-auction"
-                                className="flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-medium text-white transition duration-300 hover:scale-105 hover:bg-[#FF5A1F]"
+                                className="flex items-center gap-2 rounded-full bg-[#FF3B00] px-5 py-2.5 text-sm font-semibold text-white transition duration-300 hover:scale-105 hover:bg-[#FF5A2C] shadow-md"
                             >
                                 <Plus size={16} />
                                 Create Auction
