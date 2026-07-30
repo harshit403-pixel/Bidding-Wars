@@ -8,6 +8,7 @@ import AuctionDetailPage from "../pages/AuctionDetailPage";
 import CreateAuctionPage from "../pages/CreateAuctionPage";
 import DashboardPage from "../pages/DashboardPage";
 
+import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
 import VerifyEmailPage from "../features/auth/pages/VerifyEmailPage";
 import ResetPasswordPage from "../features/auth/pages/ResetPasswordPage";
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
             {
                 element: <PublicRoute />,
                 children: [
+                    {
+                        path: "login",
+                        element: <LoginPage />,
+                    },
                     {
                         path: "register",
                         element: <RegisterPage />,

@@ -6,6 +6,8 @@
   "type": "module",
   "scripts": {
     "build": "tsc",
+    "build:client": "cd ../Client && npm run build && powershell -Command \"if (Test-Path '../server/public') { Remove-Item -Recurse -Force '../server/public' }; Copy-Item -Recurse -Force 'dist' '../server/public'\"",
+    "build:all": "npm run build:client && npm run build",
     "start": "node dist/server.js",
     "dev": "tsx watch server.ts",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --config ./jest.config.js",
