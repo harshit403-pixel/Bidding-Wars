@@ -94,6 +94,10 @@ function Navbar() {
                         Marketplace
                     </NavLink>
 
+
+
+
+
                     {isAuthenticated && (
                         <NavLink
                             to="/profile"
@@ -107,6 +111,8 @@ function Navbar() {
                 {/* Right Side */}
 
                 <div className="hidden items-center gap-5 lg:flex">
+
+
                     {isAuthenticated ? (
                         <>
                             <Link
@@ -199,6 +205,26 @@ function Navbar() {
                         >
                             Marketplace
                         </NavLink>
+
+                        <NavLink
+                            to="/categories"
+                            onClick={() => setMobileOpen(false)}
+                            className={({ isActive }) =>
+                                `rounded-xl px-4 py-3 transition ${
+                                    scrolled
+                                        ? isActive
+                                            ? "bg-neutral-100 font-medium text-black"
+                                            : "text-neutral-700 hover:bg-neutral-100"
+                                        : isActive
+                                          ? "bg-white/10 text-white"
+                                          : "text-white/70 hover:bg-white/10 hover:text-white"
+                                }`
+                            }
+                        >
+                            Categories
+                        </NavLink>
+
+
 
                         {isAuthenticated && (
                             <>

@@ -1,7 +1,4 @@
-# =========================
-# Stage 1 - Build Client
-# =========================
-FROM node:20-alpine AS client-builder
+FROM node:24-alpine AS client
 
 WORKDIR /app/Client
 
@@ -12,16 +9,12 @@ COPY Client/ ./
 RUN npm run build
 
 
-# =========================
-# Stage 2 - Build Server
-# =========================
-FROM node:20-alpine AS server-builder
+FROM node:24-alpine AS server
 
-WORKDIR /app/server
+WORKDIR /app
 
-COPY server/package*.json ./
+COPY ./server/package*.json ./
 
-ENV MONGOMS_SKIP_DOWNLOAD=true
 RUN npm ci
 
 COPY server/ ./
@@ -32,21 +25,16 @@ COPY --from=client-builder /app/Client/dist ./public
 RUN npm run build
 
 
-# =========================
-# Stage 3 - Production
-# =========================
-FROM node:20-alpine
+FROM node:24-alpine
 
-WORKDIR /app/server
+WORKDIR /app
 
-ENV NODE_ENV=production
+COPY ./server/package*.json ./
 
-COPY server/package*.json ./
-RUN npm ci --omit=dev
+RUN npm ci
 
-COPY --from=server-builder /app/server/dist ./dist
-COPY --from=server-builder /app/server/public ./public
+COPY --from=server /app/dist ./
 
-EXPOSE 5000
+COPY --from=client /app/dist ./public
 
-CMD ["node", "dist/server.js"]
+CMD ["node", "server.js"]
