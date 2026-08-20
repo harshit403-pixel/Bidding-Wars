@@ -20,6 +20,7 @@ export const getAuctions = async (params: AuctionListParams = {}): Promise<Aucti
     if (params.status) searchParams.set("status", params.status);
     if (params.category) searchParams.set("category", params.category);
     if (params.seller) searchParams.set("seller", params.seller);
+    if (params.winner) searchParams.set("winner", params.winner);
     if (params.search) searchParams.set("search", params.search);
     if (params.sort) searchParams.set("sort", params.sort);
 
@@ -56,4 +57,19 @@ export const getAuctionTimeline = async (
         { params: { page, limit } },
     );
     return data.data;
+};
+
+export const updateAuctionApi = async (
+    auctionId: string,
+    updateData: Record<string, unknown>
+): Promise<Auction> => {
+    const { data } = await api.patch<ApiResponse<{ auction: Auction }>>(
+        `/auctions/${auctionId}`,
+        updateData
+    );
+    return data.data.auction;
+};
+
+export const deleteAuctionApi = async (auctionId: string): Promise<void> => {
+    await api.delete(`/auctions/${auctionId}`);
 };

@@ -1,8 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
+import type { RootState } from "../app/store";
 import AuctionForm from "../shared/components/create-auction/AuctionForm";
 import AuctionImages from "../shared/components/create-auction/AuctionImages";
 import PreviewCard from "../shared/components/create-auction/PreviewCard";
@@ -42,9 +44,15 @@ const initialFormData: AuctionFormData = {
     endsAt: "",
 };
 
+function toLocalDateTimeString(d: Date): string {
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
 function CreateAuctionPage() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+    const user = useSelector((state: RootState) => state.auth.user);
     const [form, setForm] = useState<AuctionFormData>(initialFormData);
     const [images, setImages] = useState<UploadedImage[]>([]);
     const [submitting, setSubmitting] = useState(false);
@@ -60,10 +68,10 @@ function CreateAuctionPage() {
         (field: keyof AuctionFormData, value: string) => {
             setForm((prev) => {
                 const next = { ...prev, [field]: value };
-                if (field === "startsAt" && value && !prev.endsAt) {
+                if (field === "startsAt" && value) {
                     const start = new Date(value);
-                    start.setHours(start.getHours() + 1);
-                    next.endsAt = start.toISOString().slice(0, 16);
+                    const end = new Date(start.getTime() + 60 * 60 * 1000);
+                    next.endsAt = toLocalDateTimeString(end);
                 }
                 return next;
             });
@@ -147,6 +155,10 @@ function CreateAuctionPage() {
     }, []);
 
     const handleSubmit = async () => {
+        if (user && !user.isVerified) {
+            toast.error("Your account is not verified. Please verify your email before creating an auction.");
+            return;
+        }
         if (!form.title.trim()) {
             toast.error("Title is required");
             return;
@@ -273,6 +285,15 @@ function CreateAuctionPage() {
                     </h1>
                 </div>
             </section>
+
+            {user && !user.isVerified && (
+                <div className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 md:px-8">
+                    <div className="border border-amber-500/40 bg-amber-500/10 p-4 text-amber-900 font-medium">
+                        <p className="font-bold text-amber-800">⚠️ Account Verification Required</p>
+                        <p className="text-sm mt-1">Your account is not verified. You must verify your email before creating or publishing auctions.</p>
+                    </div>
+                </div>
+            )}
 
             <section className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:gap-12 sm:px-6 sm:py-16 md:px-8 lg:grid-cols-[1.2fr_0.8fr] lg:gap-20">
                 <div className="min-w-0 space-y-8 sm:space-y-12">

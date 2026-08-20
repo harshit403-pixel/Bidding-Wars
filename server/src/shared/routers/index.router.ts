@@ -11,12 +11,12 @@ import uploadRouter from "../../modules/public/upload/upload.router.js";
 // making the router
 const router = express.Router();
 
-// mounting the public routers
+// mounting the routers
 router.use("/health", healthRouter);
 router.use("/auth", authRouter);
 router.use("/upload", uploadRouter);
-router.use("/auctions", privateAuctionRouter);
 router.use("/auctions", auctionRouter);
+router.use("/auctions", privateAuctionRouter);
 router.use("/dashboard", dashboardRouter);
 router.use("/payments", paymentRouter);
 

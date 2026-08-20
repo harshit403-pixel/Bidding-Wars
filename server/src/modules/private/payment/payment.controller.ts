@@ -1,9 +1,12 @@
 // Importing modules
+import crypto from "crypto";
 import { Response } from "express";
+import mongoose from "mongoose";
 
 import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import PaymentDAO from "../../../shared/dao/payment.dao.js";
 import { AuthenticatedRequest } from "../../public/auth/auth.types.js";
+import env from "../../../shared/config/env.config.js";
 
 import Created from "../../../shared/responses/Created.response.js";
 import Ok from "../../../shared/responses/Ok.response.js";
@@ -23,8 +26,13 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     // getting the auction id from request body
     const { auctionId } = req.body;
 
-    // finding the auction
-    const auction = await auctionDAO.findAuctionByIdLean(auctionId);
+    // finding the auction by Mongo _id or roomId UUID
+    let auction = mongoose.Types.ObjectId.isValid(auctionId)
+        ? await auctionDAO.findAuctionByIdLean(auctionId)
+        : null;
+    if (!auction) {
+        auction = await auctionDAO.findAuctionByRoomId(auctionId);
+    }
 
     // checking if auction exists
     if (!auction) {
@@ -47,20 +55,18 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     }
 
     // checking if payment already exists
-    const paymentExists = await paymentDAO.paymentExistsForAuction(auctionId);
+    let payment = await paymentDAO.findPaymentByAuction(auction._id.toString());
 
-    if (paymentExists) {
-        throw new BadRequest("Payment order already exists for this auction");
+    if (!payment) {
+        // creating the payment record
+        payment = await paymentDAO.createPayment({
+            auction: auction._id.toString(),
+            winner: user.userId!,
+            amount: auction.currentPrice,
+            provider: "razorpay",
+            status: "pending",
+        });
     }
-
-    // creating the payment record
-    const payment = await paymentDAO.createPayment({
-        auction: auctionId,
-        winner: user.userId!,
-        amount: auction.currentPrice,
-        provider: "manual",
-        status: "pending",
-    });
 
     // returning the response
     return Created(res, "Payment order created successfully", {
@@ -88,13 +94,16 @@ export const verifyPayment = async (req: AuthenticatedRequest, res: Response) =>
         throw new BadRequest("Payment already verified");
     }
 
-    // TODO: Verify provider signature using payment provider SDK
-    // This is a placeholder for actual signature verification
-    // Example for Razorpay: razorpay.utils.verifyPaymentSignature({ razorpay_order_id, razorpay_payment_id, razorpay_signature })
-    const isSignatureValid = true;
+    // Verify Razorpay signature using HMAC-SHA256
+    if (env.RAZORPAY_KEY_SECRET) {
+        const expectedSignature = crypto
+            .createHmac("sha256", env.RAZORPAY_KEY_SECRET)
+            .update(`${providerOrderId}|${providerPaymentId}`)
+            .digest("hex");
 
-    if (!isSignatureValid) {
-        throw new BadRequest("Invalid payment signature");
+        if (expectedSignature !== providerSignature) {
+            throw new BadRequest("Invalid payment signature");
+        }
     }
 
     // updating the payment

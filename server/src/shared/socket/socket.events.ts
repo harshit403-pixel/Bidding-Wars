@@ -2,6 +2,7 @@ import { Server } from "socket.io";
 import AuctionDAO from "../dao/auction.dao.js";
 import BidDAO from "../dao/bid.dao.js";
 import TimelineDAO from "../dao/timeline.dao.js";
+import UserDao from "../dao/user.dao.js";
 import logger from "../config/logger.config.js";
 import socketManager from "./socket.manager.js";
 import { AuthenticatedSocket, JoinAuctionPayload, PlaceBidPayload } from "./socket.types.js";
@@ -9,6 +10,7 @@ import { AuthenticatedSocket, JoinAuctionPayload, PlaceBidPayload } from "./sock
 const auctionDAO = new AuctionDAO();
 const bidDAO = new BidDAO();
 const timelineDAO = new TimelineDAO();
+const userDao = new UserDao();
 
 export function registerSocketEvents(io: Server) {
     socketManager.setIO(io);
@@ -26,6 +28,10 @@ export function registerSocketEvents(io: Server) {
 
         socket.on("place_bid", async (payload: PlaceBidPayload) => {
             await handlePlaceBid(socket, payload);
+        });
+
+        socket.on("send_chat_message", async (payload: { roomId: string; message: string }) => {
+            await handleSendChatMessage(socket, payload);
         });
 
         socket.on("disconnect", async (reason) => {
@@ -55,7 +61,10 @@ async function handleJoinAuction(socket: AuthenticatedSocket, payload: JoinAucti
         let room = socketManager.getRoom(roomId);
         if (!room) {
             const endTimeMs = auction.endTime ? new Date(auction.endTime).getTime() : Date.now();
-            room = socketManager.createRoom(roomId, auction._id.toString(), endTimeMs);
+            const startTimeMs = auction.startTime ? new Date(auction.startTime).getTime() : Date.now();
+            room = socketManager.createRoom(roomId, auction._id.toString(), endTimeMs, startTimeMs, auction.status);
+        } else {
+            room.status = auction.status;
         }
 
         const existingParticipant = room.participants.get(socket.id);
@@ -104,6 +113,7 @@ async function handleJoinAuction(socket: AuthenticatedSocket, payload: JoinAucti
             remainingSeconds,
             participants: participantCount,
             status: auction.status,
+            chatMessages: room?.chatMessages || [],
         };
 
         socketManager.emitToSocket(socket.id, "auction_state", auctionState);
@@ -121,39 +131,52 @@ async function handleLeaveAuction(socket: AuthenticatedSocket, roomId: string) {
             return emitError(socket, "INVALID_ROOM", "Room ID is required");
         }
 
-        const room = socketManager.getRoom(roomId);
+        let room = socketManager.getRoom(roomId);
+        if (!room) {
+            for (const r of socketManager.getAllRooms().values()) {
+                if (r.auctionId === roomId || r.roomId === roomId) {
+                    room = r;
+                    break;
+                }
+            }
+        }
         if (!room) return;
 
-        const user = socketManager.removeUserFromRoom(roomId, socket.id);
+        const targetRoomId = room.roomId;
+        const user = socketManager.removeUserFromRoom(targetRoomId, socket.id);
         if (user) {
-            socket.leave(roomId);
+            socket.leave(targetRoomId);
 
             await auctionDAO.decrementParticipantsCount(room.auctionId);
 
-            const participantCount = socketManager.getParticipantCount(roomId);
+            const participantCount = socketManager.getParticipantCount(targetRoomId);
 
-            socketManager.broadcastToRoom(roomId, "user_left", {
+            socketManager.broadcastToRoom(targetRoomId, "user_left", {
                 userId: socket.userId,
                 username: socket.username,
                 participants: participantCount,
             });
 
-            socketManager.broadcastToRoom(roomId, "participants_updated", {
+            socketManager.broadcastToRoom(targetRoomId, "participants_updated", {
                 participants: participantCount,
             });
 
-            logger.debug({ socketId: socket.id, roomId, userId: socket.userId }, "Socket: left auction room");
+            logger.debug({ socketId: socket.id, roomId: targetRoomId, userId: socket.userId }, "Socket: left auction room");
         }
     } catch (error) {
         logger.error({ socketId: socket.id, error }, "Socket: leave_auction error");
-        emitError(socket, "LEAVE_ERROR", "Failed to leave auction");
     }
 }
 
 async function handlePlaceBid(socket: AuthenticatedSocket, payload: PlaceBidPayload) {
     try {
-        if (!socket.userId || !socket.username) {
-            return emitError(socket, "UNAUTHORIZED", "Authentication required");
+        if (!socket.userId || !socket.username || (socket as any).isGuest || socket.userId.startsWith("guest_")) {
+            return emitError(socket, "UNAUTHORIZED", "Please log in or create an account to place bids.");
+        }
+
+        const dbUser = await userDao.findUserById(socket.userId);
+        if (!dbUser || !dbUser.isVerified) {
+            return emitError(socket, "NOT_VERIFIED", "Your account is not verified. Please verify your email before placing bids.");
         }
 
         if (socketManager.isRateLimited(socket.id)) {
@@ -232,8 +255,8 @@ async function handlePlaceBid(socket: AuthenticatedSocket, payload: PlaceBidPayl
 
 async function handleDisconnect(socket: AuthenticatedSocket, reason: string) {
     try {
-        const roomId = socketManager.findRoomBySocketId(socket.id);
-        if (roomId) {
+        const roomIds = socketManager.findAllRoomsBySocketId(socket.id);
+        for (const roomId of roomIds) {
             await handleLeaveAuction(socket, roomId);
         }
 
@@ -242,6 +265,57 @@ async function handleDisconnect(socket: AuthenticatedSocket, reason: string) {
         logger.info({ socketId: socket.id, userId: socket.userId, reason }, "Socket disconnected");
     } catch (error) {
         logger.error({ socketId: socket.id, error }, "Socket: disconnect cleanup error");
+    }
+}
+
+async function handleSendChatMessage(socket: AuthenticatedSocket, payload: { roomId: string; message: string }) {
+    try {
+        if (!socket.userId || (socket as any).isGuest || socket.userId.startsWith("guest_")) {
+            return emitError(socket, "UNAUTHORIZED", "Please log in to send chat messages.");
+        }
+
+        const dbUser = await userDao.findUserById(socket.userId);
+        if (!dbUser || !dbUser.isVerified) {
+            return emitError(socket, "NOT_VERIFIED", "Your account is not verified. Please verify your email before sending chat messages.");
+        }
+
+        const username = socket.username || "User";
+        const { roomId, message } = payload;
+        if (!roomId || !message || typeof message !== "string" || !message.trim()) {
+            return;
+        }
+
+        const trimmed = message.trim().slice(0, 300);
+
+        let targetRoomId = roomId;
+        let room = socketManager.getRoom(roomId);
+        if (!room) {
+            const auction = await auctionDAO.findAuctionById(roomId);
+            if (auction && auction.roomId) {
+                targetRoomId = auction.roomId;
+                room = socketManager.getRoom(targetRoomId);
+            }
+        }
+
+        const chatMsg = {
+            id: `chat_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+            userId: socket.userId,
+            username,
+            message: trimmed,
+            timestamp: new Date().toISOString(),
+        };
+
+        if (targetRoomId) {
+            socketManager.addChatMessage(targetRoomId, chatMsg);
+            socketManager.broadcastToRoom(targetRoomId, "new_chat_message", chatMsg);
+        }
+        if (roomId && roomId !== targetRoomId) {
+            socketManager.addChatMessage(roomId, chatMsg);
+            socketManager.broadcastToRoom(roomId, "new_chat_message", chatMsg);
+        }
+        socket.emit("new_chat_message", chatMsg);
+    } catch (error) {
+        logger.error({ socketId: socket.id, error }, "Socket: handleSendChatMessage error");
     }
 }
 

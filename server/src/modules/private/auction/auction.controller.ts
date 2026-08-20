@@ -1,11 +1,14 @@
 // Importing modules
 import { Response } from "express";
 import crypto from "crypto";
+import mongoose from "mongoose";
 
 import AuctionDAO from "../../../shared/dao/auction.dao.js";
 import BidDAO from "../../../shared/dao/bid.dao.js";
 import TimelineDAO from "../../../shared/dao/timeline.dao.js";
 import ChatMessageDAO from "../../../shared/dao/chatMessage.dao.js";
+import UserDao from "../../../shared/dao/user.dao.js";
+import socketManager from "../../../shared/socket/socket.manager.js";
 import { AuthenticatedRequest } from "../../public/auth/auth.types.js";
 
 import Created from "../../../shared/responses/Created.response.js";
@@ -18,12 +21,27 @@ const auctionDAO = new AuctionDAO();
 const bidDAO = new BidDAO();
 const timelineDAO = new TimelineDAO();
 const chatMessageDAO = new ChatMessageDAO();
+const userDao = new UserDao();
+
+const getAuctionByIdOrRoomId = async (id: string) => {
+    if (mongoose.Types.ObjectId.isValid(id)) {
+        const auction = await auctionDAO.findAuctionByIdLean(id);
+        if (auction) return auction;
+    }
+    return await auctionDAO.findAuctionByRoomId(id);
+};
 
 // Create a new auction
 export const createAuction = async (req: AuthenticatedRequest, res: Response) => {
 
     // getting the authenticated user
     const user = req.user!;
+
+    // checking if user is verified
+    const dbUser = await userDao.findUserById(user.userId as string);
+    if (!dbUser || !dbUser.isVerified) {
+        throw new Forbidden("Your account is not verified. Please verify your email before creating an auction.");
+    }
 
     // getting the request body
     const {
@@ -81,7 +99,7 @@ export const updateAuction = async (req: AuthenticatedRequest, res: Response) =>
     const user = req.user!;
 
     // finding the existing auction
-    const existingAuction = await auctionDAO.findAuctionByIdLean(
+    const existingAuction = await getAuctionByIdOrRoomId(
         req.params.auctionId as string,
     );
 
@@ -138,7 +156,7 @@ export const updateAuction = async (req: AuthenticatedRequest, res: Response) =>
 
     // updating the auction
     const auction = await auctionDAO.updateAuctionById(
-        req.params.auctionId as string,
+        existingAuction._id.toString(),
         updateData,
     );
 
@@ -155,7 +173,7 @@ export const deleteAuction = async (req: AuthenticatedRequest, res: Response) =>
     const user = req.user!;
 
     // finding the existing auction
-    const existingAuction = await auctionDAO.findAuctionByIdLean(
+    const existingAuction = await getAuctionByIdOrRoomId(
         req.params.auctionId as string,
     );
 
@@ -169,18 +187,29 @@ export const deleteAuction = async (req: AuthenticatedRequest, res: Response) =>
         throw new Forbidden("You can only delete your own auction");
     }
 
-    // checking if auction can be deleted
-    if (existingAuction.status === "active" || existingAuction.status === "ended") {
-        throw new BadRequest("Cannot delete an active or ended auction");
+    // checking if auction can be deleted (cannot delete after it has ended)
+    if (existingAuction.status === "ended") {
+        throw new BadRequest("Cannot delete an auction after it has ended");
+    }
+
+    // if active/room exists, notify connected sockets and cleanup room
+    if (existingAuction.roomId) {
+        socketManager.broadcastToRoom(existingAuction.roomId, "auction_ended", {
+            auction: {
+                ...existingAuction,
+                status: "ended",
+            },
+        });
+        socketManager.deleteRoom(existingAuction.roomId);
     }
 
     // cascade deleting associated data
-    await bidDAO.deleteBidsByAuction(req.params.auctionId as string);
-    await timelineDAO.deleteEventsByAuction(req.params.auctionId as string);
-    await chatMessageDAO.deleteMessagesByAuction(req.params.auctionId as string);
+    await bidDAO.deleteBidsByAuction(existingAuction._id.toString());
+    await timelineDAO.deleteEventsByAuction(existingAuction._id.toString());
+    await chatMessageDAO.deleteMessagesByAuction(existingAuction._id.toString());
 
     // deleting the auction
-    await auctionDAO.deleteAuctionById(req.params.auctionId as string);
+    await auctionDAO.deleteAuctionById(existingAuction._id.toString());
 
     // returning the response
     return Ok(res, "Auction deleted successfully");
@@ -190,7 +219,7 @@ export const deleteAuction = async (req: AuthenticatedRequest, res: Response) =>
 export const startNow = async (req: AuthenticatedRequest, res: Response) => {
     const user = req.user!;
 
-    const existingAuction = await auctionDAO.findAuctionByIdLean(
+    const existingAuction = await getAuctionByIdOrRoomId(
         req.params.auctionId as string,
     );
 
@@ -202,39 +231,49 @@ export const startNow = async (req: AuthenticatedRequest, res: Response) => {
         throw new Forbidden("You can only update your own auction");
     }
 
-    if (existingAuction.status !== "upcoming") {
-        throw new BadRequest("Auction is not in upcoming status");
+    if (existingAuction.status === "active") {
+        const fullAuction = await auctionDAO.findAuctionByIdLean(existingAuction._id.toString());
+        return Ok(res, "Auction is already active", { auction: fullAuction });
     }
 
     const auction = await auctionDAO.updateAuctionById(
-        req.params.auctionId as string,
+        existingAuction._id.toString(),
         {
             status: "active",
             startTime: new Date(),
         },
     );
 
+    const updatedAuction = await auctionDAO.findAuctionByIdLean(existingAuction._id.toString());
+
     // emit socket event for realtime
     try {
         const { getIO } = await import("../../../shared/socket/socket.js");
+        const socketManager = (await import("../../../shared/socket/socket.manager.js")).default;
+        if (existingAuction.roomId) {
+            const room = socketManager.getRoom(existingAuction.roomId);
+            if (room) {
+                room.status = "active";
+            }
+        }
         const io = getIO();
         if (io && existingAuction.roomId) {
             io.to(existingAuction.roomId).emit("auction_started", {
-                auction: auction!,
+                auction: updatedAuction!,
             });
         }
     } catch {
         // socket not available
     }
 
-    return Ok(res, "Auction started successfully", { auction });
+    return Ok(res, "Auction started successfully", { auction: updatedAuction });
 };
 
 // End auction immediately
 export const endNow = async (req: AuthenticatedRequest, res: Response) => {
     const user = req.user!;
 
-    const existingAuction = await auctionDAO.findAuctionByIdLean(
+    const existingAuction = await getAuctionByIdOrRoomId(
         req.params.auctionId as string,
     );
 
@@ -246,12 +285,13 @@ export const endNow = async (req: AuthenticatedRequest, res: Response) => {
         throw new Forbidden("You can only update your own auction");
     }
 
-    if (existingAuction.status !== "active") {
-        throw new BadRequest("Auction is not active");
+    if (existingAuction.status === "ended") {
+        const fullAuction = await auctionDAO.findAuctionByIdLean(existingAuction._id.toString());
+        return Ok(res, "Auction is already ended", { auction: fullAuction });
     }
 
     // find highest bid
-    const highestBid = await bidDAO.findHighestBid(req.params.auctionId as string);
+    const highestBid = await bidDAO.findHighestBid(existingAuction._id.toString());
 
     const updateData: Record<string, unknown> = {
         status: "ended",
@@ -263,8 +303,8 @@ export const endNow = async (req: AuthenticatedRequest, res: Response) => {
         updateData.currentPrice = highestBid.amount;
     }
 
-    const auction = await auctionDAO.updateAuctionById(
-        req.params.auctionId as string,
+    await auctionDAO.updateAuctionById(
+        existingAuction._id.toString(),
         updateData,
     );
 
@@ -273,20 +313,29 @@ export const endNow = async (req: AuthenticatedRequest, res: Response) => {
         await bidDAO.markWinningBid(highestBid._id.toString());
     }
 
+    const updatedAuction = await auctionDAO.findAuctionByIdLean(existingAuction._id.toString());
+
     // emit socket event for realtime
     try {
         const { getIO } = await import("../../../shared/socket/socket.js");
+        const socketManager = (await import("../../../shared/socket/socket.manager.js")).default;
+        if (existingAuction.roomId) {
+            const room = socketManager.getRoom(existingAuction.roomId);
+            if (room) {
+                room.status = "ended";
+            }
+        }
         const io = getIO();
         if (io && existingAuction.roomId) {
             io.to(existingAuction.roomId).emit("auction_ended", {
-                auction: auction!,
+                auction: updatedAuction!,
             });
         }
     } catch {
         // socket not available
     }
 
-    return Ok(res, "Auction ended successfully", { auction });
+    return Ok(res, "Auction ended successfully", { auction: updatedAuction });
 };
 
 // Get auctions created by the logged-in seller

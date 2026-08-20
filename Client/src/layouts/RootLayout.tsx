@@ -20,7 +20,7 @@ const RootLayout = () => {
                 <Outlet />
             </main>
 
-            {!hideLayout && <Footer />}
+            {pathname === "/" && <Footer />}
         </>
     );
 };

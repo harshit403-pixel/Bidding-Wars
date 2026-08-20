@@ -15,6 +15,9 @@ export interface AuctionRoom {
     roomId: string;
     auctionId: string;
     endTime: number;
+    startTime?: number;
+    status?: string;
+    chatMessages?: ChatMessageData[];
     participants: Map<string, SocketUser>;
 }
 
@@ -39,6 +42,7 @@ export interface AuctionState {
     remainingSeconds: number;
     participants: number;
     status: string;
+    chatMessages?: ChatMessageData[];
 }
 
 export interface TimerUpdate {
@@ -56,4 +60,17 @@ export interface SocketError {
 
 export interface BidRateLimit {
     lastBidTime: number;
+}
+
+export interface SendChatMessagePayload {
+    roomId: string;
+    message: string;
+}
+
+export interface ChatMessageData {
+    id: string;
+    userId: string;
+    username: string;
+    message: string;
+    timestamp: string;
 }

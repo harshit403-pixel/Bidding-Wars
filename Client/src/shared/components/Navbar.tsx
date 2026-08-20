@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 
 import { useLogout } from "../../features/auth/hooks/useLogout";
 import type { RootState } from "../../app/store";
+import logoImg from "../../assets/logo.png";
 
 function Navbar() {
     const [showNavbar, setShowNavbar] = useState(true);
@@ -17,50 +18,48 @@ function Navbar() {
 
     const { mutate: logout } = useLogout();
 
-   useEffect(() => {
-    let lastScrollY = window.scrollY;
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
 
-    const handleScroll = () => {
-        const currentScrollY = window.scrollY;
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
 
-        setScrolled(currentScrollY > 30);
+            setScrolled(currentScrollY > 30);
 
-        if (currentScrollY < 80) {
-            setShowNavbar(true);
-        } else if (currentScrollY > lastScrollY) {
-            // Scrolling down
-            setShowNavbar(false);
-        } else {
-            // Scrolling up
-            setShowNavbar(true);
-        }
+            if (currentScrollY < 80) {
+                setShowNavbar(true);
+            } else if (currentScrollY > lastScrollY) {
+                setShowNavbar(false);
+            } else {
+                setShowNavbar(true);
+            }
 
-        lastScrollY = currentScrollY;
-    };
+            lastScrollY = currentScrollY;
+        };
 
-    window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll);
 
-    return () =>
-        window.removeEventListener("scroll", handleScroll);
-}, []);
+        return () =>
+            window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     const navClass = ({ isActive }: { isActive: boolean }) =>
         `relative transition duration-300 ${
             scrolled
                 ? isActive
-                    ? "text-black"
+                    ? "text-black font-semibold"
                     : "text-neutral-600 hover:text-black"
                 : isActive
-                  ? "text-white"
+                  ? "text-white font-semibold"
                   : "text-white/70 hover:text-white"
         }`;
 
     return (
-      <header
-    className={`fixed left-0 top-0 z-50 w-full px-4 py-5 transition-transform duration-500 ${
-        showNavbar ? "translate-y-0" : "-translate-y-full"
-    }`}
->
+        <header
+            className={`fixed left-0 top-0 z-50 w-full px-4 py-5 transition-transform duration-500 ${
+                showNavbar ? "translate-y-0" : "-translate-y-full"
+            }`}
+        >
             <div
                 className={`mx-auto flex h-20 max-w-7xl items-center justify-between rounded-full px-8 transition-all duration-500 ${
                     scrolled
@@ -68,33 +67,26 @@ function Navbar() {
                         : "border border-white/15 bg-white/10 backdrop-blur-xl"
                 }`}
             >
-
                 {/* Logo */}
 
                 <Link
                     to="/"
                     className="flex items-center gap-3"
                 >
-                    <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-lg font-black text-black">
-                        BW
-                    </div>
+                    <img
+                        src={logoImg}
+                        alt="Bidding Wars Logo"
+                        className="h-11 w-11 rounded-full object-cover shadow-sm border border-neutral-200"
+                    />
 
-                    <span
-                        className={`hidden text-xl font-semibold lg:block ${
-                            scrolled
-                                ? "text-black"
-                                : "text-white"
-                        }`}
-                    >
+                    <span className="hidden text-xl font-extrabold text-neutral-900 lg:block">
                         Bidding Wars
                     </span>
                 </Link>
 
-                {/* Desktop Navigation Starts Here */}
-                                {/* Desktop Navigation */}
+                {/* Desktop Navigation */}
 
                 <nav className="hidden items-center gap-10 lg:flex">
-
                     <NavLink
                         to="/auctions"
                         className={navClass}
@@ -108,13 +100,12 @@ function Navbar() {
 
                     {isAuthenticated && (
                         <NavLink
-                            to="/dashboard"
+                            to="/profile"
                             className={navClass}
                         >
-                            Dashboard
+                            Profile
                         </NavLink>
                     )}
-
                 </nav>
 
                 {/* Right Side */}
@@ -124,10 +115,9 @@ function Navbar() {
 
                     {isAuthenticated ? (
                         <>
-
                             <Link
                                 to="/create-auction"
-                                className="flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-medium text-white transition duration-300 hover:scale-105 hover:bg-[#FF5A1F]"
+                                className="flex items-center gap-2 rounded-full bg-[#FF3B00] px-5 py-2.5 text-sm font-semibold text-white transition duration-300 hover:scale-105 hover:bg-[#FF5A2C] shadow-md"
                             >
                                 <Plus size={16} />
                                 Create Auction
@@ -142,19 +132,13 @@ function Navbar() {
 
                             <button
                                 onClick={() => logout()}
-                                className={`transition ${
-                                    scrolled
-                                        ? "text-neutral-600 hover:text-black"
-                                        : "text-white/70 hover:text-white"
-                                }`}
+                                className="text-sm font-bold text-black transition hover:text-[#FF3B00]"
                             >
                                 Logout
                             </button>
-
                         </>
                     ) : (
                         <div className="flex items-center gap-4">
-
                             <Link
                                 to="/login"
                                 className={`transition ${
@@ -172,10 +156,8 @@ function Navbar() {
                             >
                                 Get Started
                             </Link>
-
                         </div>
                     )}
-
                 </div>
 
                 {/* Mobile Menu Button */}
@@ -194,11 +176,10 @@ function Navbar() {
                         <Menu size={28} />
                     )}
                 </button>
-
             </div>
 
-            {/* Mobile Menu Starts Here */}
-                        {mobileOpen && (
+            {/* Mobile Menu */}
+            {mobileOpen && (
                 <div
                     className={`mt-4 overflow-hidden rounded-3xl transition-all duration-300 lg:hidden ${
                         scrolled
@@ -207,7 +188,6 @@ function Navbar() {
                     }`}
                 >
                     <nav className="flex flex-col p-6">
-
                         <NavLink
                             to="/auctions"
                             onClick={() => setMobileOpen(false)}
@@ -249,7 +229,7 @@ function Navbar() {
                         {isAuthenticated && (
                             <>
                                 <NavLink
-                                    to="/dashboard"
+                                    to="/profile"
                                     onClick={() => setMobileOpen(false)}
                                     className={({ isActive }) =>
                                         `rounded-xl px-4 py-3 transition ${
@@ -263,7 +243,7 @@ function Navbar() {
                                         }`
                                     }
                                 >
-                                    Dashboard
+                                    Profile
                                 </NavLink>
 
                                 <NavLink
@@ -285,7 +265,8 @@ function Navbar() {
                                 </NavLink>
                             </>
                         )}
-                                                <div
+
+                        <div
                             className={`mt-6 border-t pt-6 ${
                                 scrolled
                                     ? "border-neutral-200"
@@ -360,7 +341,6 @@ function Navbar() {
                                 </div>
                             )}
                         </div>
-
                     </nav>
                 </div>
             )}

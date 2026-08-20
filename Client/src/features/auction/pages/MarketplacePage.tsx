@@ -4,6 +4,7 @@ import { Search, Gavel, ArrowUpRight } from "lucide-react";
 
 import { useAuctions } from "../hooks/useAuctions";
 import { AUCTION_CATEGORIES, type AuctionCategory } from "../auction.types";
+import { formatCurrency } from "../../../shared/utils/formatCurrency";
 
 const SORT_OPTIONS = [
     { value: "-createdAt", label: "Newest" },
@@ -15,7 +16,7 @@ const SORT_OPTIONS = [
 function MarketplacePage() {
     const [search, setSearch] = useState("");
     const [selectedCategory, setSelectedCategory] = useState<AuctionCategory | "">("");
-    const [selectedStatus, setSelectedStatus] = useState<string>("active");
+    const [selectedStatus, setSelectedStatus] = useState<string>("all");
     const [sort, setSort] = useState("-createdAt");
     const [page, setPage] = useState(1);
 
@@ -78,10 +79,10 @@ function MarketplacePage() {
 
                 <div className="mb-4 flex flex-wrap gap-2 sm:mb-6 sm:gap-3">
                     {[
+                        { key: "all", label: "All Statuses" },
                         { key: "active", label: "Live Active" },
                         { key: "upcoming", label: "Upcoming" },
                         { key: "ended", label: "Ended" },
-                        { key: "all", label: "All Statuses" },
                     ].map((tab) => (
                         <button
                             key={tab.key}
@@ -180,17 +181,20 @@ function MarketplacePage() {
                                 />
                             </div>
 
-                            <div className="mt-4 flex items-end justify-between border-t border-neutral-300 pt-4 sm:mt-6 sm:pt-5">
-                                <div>
+                            <div className="mt-4 flex items-end justify-between border-t border-neutral-300 pt-4 sm:mt-6 sm:pt-5 gap-2">
+                                <div className="min-w-0 flex-1 pr-2">
                                     <p className="text-[10px] uppercase tracking-[0.2em] text-neutral-500 sm:text-xs sm:tracking-[0.25em]">
                                         Current Bid
                                     </p>
-                                    <h4 className="mt-0.5 text-xl font-bold text-[#FF3B00] sm:mt-1 sm:text-3xl">
-                                        ₹{auction.currentPrice.toLocaleString()}
+                                    <h4
+                                        className="mt-0.5 text-xl font-bold text-[#FF3B00] sm:mt-1 sm:text-3xl truncate"
+                                        title={`₹${auction.currentPrice.toLocaleString()}`}
+                                    >
+                                        {formatCurrency(auction.currentPrice)}
                                     </h4>
                                 </div>
 
-                                <div className="text-right text-xs text-neutral-500 sm:text-sm">
+                                <div className="text-right text-xs text-neutral-500 sm:text-sm flex-shrink-0">
                                     <p>{auction.participantsCount} Watching</p>
                                     <p>{auction.totalBids} Bids</p>
                                 </div>

@@ -6,7 +6,7 @@ import HomePage from "../pages/HomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuctionDetailPage from "../pages/AuctionDetailPage";
 import CreateAuctionPage from "../pages/CreateAuctionPage";
-import DashboardPage from "../pages/DashboardPage";
+import ProfilePage from "../pages/ProfilePage";
 
 import LoginPage from "../features/auth/pages/LoginPage";
 import RegisterPage from "../features/auth/pages/RegisterPage";
@@ -85,7 +85,11 @@ export const router = createBrowserRouter([
                 children: [
                     {
                         path: "dashboard",
-                        element: <DashboardPage />,
+                        element: <ProfilePage />,
+                    },
+                    {
+                        path: "profile",
+                        element: <ProfilePage />,
                     },
                     {
                         path: "create-auction",

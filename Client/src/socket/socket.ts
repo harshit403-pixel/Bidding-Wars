@@ -18,8 +18,20 @@ export function getSocket(): Socket {
 
 export function connectSocket(): void {
     const s = getSocket();
+    const token = store.getState().auth.accessToken;
+
+    const currentToken = (s.auth as { token?: string })?.token;
+
+    if (token && currentToken !== token) {
+        s.auth = { token };
+        if (s.connected || s.active) {
+            s.disconnect();
+        }
+        s.connect();
+        return;
+    }
+
     if (!s.connected && !s.active) {
-        const token = store.getState().auth.accessToken;
         if (token) {
             s.auth = { token };
         }

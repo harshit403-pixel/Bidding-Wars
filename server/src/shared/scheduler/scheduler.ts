@@ -14,16 +14,32 @@ function tickTimer() {
     const rooms = socketManager.getAllRooms();
 
     for (const [roomId, room] of rooms) {
-        const remainingMs = room.endTime - now;
-        const remainingSeconds = Math.max(0, Math.floor(remainingMs / 1000));
+        let status = room.status || "active";
+        let targetTime = room.endTime;
+
+        if (status === "upcoming" && room.startTime) {
+            targetTime = room.startTime;
+            if (now >= room.startTime) {
+                status = "active";
+                room.status = "active";
+            }
+        } else if (status === "active") {
+            if (now >= room.endTime) {
+                status = "ended";
+                room.status = "ended";
+            }
+        }
+
+        const remainingMs = Math.max(0, targetTime - now);
+        const remainingSeconds = Math.floor(remainingMs / 1000);
 
         io.to(roomId).emit("timer_update", {
             auctionId: room.auctionId,
             remainingSeconds,
-            status: remainingSeconds > 0 ? "active" : "ended",
+            status,
         });
 
-        if (remainingSeconds <= 0) {
+        if (status === "ended") {
             socketManager.deleteRoom(roomId);
         }
     }

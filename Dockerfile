@@ -1,13 +1,11 @@
 FROM node:24-alpine AS client
 
-WORKDIR /app
+WORKDIR /app/Client
 
-COPY ./Client/package*.json ./
-
+COPY Client/package*.json ./
 RUN npm ci
 
-COPY ./Client/ ./
-
+COPY Client/ ./
 RUN npm run build
 
 
@@ -19,7 +17,10 @@ COPY ./server/package*.json ./
 
 RUN npm ci
 
-COPY ./server/ ./
+COPY server/ ./
+
+# Copy client build into server/public
+COPY --from=client-builder /app/Client/dist ./public
 
 RUN npm run build
 

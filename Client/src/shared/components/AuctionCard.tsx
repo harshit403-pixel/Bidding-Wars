@@ -1,5 +1,6 @@
 import { ArrowUpRight, Clock, Eye, Gavel } from "lucide-react";
 import { motion } from "framer-motion";
+import { formatCurrency } from "../utils/formatCurrency";
 
 type AuctionCardProps = {
     title: string;
@@ -45,14 +46,14 @@ function AuctionCard({
                     {timeLeft}
                 </div>
 
-                <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-white/15 p-4 backdrop-blur-xl">
+                <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-white/15 p-4 backdrop-blur-xl min-w-0">
 
                     <p className="text-xs uppercase tracking-widest text-white/70">
                         Current Bid
                     </p>
 
-                    <h3 className="mt-1 text-3xl font-bold text-white">
-                        ₹{currentBid.toLocaleString()}
+                    <h3 className="mt-1 text-3xl font-bold text-white truncate" title={`₹${currentBid.toLocaleString()}`}>
+                        {formatCurrency(currentBid)}
                     </h3>
 
                 </div>
