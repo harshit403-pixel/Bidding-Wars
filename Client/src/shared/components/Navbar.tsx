@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router";
-import { Menu, Plus, Search, X } from "lucide-react";
+import { Menu, Plus, X } from "lucide-react";
 import { useSelector } from "react-redux";
 
 import { useLogout } from "../../features/auth/hooks/useLogout";
